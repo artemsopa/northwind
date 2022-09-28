@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import csv from 'csv-parser';
 import {
-  Customer, Employee, Files, Order, OrderDetail, Product, Supply,
+  Customer, Employee, Order, OrderDetail, Product, Supply, Files,
 } from './types.reader';
 
 export default class CsvReader {
