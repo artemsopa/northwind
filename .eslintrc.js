@@ -24,5 +24,8 @@ module.exports = {
     'import/prefer-default-export': 0,
     'max-classes-per-file': 0,
     'max-len': 0,
+    'no-promise-executor-return': 0,
+    'consistent-return': 0,
+    'no-shadow': 0,
   },
 };
