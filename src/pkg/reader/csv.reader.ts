@@ -5,12 +5,12 @@ import {
   Customer, Employee, Order, OrderDetail, Product, Supply, Files,
 } from './types.reader';
 
-export default class CsvReader {
+export default class CSVReader {
   constructor(private readonly filePath: string) {
     this.filePath = filePath;
   }
 
-  private readFile = <T>(fileName: string) => new Promise<T[]>(
+  private readCSV = <T>(fileName: string) => new Promise<T[]>(
     (resolve, reject) => {
       const result: T[] = [];
       fs.createReadStream(path.resolve(__dirname, this.filePath, fileName), { encoding: 'utf-8' })
@@ -21,13 +21,13 @@ export default class CsvReader {
     },
   );
 
-  readAllFiles = async () => {
-    const employees = await this.readFile<Employee>(Files.Employees);
-    const customers = await this.readFile<Customer>(Files.Customers);
-    const orders = await this.readFile<Order>(Files.Orders);
-    const supplies = await this.readFile<Supply>(Files.Supplies);
-    const products = await this.readFile<Product>(Files.Products);
-    const orderDetails = await this.readFile<OrderDetail>(Files.OrderDetails);
+  readAllCSVs = async () => {
+    const employees = await this.readCSV<Employee>(Files.Employees);
+    const customers = await this.readCSV<Customer>(Files.Customers);
+    const orders = await this.readCSV<Order>(Files.Orders);
+    const supplies = await this.readCSV<Supply>(Files.Supplies);
+    const products = await this.readCSV<Product>(Files.Products);
+    const orderDetails = await this.readCSV<OrderDetail>(Files.OrderDetails);
 
     return {
       employees, customers, orders, supplies, products, orderDetails,
