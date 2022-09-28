@@ -25,6 +25,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
+    "csv-parser": "^3.0.0",
     "dotenv": "^16.0.2",
     "joi": "^17.6.1"
   }
