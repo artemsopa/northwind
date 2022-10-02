@@ -20,7 +20,6 @@ provider:
     DB_USER: ${env:DB_USER}
     DB_PASSWORD: ${env:DB_PASSWORD}
     DB_NAME: ${env:DB_NAME}
-    CSV_DIR: ${env:CSV_DIR}
     AWS_SQS_URL: { Ref: MessagesQueue }
   iamRoleStatements:
     - Effect: "Allow"
