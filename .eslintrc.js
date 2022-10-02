@@ -27,5 +27,12 @@ module.exports = {
     'no-promise-executor-return': 0,
     'consistent-return': 0,
     'no-shadow': 0,
+    'no-return-await': 0,
+    'no-param-reassign': 0,
+    'no-restricted-syntax': 0,
+    'class-methods-use-this': 0,
+    'no-use-before-define': 0,
+    'no-nested-ternary': 0,
+    'import/no-extraneous-dependencies': 0,
   },
 };
