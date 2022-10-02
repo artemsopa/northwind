@@ -17,7 +17,6 @@ WORKDIR /opt/app
 
 # fetch app specific deps
 RUN npm install
-RUN sh ./scripts/protoc.sh
 RUN npm run build
 
 # expose port
