@@ -6,7 +6,8 @@
   "scripts": {
     "start": "serverless offline start --noTimeout",
     "deploy": "sls deploy",
-    "deploy-prod": "sls deploy --stage prod"
+    "deploy-prod": "sls deploy --stage prod",
+    "remove": "sls remove"
   },
   "keywords": [],
   "author": "",
