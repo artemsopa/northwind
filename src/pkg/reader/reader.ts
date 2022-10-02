@@ -4,15 +4,14 @@ export interface Employee {
     FirstName: string;
     Title: string;
     TitleOfCourtesy: string;
-    BirthDate: string;
-    HireDate: string;
+    BirthDate: Date;
+    HireDate: Date;
     Address: string;
     City: string;
-    Region: string;
     PostalCode: string;
     Country: string;
     HomePhone: string;
-    Extension: string;
+    Extension: number;
     Notes: string;
     ReportsTo: string;
 }
@@ -24,8 +23,8 @@ export interface Customer {
     ContactTitle: string;
     Address: string;
     City: string;
-    Region: string;
     PostalCode: string;
+    Region: string;
     Country: string;
     Phone: string;
     Fax: string;
@@ -34,22 +33,21 @@ export interface Customer {
 export interface OrderDetail {
     OrderID: string;
     ProductID: string;
-    UnitPrice: string;
-    Quantity: string;
-    Discount: string;
+    UnitPrice: number;
+    Quantity: number;
+    Discount: number;
 }
 
 export interface Order {
     OrderID: string;
     CustomerID: string;
     EmployeeID: string;
-    OrderDate: string;
-    RequiredDate: string;
-    ShippedDate: string;
-    ShipVia: string;
-    Freight: string;
+    OrderDate: Date;
+    RequiredDate: Date;
+    ShippedDate: Date;
+    ShipVia: number;
+    Freight: number;
     ShipName: string;
-    ShipAddress: string;
     ShipCity: string;
     ShipRegion: string;
     ShipPostalCode: string;
@@ -60,16 +58,15 @@ export interface Product {
     ProductID: string;
     ProductName: string;
     SupplierID: string;
-    CategoryID: string;
     QuantityPerUnit: string;
-    UnitPrice: string;
-    UnitsInStock: string;
-    UnitsOnOrder: string;
-    ReorderLevel: string;
-    Discontinued: string;
+    UnitPrice: number;
+    UnitsInStock: number;
+    UnitsOnOrder: number;
+    ReorderLevel: number;
+    Discontinued: number;
 }
 
-export interface Supply {
+export interface Supplier {
     SupplierID: string;
     CompanyName: string;
     ContactName: string;
@@ -80,8 +77,18 @@ export interface Supply {
     PostalCode: string;
     Country: string;
     Phone: string;
-    Fax: string;
-    HomePage: string;
+}
+
+export interface ICSVReader {
+    readCSV<T>(fileName: string): Promise<T[]>;
+    readAllCSVs(): Promise<{
+        employees: Employee[];
+        customers: Customer[];
+        orders: Order[];
+        suppliers: Supplier[];
+        products: Product[];
+        orderDetails: OrderDetail[];
+    }>;
 }
 
 export const FILE_PATH = '../data_tables/';
@@ -90,7 +97,7 @@ export enum Files {
     Customers = 'Customers.csv',
     Employees = 'Employees.csv',
     Orders = 'Orders.csv',
-    Supplies = 'Supplies.csv',
+    Suppliers = 'Suppliers.csv',
     Products = 'Products.csv',
     OrderDetails = 'OrderDetails.csv',
 }
