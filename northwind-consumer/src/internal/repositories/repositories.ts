@@ -4,7 +4,7 @@ import MetricsRepo from './metrics.repo';
 
 export interface IMetricsRepo {
   getAll(): Promise<Metric[]>;
-  create(query: string, ms: number, type: QueryTypes): Promise<void>;
+  create(metric: Metric): Promise<void>;
 }
 
 export default class Repositories {

@@ -13,8 +13,8 @@ class MetricsRepo implements IMetricsRepo {
     return await this.repo.find();
   }
 
-  async create(query: string, ms: number, type: QueryTypes): Promise<void> {
-    await this.repo.save(new Metric(query, ms, type));
+  async create(metric: Metric): Promise<void> {
+    await this.repo.save(metric);
   }
 }
 
