@@ -59,7 +59,6 @@ export interface ISuppliersRepo {
 
 export interface IMetricsRepo {
   getAll(): Promise<Metric[]>;
-  create(query: string, ms: number, type: QueryTypes): Promise<void>;
 }
 
 export default class Repositories {

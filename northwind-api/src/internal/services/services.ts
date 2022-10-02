@@ -13,7 +13,6 @@ import SuppliersService from './suppliers.service';
 import ProductsService from './products.service';
 import { MetricsInfo, EnqueuedMetric } from './dtos/metric';
 import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import MetricsService from './metrics.service';
 
 export interface IAdminService {
   rewriteData(): Promise<void>;
@@ -47,10 +46,6 @@ export interface IOrdersService {
   getInfo(id: string): Promise<OrderInfo>;
 }
 
-export interface IMetricsService {
-  create(metric: EnqueuedMetric): Promise<void>;
-}
-
 export class Deps {
   reader: ICSVReader;
   queue: ISQSQueue;
@@ -69,7 +64,6 @@ export default class Services {
   suppliers: ISuppliersService;
   products: IProductsService;
   orders: IOrdersService;
-  metrics: IMetricsService;
   constructor(deps: Deps) {
     this.admin = new AdminService(deps.reader, deps.repos);
     this.customers = new CustomersService(deps.repos.customers, deps.queue);
@@ -77,6 +71,5 @@ export default class Services {
     this.suppliers = new SuppliersService(deps.repos.suppliers, deps.queue);
     this.products = new ProductsService(deps.repos.products, deps.queue);
     this.orders = new OrdersService(deps.repos.orders, deps.repos.products, deps.queue);
-    this.metrics = new MetricsService(deps.repos.metrics);
   }
 }

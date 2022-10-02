@@ -1,6 +1,7 @@
 import { SQSEvent } from 'aws-lambda';
 import { IMetricsService } from '../services/services';
 import { ISQSQueue } from '../../pkg/queue/sqs.queue';
+import { EnqueuedMetric } from '../services/dtos/metric';
 
 class Consumer {
   constructor(private metricsService: IMetricsService, private queue: ISQSQueue) {
@@ -54,7 +55,7 @@ class Consumer {
 
   private mapEventToDequeuedMessages(event: SQSEvent) {
     return event.Records.map((record) => {
-      const message = JSON.parse(record.body);
+      const message = JSON.parse(record.body) as EnqueuedMetric;
       return {
         id: record.messageId,
         receiptHandle: record.receiptHandle,
