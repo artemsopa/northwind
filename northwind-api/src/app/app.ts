@@ -13,7 +13,12 @@ const createApp = async () => {
 
   const reader = new CSVReader(cfgs.csv.CSV_DIR);
   const repos = new Repositories(ds);
-  const sqsQueue = new SQSQueue(new SQS({}), cfgs.aws.sqs.AWS_SQS_URL);
+  const sqs = new SQS({
+    accessKeyId: cfgs.aws.AWS_ACCESS_KEY,
+    secretAccessKey: cfgs.aws.AWS_SECRET_KEY,
+    region: cfgs.aws.AWS_REGION,
+  });
+  const sqsQueue = new SQSQueue(sqs, cfgs.aws.sqs.AWS_SQS_URL);
 
   const deps = new Deps(reader, repos, sqsQueue);
   const services = new Services(deps);

@@ -3,10 +3,30 @@ import dotenv from 'dotenv';
 const initConfigs = () => {
   dotenv.config();
   const {
-    PORT, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, CSV_DIR, AWS_SQS_URL,
+    PORT,
+    DB_HOST,
+    DB_PORT,
+    DB_USER,
+    DB_PASSWORD,
+    DB_NAME,
+    CSV_DIR,
+    AWS_ACCESS_KEY,
+    AWS_SECRET_KEY,
+    AWS_REGION,
+    AWS_SQS_URL,
   } = process.env;
 
-  if (!PORT || !DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME || !CSV_DIR || !AWS_SQS_URL) {
+  if (!PORT
+    || !DB_HOST
+    || !DB_PORT
+    || !DB_USER
+    || !DB_PASSWORD
+    || !DB_NAME
+    || !CSV_DIR
+    || !AWS_ACCESS_KEY
+    || !AWS_SECRET_KEY
+    || !AWS_REGION
+    || !AWS_SQS_URL) {
     throw new Error('ERROR! Invalid configuration');
   }
 
@@ -25,6 +45,9 @@ const initConfigs = () => {
       CSV_DIR,
     },
     aws: {
+      AWS_ACCESS_KEY,
+      AWS_SECRET_KEY,
+      AWS_REGION,
       sqs: {
         AWS_SQS_URL,
       },
