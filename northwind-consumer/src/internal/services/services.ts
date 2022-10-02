@@ -1,10 +1,10 @@
+import { SQSEvent } from 'aws-lambda';
 import Repositories from '../repositories/repositories';
-import { EnqueuedMetric } from './dtos/metric';
 import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import MetricsService from './metrics.service';
+import ConsumerService from './consumer.service';
 
-export interface IMetricsService {
-  create(metric: EnqueuedMetric): Promise<void>;
+export interface IConsumerService {
+  handle(event: SQSEvent): Promise<void>;
 }
 
 export class Deps {
@@ -17,8 +17,8 @@ export class Deps {
 }
 
 export default class Services {
-  metrics: IMetricsService;
+  cuonsumer: IConsumerService;
   constructor(deps: Deps) {
-    this.metrics = new MetricsService(deps.repos.metrics);
+    this.cuonsumer = new ConsumerService(deps.repos.metrics, deps.queue);
   }
 }
