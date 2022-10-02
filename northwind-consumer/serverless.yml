@@ -42,13 +42,6 @@ custom:
       true
 
 functions:
-  api:
-    handler: ./src/index.handler
-    events:
-      - http:
-          path: /{proxy+}
-          method: any
-          cors: true
   consumer:
     handler: ./src/index.consumer
     events:
