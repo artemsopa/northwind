@@ -2,23 +2,14 @@
 import AWS from 'aws-sdk';
 
 export interface ISQSQueue {
-  enqueueMessage<T>(message: T): Promise<void>;
+  deleteMessages(deleteMessageRequests: any[]): Promise<void>;
 }
 
 class SQSQueue {
   private sqsUrl: string;
   constructor(private sqsClient: AWS.SQS, sqsUrl: string) {
     this.sqsClient = sqsClient;
-    this.sqsUrl = sqsUrl; // `https://sqs.${region}.amazonaws.com/${acccountId}/${queueName}`;
-  }
-
-  async enqueueMessage<T>(message: T): Promise<void> {
-    await this.sqsClient
-      .sendMessage({
-        QueueUrl: this.sqsUrl,
-        MessageBody: JSON.stringify(message),
-      })
-      .promise();
+    this.sqsUrl = sqsUrl;
   }
 
   async deleteMessages(deleteMessageRequests: any[]): Promise<void> {
