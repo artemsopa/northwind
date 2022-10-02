@@ -1,6 +1,6 @@
 org: artemsopa
-app: northwind
-service: northwind-api
+app: northwind-consumer
+service: northwind-consumer
 frameworkVersion: '3'
 useDotenv: true
 
