@@ -25,19 +25,19 @@ class AdminService implements IAdminService {
 
     const data = await this.reader.readAllCSVs();
 
-    await this.repos.customers.createMany(data.customers.map((item) => new Customer(
-      item.CustomerID,
-      item.CompanyName,
-      item.ContactName,
-      item.ContactTitle,
-      item.Address,
-      item.City,
-      item.PostalCode,
-      item.Region,
-      item.Country,
-      item.Phone,
-      item.Fax,
-    )));
+    await this.repos.customers.createMany(data.customers.map((item) => ({
+      id: item.CustomerID,
+      companyName: item.CompanyName,
+      contactName: item.ContactName,
+      contactTitle: item.ContactTitle,
+      address: item.Address,
+      city: item.City,
+      postalCode: item.PostalCode,
+      region: item.Region,
+      country: item.Country,
+      phone: item.Phone,
+      fax: item.Fax,
+    })));
 
     await this.repos.employees.createMany(
       data.employees
@@ -47,73 +47,73 @@ class AdminService implements IAdminService {
               : (e1.ReportsTo && e2.ReportsTo) && e1.ReportsTo > e2.ReportsTo ? 1
                 : (e1.ReportsTo && e2.ReportsTo) && e1.ReportsTo < e2.ReportsTo ? -1 : 0
         ))
-        .map((item) => new Employee(
-          item.EmployeeID,
-          item.LastName,
-          item.FirstName,
-          item.Title,
-          item.TitleOfCourtesy,
-          new Date(item.BirthDate),
-          new Date(item.HireDate),
-          item.Address,
-          item.City,
-          item.PostalCode,
-          item.Country,
-          item.HomePhone,
-          item.Extension,
-          item.Notes,
-          item.ReportsTo,
-        )),
+        .map((item) => ({
+          id: item.EmployeeID,
+          lastName: item.LastName,
+          firstName: item.FirstName,
+          title: item.Title,
+          titleOfCourtesy: item.TitleOfCourtesy,
+          birthDate: item.BirthDate,
+          hireDate: item.HireDate,
+          address: item.Address,
+          city: item.City,
+          postalCode: item.PostalCode,
+          country: item.Country,
+          homePhone: item.HomePhone,
+          extension: item.Extension,
+          notes: item.Notes,
+          reportsTo: item.ReportsTo,
+        })),
     );
 
-    await this.repos.orders.createMany(data.orders.map((item) => new Order(
-      item.OrderID,
-      new Date(item.OrderDate),
-      new Date(item.RequiredDate),
-      item.ShippedDate ? new Date(item.ShippedDate) : null,
-      item.ShipVia,
-      item.Freight,
-      item.ShipName,
-      item.ShipCity,
-      item.ShipRegion,
-      item.ShipPostalCode,
-      item.ShipCountry,
-      item.CustomerID,
-      item.EmployeeID,
-    )));
+    await this.repos.orders.createMany(data.orders.map((item) => ({
+      id: item.OrderID,
+      orderDate: item.OrderDate,
+      requiredDate: item.RequiredDate,
+      shippedDate: item.ShippedDate,
+      shipVia: item.ShipVia,
+      freight: item.Freight,
+      shipName: item.ShipName,
+      shipCity: item.ShipCity,
+      shipRegion: item.ShipRegion,
+      shipPostalCode: item.ShipPostalCode,
+      shipCountry: item.ShipCountry,
+      customerId: item.CustomerID,
+      employeeId: item.EmployeeID,
+    })));
 
-    await this.repos.suppliers.createMany(data.suppliers.map((item) => new Supplier(
-      item.SupplierID,
-      item.CompanyName,
-      item.ContactName,
-      item.ContactTitle,
-      item.Address,
-      item.City,
-      item.Region,
-      item.PostalCode,
-      item.Country,
-      item.Phone,
-    )));
+    await this.repos.suppliers.createMany(data.suppliers.map((item) => ({
+      id: item.SupplierID,
+      companyName: item.CompanyName,
+      contactName: item.ContactName,
+      contactTitle: item.ContactTitle,
+      address: item.Address,
+      city: item.City,
+      region: item.Region,
+      postalCode: item.PostalCode,
+      country: item.Country,
+      phone: item.Phone,
+    })));
 
-    await this.repos.products.createMany(data.products.map((item) => new Product(
-      item.ProductID,
-      item.ProductName,
-      item.QuantityPerUnit,
-      item.UnitPrice,
-      item.UnitsInStock,
-      item.UnitsOnOrder,
-      item.ReorderLevel,
-      item.Discontinued,
-      item.SupplierID,
-    )));
+    await this.repos.products.createMany(data.products.map((item) => ({
+      id: item.ProductID,
+      name: item.ProductName,
+      quantityPerUnit: item.QuantityPerUnit,
+      unitPrice: item.UnitPrice,
+      unitsInStock: item.UnitsInStock,
+      unitsOnOrder: item.UnitsOnOrder,
+      reorderLevel: item.ReorderLevel,
+      discontinued: item.Discontinued,
+      supplierId: item.SupplierID,
+    })));
 
-    await this.repos.details.createMany(data.orderDetails.map((item) => new Detail(
-      item.UnitPrice,
-      item.Quantity,
-      item.Discount,
-      item.OrderID,
-      item.ProductID,
-    )));
+    await this.repos.details.createMany(data.orderDetails.map((item) => ({
+      unitPrice: item.UnitPrice,
+      quantity: item.Quantity,
+      discount: item.Discount,
+      orderId: item.OrderID,
+      productId: item.ProductID,
+    })));
   }
 
   async getAllMetrics(): Promise<MetricsInfo> {
