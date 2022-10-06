@@ -15,38 +15,4 @@ export const suppliers = pgTable('suppliers', {
   phone: varchar('phone').notNull(),
 });
 
-export class Supplier implements InferModel<typeof suppliers> {
-  id: string;
-  companyName: string;
-  contactName: string;
-  contactTitle: string;
-  address: string;
-  city: string;
-  region: string | null;
-  postalCode: string;
-  country: string;
-  phone: string;
-  constructor(
-    id: string,
-    companyName: string,
-    contactName: string,
-    contactTitle: string,
-    address: string,
-    city: string,
-    region: string | null,
-    postalCode: string,
-    country: string,
-    phone: string,
-  ) {
-    this.id = id;
-    this.companyName = companyName;
-    this.contactName = contactName;
-    this.contactTitle = contactTitle;
-    this.address = address;
-    this.city = city;
-    this.region = region;
-    this.postalCode = postalCode;
-    this.country = country;
-    this.phone = phone;
-  }
-}
+export type Supplier = InferModel<typeof suppliers>;

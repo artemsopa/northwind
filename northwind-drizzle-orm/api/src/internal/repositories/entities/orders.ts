@@ -24,47 +24,4 @@ export const orders = pgTable('orders', {
     .references(() => employees.id, { onDelete: 'cascade' }),
 });
 
-export class Order implements InferModel<typeof orders> {
-  id: string;
-  orderDate: Date;
-  requiredDate: Date;
-  shippedDate: Date | null;
-  shipVia: number;
-  freight: number;
-  shipName: string;
-  shipCity: string;
-  shipRegion: string | null;
-  shipPostalCode: string | null;
-  shipCountry: string;
-  customerId: string;
-  employeeId: string;
-  constructor(
-    id: string,
-    orderDate: Date,
-    requiredDate: Date,
-    shippedDate: Date | null,
-    shipVia: number,
-    freight: number,
-    shipName: string,
-    shipCity: string,
-    shipRegion: string | null,
-    shipPostalCode: string | null,
-    shipCountry: string,
-    customerId: string,
-    employeeId: string,
-  ) {
-    this.id = id;
-    this.orderDate = orderDate;
-    this.requiredDate = requiredDate;
-    this.shippedDate = shippedDate;
-    this.shipVia = shipVia;
-    this.freight = freight;
-    this.shipName = shipName;
-    this.shipCity = shipCity;
-    this.shipRegion = shipRegion;
-    this.shipPostalCode = shipPostalCode;
-    this.shipCountry = shipCountry;
-    this.customerId = customerId;
-    this.employeeId = employeeId;
-  }
-}
+export type Order = InferModel<typeof orders>;

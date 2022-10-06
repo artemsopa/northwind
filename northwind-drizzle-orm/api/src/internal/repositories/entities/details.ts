@@ -16,23 +16,4 @@ export const details = pgTable('order_details', {
     .references(() => products.id, { onDelete: 'cascade' }),
 });
 
-export class Detail implements InferModel<typeof details> {
-  unitPrice: number;
-  quantity: number;
-  discount: number;
-  orderId: string;
-  productId: string;
-  constructor(
-    unitPrice: number,
-    quantity: number,
-    discount: number,
-    orderId: string,
-    productId: string,
-  ) {
-    this.unitPrice = unitPrice;
-    this.quantity = quantity;
-    this.discount = discount;
-    this.orderId = orderId;
-    this.productId = productId;
-  }
-}
+export type Detail = InferModel<typeof details>;
