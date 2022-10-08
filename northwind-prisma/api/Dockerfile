@@ -17,6 +17,7 @@ WORKDIR /opt/app
 
 # fetch app specific deps
 RUN npm install
+RUN npx prisma generate
 RUN npm run build
 
 # expose port
