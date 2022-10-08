@@ -27,7 +27,7 @@ const createApp = async () => {
     });
     const sqsQueue = new SQSQueue(sqs, cfgs.aws.sqs.AWS_SQS_URL);
 
-    const deps = new Deps(reader, repos, sqsQueue);
+    const deps = new Deps(reader, repos);
     const services = new Services(deps);
 
     prisma.$on('query', async (e) => {
