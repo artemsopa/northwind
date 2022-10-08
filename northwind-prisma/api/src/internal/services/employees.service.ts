@@ -1,14 +1,11 @@
 import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
 import { IEmployeesRepo } from '../repositories/repositories';
 import { EmployeeItem, EmployeeInfo, EmployeeRecipient } from './dtos/employee';
-import { EnqueuedMetric } from './dtos/metric';
 import { IEmployeesService } from './services';
 
 class EmployeesService implements IEmployeesService {
-  constructor(private readonly employeesRepo: IEmployeesRepo, private readonly queue: ISQSQueue) {
+  constructor(private readonly employeesRepo: IEmployeesRepo) {
     this.employeesRepo = employeesRepo;
-    this.queue = queue;
   }
 
   async getAll(): Promise<EmployeeItem[]> {

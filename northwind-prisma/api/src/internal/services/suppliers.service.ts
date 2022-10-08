@@ -6,9 +6,8 @@ import { SupplierItem, SupplierInfo } from './dtos/supplier';
 import { ISuppliersService } from './services';
 
 class SuppliersService implements ISuppliersService {
-  constructor(private readonly suppliersRepo: ISuppliersRepo, private readonly queue: ISQSQueue) {
+  constructor(private readonly suppliersRepo: ISuppliersRepo) {
     this.suppliersRepo = suppliersRepo;
-    this.queue = queue;
   }
 
   async getAll(): Promise<SupplierItem[]> {

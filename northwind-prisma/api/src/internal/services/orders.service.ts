@@ -1,14 +1,11 @@
 import { OrderItem, OrderInfo, OrderProduct } from './dtos/order';
 import { IOrdersService } from './services';
-import { IOrdersRepo, IProductsRepo } from '../repositories/repositories';
+import { IOrdersRepo } from '../repositories/repositories';
 import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { EnqueuedMetric } from './dtos/metric';
 
 class OrdersService implements IOrdersService {
-  constructor(private readonly ordersRepo: IOrdersRepo, private readonly queue: ISQSQueue) {
+  constructor(private readonly ordersRepo: IOrdersRepo) {
     this.ordersRepo = ordersRepo;
-    this.queue = queue;
   }
 
   async getAll(): Promise<OrderItem[]> {

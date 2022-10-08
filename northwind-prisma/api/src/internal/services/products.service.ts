@@ -2,13 +2,10 @@ import { IProductsService } from './services';
 import { IProductsRepo } from '../repositories/repositories';
 import { ProductItem, ProductInfo, ProductSupplier } from './dtos/product';
 import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { EnqueuedMetric } from './dtos/metric';
 
 class ProductsService implements IProductsService {
-  constructor(private readonly productsRepo: IProductsRepo, private readonly queue: ISQSQueue) {
+  constructor(private readonly productsRepo: IProductsRepo) {
     this.productsRepo = productsRepo;
-    this.queue = queue;
   }
 
   async getAll(): Promise<ProductItem[]> {

@@ -2,12 +2,10 @@ import { ICustomersService } from './services';
 import { ICustomersRepo } from '../repositories/repositories';
 import { CustomerItem, CustomerInfo } from './dtos/customer';
 import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
 
 class CustomersService implements ICustomersService {
-  constructor(private readonly customersRepo: ICustomersRepo, private readonly queue: ISQSQueue) {
+  constructor(private readonly customersRepo: ICustomersRepo) {
     this.customersRepo = customersRepo;
-    this.queue = queue;
   }
 
   async getAll(): Promise<CustomerItem[]> {

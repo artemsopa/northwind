@@ -48,11 +48,9 @@ export interface IOrdersService {
 
 export class Deps {
   reader: ICSVReader;
-  queue: ISQSQueue;
   repos: Repositories;
-  constructor(reader: ICSVReader, repos: Repositories, queue: ISQSQueue) {
+  constructor(reader: ICSVReader, repos: Repositories) {
     this.reader = reader;
-    this.queue = queue;
     this.repos = repos;
   }
 }
@@ -66,10 +64,10 @@ export default class Services {
   orders: IOrdersService;
   constructor(deps: Deps) {
     this.admin = new AdminService(deps.reader, deps.repos);
-    this.customers = new CustomersService(deps.repos.customers, deps.queue);
-    this.employees = new EmployeesService(deps.repos.employees, deps.queue);
-    this.suppliers = new SuppliersService(deps.repos.suppliers, deps.queue);
-    this.products = new ProductsService(deps.repos.products, deps.queue);
-    this.orders = new OrdersService(deps.repos.orders, deps.queue);
+    this.customers = new CustomersService(deps.repos.customers);
+    this.employees = new EmployeesService(deps.repos.employees);
+    this.suppliers = new SuppliersService(deps.repos.suppliers);
+    this.products = new ProductsService(deps.repos.products);
+    this.orders = new OrdersService(deps.repos.orders);
   }
 }
