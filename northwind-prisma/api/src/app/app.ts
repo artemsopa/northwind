@@ -31,7 +31,7 @@ const createApp = async () => {
     const services = new Services(deps);
 
     prisma.$on('query', async (e) => {
-      sqsQueue.enqueueMessage({
+      await sqsQueue.enqueueMessage({
         query: `${e.query} ${e.params}`,
         ms: e.duration,
         date: e.timestamp,
