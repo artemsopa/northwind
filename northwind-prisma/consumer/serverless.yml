@@ -1,0 +1,68 @@
+org: artemsopa
+app: northwind-prisma
+service: northwind-prisma-consumer
+frameworkVersion: '3'
+useDotenv: true
+
+plugins:
+  - serverless-webpack
+  - serverless-webpack-prisma
+  - serverless-offline
+  - serverless-export-env
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+    AWS_SQS_URL: { Ref: MessagesQueue }
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:SendMessage"
+        - "sqs:DeleteMessageBatch"
+      Resource: 
+        - Fn::GetAtt: [MessagesQueue, Arn]
+    - Effect: "Allow"
+      Action:
+        - ec2:CreateNetworkInterface
+        - ec2:DescribeNetworkInterfaces
+        - ec2:DeleteNetworkInterface
+      Resource:
+        - "*"
+
+custom: 
+  webpack: 
+    includeModules: 
+      true
+    packagerOptions:
+      scripts:
+        - prisma generate
+
+
+functions:
+  consumer:
+    handler: ./src/index.consumer
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - MessagesQueue
+              - Arn
+resources:
+  Resources:
+    MessagesQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        RedrivePolicy:
+          deadLetterTargetArn: !GetAtt DeadLetterMessagesQueue.Arn
+          maxReceiveCount: 3
+        # Two minutes
+        VisibilityTimeout: 120
+    DeadLetterMessagesQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        # Seven days
+        MessageRetentionPeriod: 604800
