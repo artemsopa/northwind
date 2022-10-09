@@ -7,7 +7,7 @@ import SuppliersRepo from './suppliers.repo';
 import MetricsRepo from './metrics.repo';
 import { Customer } from './entities/customers';
 import { Metric } from './entities/metrics';
-import { Employee, ReportedEmployee } from './entities/employees';
+import { Employee } from './entities/employees';
 import { Order } from './entities/orders';
 import { Detail } from './entities/details';
 import { Product } from './entities/products';
@@ -24,7 +24,7 @@ export interface ICustomersRepo {
 
 export interface IEmployeesRepo {
   getAll():Promise<ItemsWithMetric<Employee[]>>;
-  getInfo(id: string): Promise<ItemsWithMetric<ReportedEmployee | null>>;
+  getInfo(id: string): Promise<ItemsWithMetric<any | null>>;
   createMany(employees: Employee[]): Promise<void>;
   deleteAll(): Promise<void>;
 }

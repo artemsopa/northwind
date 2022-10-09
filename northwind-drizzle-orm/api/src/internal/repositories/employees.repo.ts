@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { Employee, ReportedEmployee } from './entities/employees';
+import { Employee } from './entities/employees';
 import { IEmployeesRepo, ItemsWithMetric, QueryTypes } from './repositories';
 import { DataBase } from './entities/schema';
 
@@ -21,12 +21,11 @@ class EmployeesRepo implements IEmployeesRepo {
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<ReportedEmployee | null>> {
+  async getInfo(id: string): Promise<ItemsWithMetric<any | null>> {
     const command = sql`SELECT e1.*, e2.last_name as reports_lname, e2.first_name as reports_fname FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.reports_to WHERE e1.id = ${id}`;
-    const { rows: [data] } = await this.db.execute<ReportedEmployee>(command);
+    const { rows: [data] } = await this.db.execute(command);
 
     const query = `${command.getSQL().queryChunks} ${id}`;
-    console.log(data);
 
     return {
       data,

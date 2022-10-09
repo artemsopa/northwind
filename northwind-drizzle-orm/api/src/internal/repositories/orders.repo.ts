@@ -16,7 +16,6 @@ class OrdersRepo implements IOrdersRepo {
 
     const data = await command.execute();
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
-    console.log(data[0]);
 
     return {
       data,

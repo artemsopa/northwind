@@ -2,12 +2,6 @@ import { IAdminService } from './services';
 import { ICSVReader } from '../../pkg/reader/reader';
 import Repositories, { QueryTypes } from '../repositories/repositories';
 import { MetricsInfo, MetricItem } from './dtos/metric';
-import { Customer } from '../repositories/entities/customers';
-import { Employee } from '../repositories/entities/employees';
-import { Supplier } from '../repositories/entities/suppliers';
-import { Product } from '../repositories/entities/products';
-import { Order } from '../repositories/entities/orders';
-import { Detail } from '../repositories/entities/details';
 
 class AdminService implements IAdminService {
   constructor(private readonly reader: ICSVReader, private readonly repos: Repositories) {
@@ -53,8 +47,8 @@ class AdminService implements IAdminService {
           firstName: item.FirstName,
           title: item.Title,
           titleOfCourtesy: item.TitleOfCourtesy,
-          birthDate: item.BirthDate,
-          hireDate: item.HireDate,
+          birthDate: new Date(item.BirthDate),
+          hireDate: new Date(item.HireDate),
           address: item.Address,
           city: item.City,
           postalCode: item.PostalCode,
@@ -68,9 +62,9 @@ class AdminService implements IAdminService {
 
     await this.repos.orders.createMany(data.orders.map((item) => ({
       id: item.OrderID,
-      orderDate: item.OrderDate,
-      requiredDate: item.RequiredDate,
-      shippedDate: item.ShippedDate,
+      orderDate: new Date(item.OrderDate),
+      requiredDate: new Date(item.RequiredDate),
+      shippedDate: item.ShippedDate ? new Date(item.ShippedDate) : null,
       shipVia: item.ShipVia,
       freight: item.Freight,
       shipName: item.ShipName,
