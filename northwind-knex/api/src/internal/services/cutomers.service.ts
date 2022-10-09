@@ -6,8 +6,9 @@ import { ISQSQueue } from '../../pkg/queue/sqs.queue';
 import { EnqueuedMetric } from './dtos/metric';
 
 class CustomersService implements ICustomersService {
-  constructor(private readonly customersRepo: ICustomersRepo) {
+  constructor(private readonly customersRepo: ICustomersRepo, private readonly queue: ISQSQueue) {
     this.customersRepo = customersRepo;
+    this.queue = queue;
   }
 
   async getAll(): Promise<CustomerItem[]> {
@@ -15,8 +16,8 @@ class CustomersService implements ICustomersService {
     const { data, query, type } = await this.customersRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const customers = data.map((item) => new CustomerItem(
       item.id,
@@ -36,8 +37,8 @@ class CustomersService implements ICustomersService {
 
     if (data === undefined) throw ApiError.badRequest('Unknown customer!');
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const customer = new CustomerInfo(
       data.id,
@@ -60,8 +61,8 @@ class CustomersService implements ICustomersService {
     const { data, query, type } = await this.customersRepo.search(company);
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const customers = data.map((item) => new CustomerItem(
       item.id,

@@ -14,18 +14,18 @@ const createApp = async () => {
 
     const reader = new CSVReader(cfgs.csv.CSV_DIR);
     const repos = new Repositories(knex);
-    // const sqs = new SQS({
-    //   accessKeyId: cfgs.aws.AWS_ACCESS_KEY,
-    //   secretAccessKey: cfgs.aws.AWS_SECRET_KEY,
-    //   region: cfgs.aws.AWS_REGION,
-    // });
-    // const sqsQueue = new SQSQueue(sqs, cfgs.aws.sqs.AWS_SQS_URL);
+    const sqs = new SQS({
+      accessKeyId: cfgs.aws.AWS_ACCESS_KEY,
+      secretAccessKey: cfgs.aws.AWS_SECRET_KEY,
+      region: cfgs.aws.AWS_REGION,
+    });
+    const sqsQueue = new SQSQueue(sqs, cfgs.aws.sqs.AWS_SQS_URL);
 
     knex.on('query', (query) => {
       console.log(String(`${query.sql} ${query.bindings}`));
     });
 
-    const deps = new Deps(reader, repos);
+    const deps = new Deps(reader, repos, sqsQueue);
     const services = new Services(deps);
     const handler = new Handler(services).initHandler();
 

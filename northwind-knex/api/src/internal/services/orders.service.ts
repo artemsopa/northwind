@@ -6,8 +6,9 @@ import { ISQSQueue } from '../../pkg/queue/sqs.queue';
 import { EnqueuedMetric } from './dtos/metric';
 
 class OrdersService implements IOrdersService {
-  constructor(private readonly ordersRepo: IOrdersRepo) {
+  constructor(private readonly ordersRepo: IOrdersRepo, private readonly queue: ISQSQueue) {
     this.ordersRepo = ordersRepo;
+    this.queue = queue;
   }
 
   async getAll(): Promise<OrderItem[]> {
@@ -15,8 +16,8 @@ class OrdersService implements IOrdersService {
     const { data, query, type } = await this.ordersRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const orders = data.map((item) => ({
       id: item.id,
@@ -39,8 +40,8 @@ class OrdersService implements IOrdersService {
     const [order] = data;
     if (!order) throw ApiError.badRequest('Unknown order!');
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const map = new Map();
     for (const el of data) {

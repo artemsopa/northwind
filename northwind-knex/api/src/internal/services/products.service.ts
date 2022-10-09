@@ -6,8 +6,9 @@ import { ISQSQueue } from '../../pkg/queue/sqs.queue';
 import { EnqueuedMetric } from './dtos/metric';
 
 class ProductsService implements IProductsService {
-  constructor(private readonly productsRepo: IProductsRepo) {
+  constructor(private readonly productsRepo: IProductsRepo, private readonly queue: ISQSQueue) {
     this.productsRepo = productsRepo;
+    this.queue = queue;
   }
 
   async getAll(): Promise<ProductItem[]> {
@@ -36,8 +37,8 @@ class ProductsService implements IProductsService {
 
     if (data === undefined) throw ApiError.badRequest('Unknown product!');
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const product = new ProductInfo(
       data.id,
@@ -61,8 +62,8 @@ class ProductsService implements IProductsService {
     const { data, query, type } = await this.productsRepo.search(name);
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const products = data.map((item) => new ProductItem(
       item.id,

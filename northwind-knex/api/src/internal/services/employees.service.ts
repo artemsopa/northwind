@@ -6,8 +6,9 @@ import { EnqueuedMetric } from './dtos/metric';
 import { IEmployeesService } from './services';
 
 class EmployeesService implements IEmployeesService {
-  constructor(private readonly employeesRepo: IEmployeesRepo) {
+  constructor(private readonly employeesRepo: IEmployeesRepo, private readonly queue: ISQSQueue) {
     this.employeesRepo = employeesRepo;
+    this.queue = queue;
   }
 
   async getAll(): Promise<EmployeeItem[]> {
@@ -15,8 +16,8 @@ class EmployeesService implements IEmployeesService {
     const { data, query, type } = await this.employeesRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const employees = data.map((item) => new EmployeeItem(
       item.id,
@@ -37,8 +38,8 @@ class EmployeesService implements IEmployeesService {
 
     if (data === undefined) throw ApiError.badRequest('Unknown employee!');
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const employee = new EmployeeInfo(
       data.id,

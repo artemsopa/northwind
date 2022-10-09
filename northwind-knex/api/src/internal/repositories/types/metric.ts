@@ -5,7 +5,7 @@ export enum QueryTypes {
   SELECT_LEFT_JOIN_WHERE = 'SELECT LEFT JOIN WHERE'
 }
 
-export interface Metric {
+export type Metric = {
     id: string;
     query: string;
     ms: number;
