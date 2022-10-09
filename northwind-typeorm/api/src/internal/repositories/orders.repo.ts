@@ -16,8 +16,12 @@ class OrdersRepo implements IOrdersRepo {
         'orders.details',
         'order_details',
       );
+      // .addSelect('COUNT(order_details.product_id)', 'total')
+      // .groupBy('orders.id')
+      // .orderBy('total', 'DESC');
 
-    const data = await command.getMany();
+    const data: any[] = await command.getMany();
+    console.log(data);
     const query = command.getQueryAndParameters().toString();
 
     return {
