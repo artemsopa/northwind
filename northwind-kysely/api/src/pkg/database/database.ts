@@ -30,7 +30,7 @@ const initDbConnection = async (
     provider: new FileMigrationProvider({
       fs,
       path,
-      migrationFolder: migrationsFolder,
+      migrationFolder: path.join(__dirname, migrationsFolder),
     }),
   });
 

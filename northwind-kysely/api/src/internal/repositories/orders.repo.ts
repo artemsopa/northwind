@@ -1,37 +1,36 @@
-import { Knex } from 'knex';
+import { Kysely, sql } from 'kysely';
 import { IOrdersRepo, ItemsWithMetric } from './repositories';
-import { Order, OrderWithDetailAndProduct } from './types/order';
+import { Order, OrderWithDetail, OrderWithDetailAndProduct } from './types/order';
 import { QueryTypes } from './types/metric';
+import Database from './types/types';
 
 class OrdersRepo implements IOrdersRepo {
-  constructor(private readonly knex: Knex) {
-    this.knex = knex;
+  constructor(private readonly db: Kysely<Database>) {
+    this.db = db;
   }
 
-  async getAll(): Promise<ItemsWithMetric<any[]>> {
-    const command = this.knex('northwind_schema.orders')
-      .select([
-        'orders.id',
-        'orders.shipped_date',
-        'orders.ship_name',
-        'orders.ship_city',
-        'orders.ship_country',
-      ])
-      .leftJoin(
-        'northwind_schema.order_details',
-        'order_details.order_id',
-        'orders.id',
-      )
-      .count('product_id as products')
-      .sum('quantity as quantity')
-      .sum(this.knex.raw('?? * ??', ['quantity', 'unit_price']))
-      .groupBy('orders.id')
-      .orderBy('orders.id', 'asc');
+  async getAll(): Promise<ItemsWithMetric<OrderWithDetail[]>> {
+    const command = this.db.selectFrom('orders')
+      .selectAll()
+      .leftJoinLateral(
+        (eb) => eb.selectFrom('details')
+          .select(['quantity', 'unit_price'])
+          // .select([
+          //   this.db.fn.count<number>('product_id').as('products'),
+          //   this.db.fn.sum<number>('quantity').as('quantity'),
+          // ])
+          // .groupBy(['order_id'])
+          // .orderBy('order_id', 'asc')
+          .whereRef('details.order_id', '=', 'orders.id')
+          .as('e'),
+        (join) => join.onTrue(),
+      );
 
-    const data = await command;
-
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const data = await command.execute() as OrderWithDetail[];
+    console.log(data);
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -40,34 +39,42 @@ class OrdersRepo implements IOrdersRepo {
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<OrderWithDetailAndProduct[]>> {
-    const command = this.knex('northwind_schema.order_details as od')
-      .whereRaw('od.order_id = (?)', [id])
-      .leftJoin(
-        'northwind_schema.orders as o',
-        'o.id',
-        'od.order_id',
+  async getInfo(id: string): Promise<ItemsWithMetric<any[]>> {
+    const command = this.db.selectFrom('details')
+      .selectAll()
+      .where('order_id', '=', id)
+      .leftJoinLateral(
+        (eb) => eb.selectFrom('orders')
+          .select([
+            'ship_name',
+            'ship_via',
+            'freight',
+            'order_date',
+            'required_date',
+            'shipped_date',
+            'ship_city',
+            'ship_region',
+            'ship_postal_code',
+            'ship_country',
+            'customer_id',
+          ])
+          .whereRef('details.order_id', '=', 'orders.id')
+          .as('o'),
+        (join) => join.onTrue(),
       )
-      .leftJoin(
-        'northwind_schema.products as p',
-        'p.id',
-        'od.product_id',
-      )
-      .select([
-        'o.*',
+      .leftJoinLateral(
+        (eb) => eb.selectFrom('products')
+          .select(['id as p_id', 'name as p_name'])
+          .whereRef('details.product_id', '=', 'products.id')
+          .as('p'),
+        (join) => join.onTrue(),
+      );
 
-        'od.unit_price as od_uprice',
-        'od.quantity as od_quantity',
-        'od.discount as od_discount',
-
-        'p.id as p_id',
-        'p.name as p_name',
-      ]);
-
-    const data = await command;
-
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const data = await command.execute();
+    console.log(data);
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -77,11 +84,11 @@ class OrdersRepo implements IOrdersRepo {
   }
 
   async createMany(orders: Order[]): Promise<void> {
-    await this.knex('northwind_schema.orders').insert(orders);
+    await this.db.insertInto('orders').values(orders).execute();
   }
 
   async deleteAll(): Promise<void> {
-    await this.knex('northwind_schema.orders').del();
+    await this.db.deleteFrom('orders').execute();
   }
 }
 

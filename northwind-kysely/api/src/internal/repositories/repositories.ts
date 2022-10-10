@@ -17,7 +17,7 @@ import Database from './types/types';
 
 export interface ICustomersRepo {
   getAll(): Promise<ItemsWithMetric<Customer[]>>;
-  getInfo(id: string): Promise<ItemsWithMetric<Customer | undefined>>;
+  getInfo(id: string): Promise<ItemsWithMetric<Customer | null>>;
   search(company: string): Promise<ItemsWithMetric<Customer[]>>;
   createMany(customers: Customer[]): Promise<void>;
   deleteAll(): Promise<void>;
@@ -25,7 +25,7 @@ export interface ICustomersRepo {
 
 export interface IEmployeesRepo {
   getAll():Promise<ItemsWithMetric<Employee[]>>;
-  getInfo(id: string): Promise<ItemsWithMetric<EmployeeWithRecipient | undefined>>;
+  getInfo(id: string): Promise<ItemsWithMetric<EmployeeWithRecipient | null>>;
   createMany(employees: Employee[]): Promise<void>;
   deleteAll(): Promise<void>;
 }
@@ -44,7 +44,7 @@ export interface IDetailsRepo {
 
 export interface IProductsRepo {
   getAll():Promise<ItemsWithMetric<Product[]>>;
-  getInfo(id: string): Promise<ItemsWithMetric<ProductWithSupplier | undefined>>;
+  getInfo(id: string): Promise<ItemsWithMetric<ProductWithSupplier | null>>;
   search(name: string): Promise<ItemsWithMetric<Product[]>>;
   createMany(products: Product[]): Promise<void>;
   deleteAll(): Promise<void>;
@@ -52,7 +52,7 @@ export interface IProductsRepo {
 
 export interface ISuppliersRepo {
   getAll():Promise<ItemsWithMetric<Supplier[]>>;
-  getInfo(id: string): Promise<ItemsWithMetric<Supplier | undefined>>;
+  getInfo(id: string): Promise<ItemsWithMetric<Supplier | null>>;
   createMany(suppliers: Supplier[]): Promise<void>;
   deleteAll(): Promise<void>;
 }

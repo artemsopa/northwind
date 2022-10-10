@@ -16,8 +16,8 @@ class EmployeesService implements IEmployeesService {
     const { data, query, type } = await this.employeesRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // const metric = new EnqueuedMetric(query, currMs, type);
+    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const employees = data.map((item) => new EmployeeItem(
       item.id,
@@ -36,10 +36,10 @@ class EmployeesService implements IEmployeesService {
     const { data, query, type } = await this.employeesRepo.getInfo(id);
     const currMs = Date.now() - prevMs;
 
-    if (data === undefined) throw ApiError.badRequest('Unknown employee!');
+    if (!data) throw ApiError.badRequest('Unknown employee!');
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // const metric = new EnqueuedMetric(query, currMs, type);
+    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const employee = new EmployeeInfo(
       data.id,

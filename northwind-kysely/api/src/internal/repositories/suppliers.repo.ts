@@ -1,19 +1,22 @@
-import { Knex } from 'knex';
+import { Kysely } from 'kysely';
 import { ISuppliersRepo, ItemsWithMetric } from './repositories';
 import { Supplier } from './types/supplier';
 import { QueryTypes } from './types/metric';
+import Database from './types/types';
 
 class SuppliersRepo implements ISuppliersRepo {
-  constructor(private readonly knex: Knex) {
-    this.knex = knex;
+  constructor(private readonly db: Kysely<Database>) {
+    this.db = db;
   }
 
   async getAll(): Promise<ItemsWithMetric<Supplier[]>> {
-    const command = this.knex<Supplier>('northwind_schema.suppliers').select();
+    const command = this.db.selectFrom('suppliers')
+      .selectAll();
 
-    const data = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const data = await command.execute() as Supplier[];
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -22,26 +25,30 @@ class SuppliersRepo implements ISuppliersRepo {
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<Supplier | undefined>> {
-    const command = this.knex<Supplier>('northwind_schema.suppliers').where({ id }).first();
+  async getInfo(id: string): Promise<ItemsWithMetric<Supplier | null>> {
+    const command = this.db.selectFrom('suppliers')
+      .selectAll()
+      .where('suppliers.id', '=', id)
+      .limit(1);
 
-    const data = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const [data] = await command.execute() as Supplier[];
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_WHERE,
+      type: QueryTypes.SELECT,
     };
   }
 
   async createMany(suppliers: Supplier[]): Promise<void> {
-    await this.knex<Supplier>('northwind_schema.suppliers').insert(suppliers);
+    await this.db.insertInto('suppliers').values(suppliers).execute();
   }
 
   async deleteAll(): Promise<void> {
-    await this.knex<Supplier>('northwind_schema.suppliers').del();
+    await this.db.deleteFrom('suppliers').execute();
   }
 }
 

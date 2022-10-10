@@ -23,7 +23,7 @@ class ProductsService implements IProductsService {
       item.id,
       item.name,
       item.qt_per_unit,
-      item.unit_price,
+      Number(item.unit_price),
       item.units_in_stock,
       item.units_on_order,
     ));
@@ -35,16 +35,16 @@ class ProductsService implements IProductsService {
     const { data, query, type } = await this.productsRepo.getInfo(id);
     const currMs = Date.now() - prevMs;
 
-    if (data === undefined) throw ApiError.badRequest('Unknown product!');
+    if (!data) throw ApiError.badRequest('Unknown product!');
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // const metric = new EnqueuedMetric(query, currMs, type);
+    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const product = new ProductInfo(
       data.id,
       data.name,
       data.qt_per_unit,
-      data.unit_price,
+      Number(data.unit_price),
       data.units_in_stock,
       data.units_on_order,
       data.reorder_level,
@@ -62,14 +62,14 @@ class ProductsService implements IProductsService {
     const { data, query, type } = await this.productsRepo.search(name);
     const currMs = Date.now() - prevMs;
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // const metric = new EnqueuedMetric(query, currMs, type);
+    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const products = data.map((item) => new ProductItem(
       item.id,
       item.name,
       item.qt_per_unit,
-      item.unit_price,
+      Number(item.unit_price),
       item.units_in_stock,
       item.units_on_order,
     ));

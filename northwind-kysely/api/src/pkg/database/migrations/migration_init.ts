@@ -1,14 +1,38 @@
 import { Kysely } from 'kysely';
+import { v4 as uuid } from 'uuid';
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('customers')
     .addColumn('id', 'varchar', (col) => col.primaryKey())
+    .addColumn('company_name', 'varchar', (col) => col.notNull())
+    .addColumn('contact_name', 'varchar', (col) => col.notNull())
+    .addColumn('contact_title', 'varchar', (col) => col.notNull())
+    .addColumn('address', 'varchar', (col) => col.notNull())
+    .addColumn('city', 'varchar', (col) => col.notNull())
+    .addColumn('postal_code', 'varchar')
+    .addColumn('region', 'varchar')
+    .addColumn('country', 'varchar', (col) => col.notNull())
+    .addColumn('phone', 'varchar', (col) => col.notNull())
+    .addColumn('fax', 'varchar')
     .execute();
 
   await db.schema
     .createTable('employees')
     .addColumn('id', 'varchar', (col) => col.primaryKey())
+    .addColumn('last_name', 'varchar', (col) => col.notNull())
+    .addColumn('first_name', 'varchar')
+    .addColumn('title', 'varchar', (col) => col.notNull())
+    .addColumn('title_of_courtesy', 'varchar', (col) => col.notNull())
+    .addColumn('birth_date', 'date', (col) => col.notNull())
+    .addColumn('hire_date', 'date', (col) => col.notNull())
+    .addColumn('address', 'varchar')
+    .addColumn('city', 'varchar', (col) => col.notNull())
+    .addColumn('postal_code', 'varchar', (col) => col.notNull())
+    .addColumn('country', 'varchar', (col) => col.notNull())
+    .addColumn('home_phone', 'varchar', (col) => col.notNull())
+    .addColumn('extension', 'integer', (col) => col.notNull())
+    .addColumn('notes', 'text', (col) => col.notNull())
 
     .addColumn('recipient_id', 'varchar')
     .addForeignKeyConstraint(
@@ -28,6 +52,16 @@ export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('orders')
     .addColumn('id', 'varchar', (col) => col.primaryKey())
+    .addColumn('order_date', 'date', (col) => col.notNull())
+    .addColumn('required_date', 'date', (col) => col.notNull())
+    .addColumn('shipped_date', 'date')
+    .addColumn('ship_via', 'integer', (col) => col.notNull())
+    .addColumn('freight', 'decimal', (col) => col.notNull())
+    .addColumn('ship_name', 'varchar', (col) => col.notNull())
+    .addColumn('ship_city', 'varchar', (col) => col.notNull())
+    .addColumn('ship_region', 'varchar')
+    .addColumn('ship_postal_code', 'varchar')
+    .addColumn('ship_country', 'varchar', (col) => col.notNull())
 
     .addColumn('customer_id', 'varchar', (col) => col.notNull())
     .addForeignKeyConstraint(
@@ -42,7 +76,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addForeignKeyConstraint(
       'employee_id_fk',
       ['employee_id'],
-      'customers',
+      'employees',
       ['id'],
       (cb) => cb.onDelete('cascade'),
     )
@@ -63,11 +97,27 @@ export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('suppliers')
     .addColumn('id', 'varchar', (col) => col.primaryKey())
+    .addColumn('company_name', 'varchar', (col) => col.notNull())
+    .addColumn('contact_name', 'varchar', (col) => col.notNull())
+    .addColumn('contact_title', 'varchar', (col) => col.notNull())
+    .addColumn('address', 'varchar', (col) => col.notNull())
+    .addColumn('city', 'varchar', (col) => col.notNull())
+    .addColumn('postal_code', 'varchar')
+    .addColumn('region', 'varchar')
+    .addColumn('country', 'varchar', (col) => col.notNull())
+    .addColumn('phone', 'varchar', (col) => col.notNull())
     .execute();
 
   await db.schema
     .createTable('products')
     .addColumn('id', 'varchar', (col) => col.primaryKey())
+    .addColumn('name', 'varchar', (col) => col.notNull())
+    .addColumn('qt_per_unit', 'varchar', (col) => col.notNull())
+    .addColumn('unit_price', 'decimal', (col) => col.notNull())
+    .addColumn('units_in_stock', 'integer', (col) => col.notNull())
+    .addColumn('units_on_order', 'integer', (col) => col.notNull())
+    .addColumn('reorder_level', 'integer', (col) => col.notNull())
+    .addColumn('discontinued', 'integer', (col) => col.notNull())
 
     .addColumn('supplier_id', 'varchar', (col) => col.notNull())
     .addForeignKeyConstraint(
@@ -87,7 +137,9 @@ export async function up(db: Kysely<any>): Promise<void> {
 
   await db.schema
     .createTable('details')
-    .addColumn('id', 'varchar', (col) => col.primaryKey())
+    .addColumn('unit_price', 'decimal', (col) => col.notNull())
+    .addColumn('quantity', 'integer', (col) => col.notNull())
+    .addColumn('discount', 'decimal', (col) => col.notNull())
 
     .addColumn('order_id', 'varchar', (col) => col.notNull())
     .addForeignKeyConstraint(
@@ -122,11 +174,11 @@ export async function up(db: Kysely<any>): Promise<void> {
 
   await db.schema
     .createTable('metrics')
-    .addColumn('id', 'uuid', (col) => col.autoIncrement().primaryKey())
+    .addColumn('id', 'uuid', (col) => col.defaultTo(uuid()).primaryKey())
     .addColumn('query', 'text', (col) => col.notNull())
     .addColumn('ms', 'integer', (col) => col.notNull())
     .addColumn('type', 'varchar', (col) => col.notNull())
-    .addColumn('created_at', 'timestamptz', (col) => col.notNull())
+    .addColumn('created_at', 'timestamptz', (col) => col.defaultTo(new Date()))
     .execute();
 }
 

@@ -1,19 +1,22 @@
-import { Knex } from 'knex';
+import { Kysely, sql } from 'kysely';
 import { IProductsRepo, ItemsWithMetric } from './repositories';
 import { Product, ProductWithSupplier } from './types/product';
 import { QueryTypes } from './types/metric';
+import Database from './types/types';
 
 class ProductsRepo implements IProductsRepo {
-  constructor(private readonly knex: Knex) {
-    this.knex = knex;
+  constructor(private readonly db: Kysely<Database>) {
+    this.db = db;
   }
 
   async getAll(): Promise<ItemsWithMetric<Product[]>> {
-    const command = this.knex('northwind_schema.products').select();
+    const command = this.db.selectFrom('products')
+      .selectAll();
 
-    const data = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const data = await command.execute() as Product[];
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -22,19 +25,24 @@ class ProductsRepo implements IProductsRepo {
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<ProductWithSupplier | undefined>> {
-    const command = this.knex('northwind_schema.products')
-      .select(['products.*', 'suppliers.id as s_id', 'suppliers.company_name as s_company_name'])
-      .whereRaw('products.id = (?)', [id])
-      .leftJoin(
-        'northwind_schema.suppliers',
-        'products.supplier_id',
-        'suppliers.id',
+  async getInfo(id: string): Promise<ItemsWithMetric<ProductWithSupplier | null>> {
+    const command = this.db.selectFrom('products')
+      .selectAll()
+      .where('products.id', '=', id)
+      .limit(1)
+      .leftJoinLateral(
+        (eb) => eb.selectFrom('suppliers')
+          .select(['suppliers.id as s_id', 'suppliers.company_name as s_company_name'])
+          .whereRef('suppliers.id', '=', 'products.supplier_id')
+          .as('s1'),
+        (join) => join.onTrue(),
       );
 
-    const [data] = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const [data] = await command.execute() as ProductWithSupplier[];
+    console.log(data);
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -44,26 +52,28 @@ class ProductsRepo implements IProductsRepo {
   }
 
   async search(name: string): Promise<ItemsWithMetric<Product[]>> {
-    const command = this.knex('northwind_schema.products')
-      .whereRaw('LOWER(name) LIKE LOWER(?)', [`%${name}%`]).select();
+    const command = this.db.selectFrom('products')
+      .selectAll()
+      .where(sql`lower(name)`, 'like', `%${name.toLowerCase()}%`);
 
-    const data = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const data = await command.execute() as Product[];
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_WHERE,
+      type: QueryTypes.SELECT,
     };
   }
 
   async createMany(products: Product[]): Promise<void> {
-    await this.knex('northwind_schema.products').insert(products);
+    await this.db.insertInto('products').values(products).execute();
   }
 
   async deleteAll(): Promise<void> {
-    await this.knex('northwind_schema.products').del();
+    await this.db.deleteFrom('products').execute();
   }
 }
 

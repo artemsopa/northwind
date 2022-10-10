@@ -1,18 +1,19 @@
-import { Knex } from 'knex';
+import { Kysely } from 'kysely';
 import { Detail } from './types/detail';
 import { IDetailsRepo } from './repositories';
+import Database from './types/types';
 
 class DetailsRepo implements IDetailsRepo {
-  constructor(private readonly knex: Knex) {
-    this.knex = knex;
+  constructor(private readonly db: Kysely<Database>) {
+    this.db = db;
   }
 
   async createMany(details: Detail[]): Promise<void> {
-    await this.knex<Detail>('northwind_schema.order_details').insert(details);
+    await this.db.insertInto('details').values(details).execute()
   }
 
   async deleteAll(): Promise<void> {
-    await this.knex<Detail>('northwind_schema.order_details').del();
+    await this.db.deleteFrom('details').execute();
   }
 }
 

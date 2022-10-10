@@ -1,3 +1,5 @@
+import { Detail } from './detail';
+
 export type Order = {
   id: string;
   order_date: Date;
@@ -14,21 +16,13 @@ export type Order = {
   employee_id: string;
 }
 
-export type OrderWithDetail = {
-  id: string;
-  shipped_date: Date;
-  ship_name: string;
-  ship_city: string;
-  ship_country: string;
-  products: number;
-  quantity: number;
-  sum: number;
-}
+export type OrderWithDetail = Order & Omit<Detail, 'id'>
 
 export type OrderWithDetailAndProduct = Order & {
-  od_uprice: number;
-  od_quantity: number;
-  od_discount: number;
+  order_id: string;
+  unit_price: number;
+  quantity: number;
+  discount: number;
   p_id: string;
   p_name:string;
 }

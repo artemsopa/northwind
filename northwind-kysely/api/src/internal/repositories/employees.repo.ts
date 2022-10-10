@@ -1,19 +1,22 @@
-import { Knex } from 'knex';
+import { Kysely } from 'kysely';
 import { IEmployeesRepo, ItemsWithMetric } from './repositories';
 import { Employee, EmployeeWithRecipient } from './types/employee';
 import { QueryTypes } from './types/metric';
+import Database from './types/types';
 
 class EmployeesRepo implements IEmployeesRepo {
-  constructor(private readonly knex: Knex) {
-    this.knex = knex;
+  constructor(private readonly db: Kysely<Database>) {
+    this.db = db;
   }
 
   async getAll(): Promise<ItemsWithMetric<Employee[]>> {
-    const command = this.knex('northwind_schema.employees').select();
+    const command = this.db.selectFrom('employees')
+      .selectAll();
 
-    const data = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const data = await command.execute() as Employee[];
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -22,19 +25,24 @@ class EmployeesRepo implements IEmployeesRepo {
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<EmployeeWithRecipient | undefined>> {
-    const command = this.knex('northwind_schema.employees as e1')
-      .whereRaw('e1.id = (?)', [id])
-      .leftJoin(
-        'northwind_schema.employees as e2',
-        'e1.recipient_id',
-        'e2.id',
-      )
-      .select(['e1.*', 'e2.id as e_id', 'e2.last_name as e_last_name', 'e2.first_name as e_first_name']);
+  async getInfo(id: string): Promise<ItemsWithMetric<EmployeeWithRecipient | null>> {
+    const command = this.db.selectFrom('employees as e1')
+      .selectAll()
+      .where('e1.id', '=', id)
+      .limit(1)
+      .leftJoinLateral(
+        (eb) => eb.selectFrom('employees as e2')
+          .select(['id as e_id', 'last_name as e_last_name', 'first_name as e_last_name'])
+          .whereRef('e1.recipient_id', '=', 'e2.id')
+          .as('e2'),
+        (join) => join.onTrue(),
+      );
 
-    const [data] = await command;
-    const queryObj = command.toSQL().toNative();
-    const query = `${queryObj.sql} [${queryObj.bindings}]`;
+    const [data] = await command.execute() as EmployeeWithRecipient[];
+    console.log(data);
+    const queryObj = command.compile();
+    const query = `${queryObj.sql} [${queryObj.parameters}]`;
+    console.log(query);
 
     return {
       data,
@@ -44,11 +52,11 @@ class EmployeesRepo implements IEmployeesRepo {
   }
 
   async createMany(employees: Employee[]): Promise<void> {
-    await this.knex('northwind_schema.employees').insert(employees);
+    await this.db.insertInto('employees').values(employees).execute();
   }
 
   async deleteAll(): Promise<void> {
-    await this.knex('northwind_schema.employees').del();
+    await this.db.deleteFrom('employees').execute();
   }
 }
 

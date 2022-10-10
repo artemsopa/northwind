@@ -8,9 +8,9 @@ export enum QueryTypes {
 }
 
 export type Metric = {
-    id: Generated<string>;
+    id: string;
     query: string;
     ms: number;
     type: QueryTypes;
-    created_at: Generated<Date>;
+    created_at: Date;
 }

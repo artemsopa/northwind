@@ -10,7 +10,7 @@ export type Product = {
   supplier_id: string;
 }
 
-export type ProductWithSupplier = Omit<Product, 'supplier_id'> & {
+export type ProductWithSupplier = Product & {
   s_id: string;
   s_company_name: string;
 }
