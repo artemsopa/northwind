@@ -1,0 +1,43 @@
+{
+  "name": "consumer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serverless offline start --noTimeout",
+    "deploy": "sls deploy",
+    "deploy-prod": "sls deploy --stage prod",
+    "remove": "sls remove"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.102",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.7.13",
+    "@types/pg": "^8.6.5",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "aws-sdk": "^2.1227.0",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "serverless": "^3.22.0",
+    "serverless-export-env": "^2.2.0",
+    "serverless-offline": "^9.2.6",
+    "serverless-webpack": "^5.9.0",
+    "terser-webpack-plugin": "^5.3.6",
+    "ts-loader": "^9.4.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3",
+    "webpack": "^5.74.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "knex": "^2.3.0",
+    "pg": "^8.8.0"
+  }
+}

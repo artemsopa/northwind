@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "artemsopa/northwind-typeorm-api",
+      "Name": "northwind-typeorm-api",
       "Update": "true"
     },
     "Ports": [

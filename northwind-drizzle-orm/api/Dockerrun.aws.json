@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "artemsopa/northwind-drizzle-api",
+      "Name": "northwind-drizzle-api",
       "Update": "true"
     },
     "Ports": [
