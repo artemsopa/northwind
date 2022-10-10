@@ -16,7 +16,6 @@ class ProductsRepo implements IProductsRepo {
     const data = await command.execute() as Product[];
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
@@ -39,15 +38,13 @@ class ProductsRepo implements IProductsRepo {
       );
 
     const [data] = await command.execute() as ProductWithSupplier[];
-    console.log(data);
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_LEFT_JOIN_WHERE,
     };
   }
 
@@ -59,12 +56,11 @@ class ProductsRepo implements IProductsRepo {
     const data = await command.execute() as Product[];
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_WHERE,
     };
   }
 

@@ -16,8 +16,8 @@ class OrdersService implements IOrdersService {
     const { data, query, type } = await this.ordersRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const map = new Map();
     for (const el of data) {

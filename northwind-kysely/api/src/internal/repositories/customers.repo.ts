@@ -13,10 +13,8 @@ class CustomersRepo implements ICustomersRepo {
     const command = this.db.selectFrom('customers').selectAll();
 
     const data = await command.execute();
-    console.log(data);
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
@@ -34,7 +32,6 @@ class CustomersRepo implements ICustomersRepo {
     const [data] = await command.execute() as Customer[];
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
@@ -44,23 +41,18 @@ class CustomersRepo implements ICustomersRepo {
   }
 
   async search(company: string): Promise<ItemsWithMetric<Customer[]>> {
-    // const command = this.knex('northwind_schema.customers')
-    //   .whereRaw('LOWER(company_name) LIKE LOWER(?)', [`%${company}%`]).select();
-
     const command = this.db.selectFrom('customers')
       .selectAll()
       .where(sql`lower(company_name)`, 'like', `%${company.toLowerCase()}%`);
 
     const data = await command.execute() as Customer[];
-    console.log(data);
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_WHERE,
     };
   }
 

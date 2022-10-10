@@ -16,7 +16,6 @@ class EmployeesRepo implements IEmployeesRepo {
     const data = await command.execute() as Employee[];
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
@@ -39,15 +38,13 @@ class EmployeesRepo implements IEmployeesRepo {
       );
 
     const [data] = await command.execute() as EmployeeWithRecipient[];
-    console.log(data);
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_LEFT_JOIN_WHERE,
     };
   }
 

@@ -3,3 +3,9 @@ export type MetricInput = {
     ms: number;
     type: string;
 }
+
+interface Database {
+    metrics: MetricInput;
+}
+
+export default Database;

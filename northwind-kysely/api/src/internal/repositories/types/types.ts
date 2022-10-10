@@ -6,7 +6,7 @@ import { Order } from './order';
 import { Product } from './product';
 import { Supplier } from './supplier';
 
-export default interface Database {
+interface Database {
     customers: Customer;
     employees: Employee;
     orders: Order;
@@ -15,3 +15,5 @@ export default interface Database {
     details: Detail;
     metrics: Metric;
 }
+
+export default Database;

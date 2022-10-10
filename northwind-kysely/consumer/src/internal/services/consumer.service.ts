@@ -3,7 +3,7 @@ import { IConsumerService } from '../services/services';
 import { ISQSQueue } from '../../pkg/queue/sqs.queue';
 import { DequeuedMessage, EnqueuedMetric } from '../services/dtos/metric';
 import { IMetricsRepo } from '../repositories/repositories';
-import { MetricInput } from '../repositories/entities/metric';
+import { MetricInput } from '../repositories/types/types';
 
 class ConsumerService implements IConsumerService {
   constructor(private metricsRepo: IMetricsRepo, private queue: ISQSQueue) {

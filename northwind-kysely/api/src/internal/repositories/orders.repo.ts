@@ -27,15 +27,13 @@ class OrdersRepo implements IOrdersRepo {
       );
 
     const data = await command.execute() as OrderWithDetail[];
-    console.log(data);
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_LEFT_JOIN,
     };
   }
 
@@ -71,15 +69,13 @@ class OrdersRepo implements IOrdersRepo {
       );
 
     const data = await command.execute();
-    console.log(data);
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_LEFT_JOIN_WHERE,
     };
   }
 

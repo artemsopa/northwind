@@ -1,4 +1,4 @@
-import { QueryTypes } from '../../repositories/entities/metric';
+import { QueryTypes } from '../../repositories/types/types';
 
 export class EnqueuedMetric {
   query: string;

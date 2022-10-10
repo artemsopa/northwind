@@ -16,7 +16,6 @@ class SuppliersRepo implements ISuppliersRepo {
     const data = await command.execute() as Supplier[];
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
@@ -34,12 +33,11 @@ class SuppliersRepo implements ISuppliersRepo {
     const [data] = await command.execute() as Supplier[];
     const queryObj = command.compile();
     const query = `${queryObj.sql} [${queryObj.parameters}]`;
-    console.log(query);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.SELECT_WHERE,
     };
   }
 

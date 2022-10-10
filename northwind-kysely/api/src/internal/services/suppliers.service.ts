@@ -16,8 +16,8 @@ class SuppliersService implements ISuppliersService {
     const { data, query, type } = await this.suppliersRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const suppliers = data.map((item) => new SupplierItem(
       item.id,
@@ -37,8 +37,8 @@ class SuppliersService implements ISuppliersService {
 
     if (!data) throw ApiError.badRequest('Unknown supplier!');
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const supplier = new SupplierInfo(
       data.id,

@@ -16,8 +16,8 @@ class ProductsService implements IProductsService {
     const { data, query, type } = await this.productsRepo.getAll();
     const currMs = Date.now() - prevMs;
 
-    // const metric = new EnqueuedMetric(query, currMs, type);
-    // await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    const metric = new EnqueuedMetric(query, currMs, type);
+    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
 
     const products = data.map((item) => new ProductItem(
       item.id,

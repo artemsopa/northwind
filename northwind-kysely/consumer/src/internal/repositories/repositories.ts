@@ -1,5 +1,5 @@
-import { Knex } from 'knex';
-import { MetricInput } from './entities/metric';
+import { Kysely } from 'kysely';
+import Database, { MetricInput } from './types/types';
 import MetricsRepo from './metrics.repo';
 
 export interface IMetricsRepo {
@@ -8,7 +8,7 @@ export interface IMetricsRepo {
 
 export default class Repositories {
   metrics: IMetricsRepo;
-  constructor(knex: Knex) {
-    this.metrics = new MetricsRepo(knex);
+  constructor(db: Kysely<Database>) {
+    this.metrics = new MetricsRepo(db);
   }
 }
