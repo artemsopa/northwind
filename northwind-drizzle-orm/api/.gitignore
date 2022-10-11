@@ -4,3 +4,5 @@ build
 .env
 
 scripts/*.sql
+
+.DS_STORE
