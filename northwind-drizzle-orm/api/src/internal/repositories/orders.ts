@@ -13,7 +13,7 @@ export class OrdersRepo {
   async getAll() {
     const command = sql`SELECT id, shipped_date, ship_name, ship_city, ship_country, 
      COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price
-     FROM orders AS o left join order_details AS od ON od.order_id = o.id group by o.id order by o.id ASC`;
+     FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`;
 
     const prevMs = Date.now();
     const { rows } = await this.db.execute(command);
