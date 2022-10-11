@@ -7,8 +7,6 @@ import cors from 'cors';
 import initConfigs from './configs/configs';
 import { schema } from './internal/repositories/entities/schema';
 import { Queue } from './pkg/queue';
-import { initRepositories } from './internal/repositories/repositories';
-import { initServices } from './internal/services/services';
 import { CustomersRoute } from './internal/delivery/routes/customers';
 import { EmployeesRoute } from './internal/delivery/routes/employees';
 import { SuppliersRoute } from './internal/delivery/routes/suppliers';
@@ -17,6 +15,19 @@ import { OrdersRoute } from './internal/delivery/routes/orders';
 import { MetricsRoute } from './internal/delivery/routes/metrics';
 import errorMiddleware from './internal/delivery/middlewares/error';
 import notfMiddleware from './internal/delivery/middlewares/notfound';
+import { MetricsRepo } from './internal/repositories/metrics';
+import { CustomersRepo } from './internal/repositories/customers';
+import { DetailsRepo } from './internal/repositories/details';
+import { EmployeesRepo } from './internal/repositories/employees';
+import { OrdersRepo } from './internal/repositories/orders';
+import { ProductsRepo } from './internal/repositories/products';
+import { SuppliersRepo } from './internal/repositories/suppliers';
+import { CustomersService } from './internal/services/cutomers';
+import { EmployeesService } from './internal/services/employees';
+import { MetricsService } from './internal/services/metrics';
+import { OrdersService } from './internal/services/orders';
+import { ProductsService } from './internal/services/products';
+import { SuppliersService } from './internal/services/suppliers';
 
 const main = async () => {
   try {
@@ -32,8 +43,10 @@ const main = async () => {
     });
     const connector = new PgConnector(pool, schema);
     const db = await connect(connector);
+    console.log('Database successfully connected...');
 
-    await migrate(connector, { migrationsFolder: '../migrations' });
+    await migrate(connector, { migrationsFolder: 'migrations' });
+    console.log('Database successfully migrated...');
 
     const { AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_REGION, AWS_SQS_URL } = configs.aws;
     const sqs = new SQS({
@@ -43,9 +56,24 @@ const main = async () => {
     });
 
     const queue = new Queue(sqs, AWS_SQS_URL);
-    const repos = initRepositories(db);
+    const repos = {
+      metrics: new MetricsRepo(db),
+      customers: new CustomersRepo(db),
+      employees: new EmployeesRepo(db),
+      orders: new OrdersRepo(db),
+      details: new DetailsRepo(db),
+      products: new ProductsRepo(db),
+      suppliers: new SuppliersRepo(db),
+    };
 
-    const services = initServices(repos, queue);
+    const services = {
+      metrics: new MetricsService(repos.metrics),
+      customers: new CustomersService(repos.customers, queue),
+      employees: new EmployeesService(repos.employees, queue),
+      suppliers: new SuppliersService(repos.suppliers, queue),
+      products: new ProductsService(repos.products, queue),
+      orders: new OrdersService(repos.orders, queue),
+    };
 
     const routes = Router()
       .use('/metrics', new MetricsRoute(services.metrics).initRoutes())
