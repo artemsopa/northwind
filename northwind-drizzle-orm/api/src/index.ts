@@ -2,7 +2,7 @@ import { SQS } from 'aws-sdk';
 import { PgConnector } from 'drizzle-orm-pg';
 import { connect, migrate } from 'drizzle-orm';
 import { Pool } from 'pg';
-import initConfigs from '@/configs/configs';
+import { initConfigs } from '@/configs/configs';
 import { schema } from '@/internal/repositories/entities/schema';
 import { Queue } from '@/pkg/queue';
 import { CustomersController } from '@/internal/delivery/controllers/customers';

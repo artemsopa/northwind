@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-const initConfigs = () => {
+export const initConfigs = () => {
   dotenv.config();
   const {
     PORT,
@@ -47,5 +47,3 @@ const initConfigs = () => {
     },
   };
 };
-
-export default initConfigs;
