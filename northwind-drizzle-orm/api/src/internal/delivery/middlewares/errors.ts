@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ErrorApi } from '../../../pkg/error';
+import { ErrorApi } from '@/pkg/error';
 
 const errors = (error: Error, req: Request, res: Response, next: NextFunction) => {
   console.log(error);

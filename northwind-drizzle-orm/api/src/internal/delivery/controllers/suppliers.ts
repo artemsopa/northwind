@@ -1,5 +1,5 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { SuppliersService } from 'src/internal/services/suppliers';
+import { RequestHandler } from 'express';
+import { SuppliersService } from '@/internal/services/suppliers';
 import { Controller, wrapped } from '../app';
 import { idReqSchema } from './joi-schemas/req.schema';
 import validateSchema from './joi-schemas/schema';

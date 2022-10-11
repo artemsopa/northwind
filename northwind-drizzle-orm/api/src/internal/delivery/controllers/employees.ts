@@ -1,5 +1,5 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { EmployeesService } from 'src/internal/services/employees';
+import { RequestHandler } from 'express';
+import { EmployeesService } from '@/internal/services/employees';
 import { Controller, wrapped } from '../app';
 import { idReqSchema } from './joi-schemas/req.schema';
 import validateSchema from './joi-schemas/schema';

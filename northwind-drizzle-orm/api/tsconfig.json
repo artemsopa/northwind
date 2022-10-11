@@ -5,7 +5,10 @@
     "lib": ["es2018"],
     "strict": true,
     "esModuleInterop": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "exclude": ["node_modules", "**/*/lib", "**/*/dist"]
 }

@@ -1,5 +1,5 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { MetricsService } from '../../services/metrics';
+import { RequestHandler } from 'express';
+import { MetricsService } from '@/internal/services/metrics';
 import { Controller, wrapped } from '../app';
 
 export class MetricsController extends Controller {
