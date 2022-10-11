@@ -1,7 +1,7 @@
 {
   "version": "3",
   "dialect": "pg",
-  "id": "5feacb04-bb96-4774-9927-837e4cd0bfb1",
+  "id": "ead647e0-849c-45de-b576-3e2146d8d88c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customers": {
@@ -184,8 +184,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "adress": {
-          "name": "adress",
+        "address": {
+          "name": "address",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
@@ -226,8 +226,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "recipientId": {
-          "name": "recipientId",
+        "recipient_id": {
+          "name": "recipient_id",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -235,12 +235,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "employees_recipientId_employees_id_fk": {
-          "name": "employees_recipientId_employees_id_fk",
+        "employees_recipient_id_employees_id_fk": {
+          "name": "employees_recipient_id_employees_id_fk",
           "tableFrom": "employees",
           "tableTo": "employees",
           "columnsFrom": [
-            "recipientId"
+            "recipient_id"
           ],
           "columnsTo": [
             "id"

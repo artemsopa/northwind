@@ -34,14 +34,14 @@ CREATE TABLE IF NOT EXISTS employees (
 	"title_of_courtesy" varchar NOT NULL,
 	"birth_date" date NOT NULL,
 	"hire_date" date NOT NULL,
-	"adress" varchar NOT NULL,
+	"address" varchar NOT NULL,
 	"city" varchar NOT NULL,
 	"postal_code" varchar NOT NULL,
 	"country" varchar NOT NULL,
 	"home_phone" varchar NOT NULL,
 	"extension" integer NOT NULL,
 	"notes" text NOT NULL,
-	"recipientId" varchar
+	"recipient_id" varchar
 );
 
 CREATE TABLE IF NOT EXISTS metrics (
@@ -106,7 +106,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- ALTER TABLE employees ADD CONSTRAINT employees_recipientId_employees_id_fk FOREIGN KEY ("recipientId") REFERENCES employees("id");
+ ALTER TABLE employees ADD CONSTRAINT employees_recipient_id_employees_id_fk FOREIGN KEY ("recipient_id") REFERENCES employees("id");
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
