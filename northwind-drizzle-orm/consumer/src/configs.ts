@@ -19,9 +19,7 @@ const initConfigs = () => {
       DB_NAME,
     },
     aws: {
-      sqs: {
-        AWS_SQS_URL,
-      },
+      AWS_SQS_URL,
     },
   };
 };

@@ -1,15 +1,9 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AWS from 'aws-sdk';
 
-export interface ISQSQueue {
-  deleteMessages(deleteMessageRequests: any[]): Promise<void>;
-}
-
-class SQSQueue {
-  private sqsUrl: string;
-  constructor(private sqsClient: AWS.SQS, sqsUrl: string) {
-    this.sqsClient = sqsClient;
-    this.sqsUrl = sqsUrl;
+export class Queue {
+  constructor(private readonly client: AWS.SQS, private readonly url: string) {
+    this.client = client;
+    this.url = url;
   }
 
   async deleteMessages(deleteMessageRequests: any[]): Promise<void> {
@@ -17,9 +11,9 @@ class SQSQueue {
       return;
     }
 
-    const result = await this.sqsClient
+    const result = await this.client
       .deleteMessageBatch({
-        QueueUrl: this.sqsUrl,
+        QueueUrl: this.url,
         Entries: deleteMessageRequests.map((m) => ({
           Id: m.id,
           ReceiptHandle: m.receiptHandle,
@@ -32,5 +26,3 @@ class SQSQueue {
     }
   }
 }
-
-export default SQSQueue;

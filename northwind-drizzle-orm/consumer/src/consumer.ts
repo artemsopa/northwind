@@ -1,12 +1,11 @@
 import { SQSEvent } from 'aws-lambda';
-import { IConsumerService } from '../services/services';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { DequeuedMessage, EnqueuedMetric } from '../services/dtos/metric';
-import { IMetricsRepo } from '../repositories/repositories';
+import { Queue } from './queue';
+import { DequeuedMessage, EnqueuedMetric } from './dtos/metric';
+import { Database } from './schema';
 
-class ConsumerService implements IConsumerService {
-  constructor(private readonly metricsRepo: IMetricsRepo, private readonly queue: ISQSQueue) {
-    this.metricsRepo = metricsRepo;
+export class Consumer {
+  constructor(private readonly db: Database, private readonly queue: Queue) {
+    this.db = db;
     this.queue = queue;
   }
 
@@ -16,7 +15,11 @@ class ConsumerService implements IConsumerService {
 
     const promises = dequeuedMessages.map(async (message) => {
       try {
-        await this.metricsRepo.create(message.metric.query, message.metric.ms, message.metric.type);
+        await this.db.metrics.insert({
+          query: message.metric.query,
+          ms: message.metric.ms,
+          type: message.metric.type,
+        }).execute();
         messagesToDelete.push(message);
       } catch (error) {
         messagesToDelete.push(message);
@@ -35,13 +38,11 @@ class ConsumerService implements IConsumerService {
   private mapEventToDequeuedMessages(event: SQSEvent): DequeuedMessage[] {
     return event.Records.map((record) => {
       const metric = JSON.parse(record.body) as EnqueuedMetric;
-      return new DequeuedMessage(
-        record.messageId,
-        record.receiptHandle,
+      return {
+        id: record.messageId,
+        receiptHandle: record.receiptHandle,
         metric,
-      );
+      };
     });
   }
 }
-
-export default ConsumerService;
