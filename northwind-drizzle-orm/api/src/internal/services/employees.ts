@@ -31,8 +31,8 @@ export class EmployeesService {
 
     // await this.queue.enqueueMessage({ query, type, ms });
 
-    const recipient = data.reports_to ? ({
-      id: data.reports_to,
+    const recipient = data.recipient_id ? ({
+      id: data.recipient_id,
       firstName: data.reports_fname,
       lastName: data.reports_lname,
     }) : null;
