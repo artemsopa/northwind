@@ -48,7 +48,7 @@ const main = async () => {
     const services = initServices(repos, queue);
 
     const routes = Router()
-      .use('/admin', new MetricsRoute(services.metrics).initRoutes())
+      .use('/metrics', new MetricsRoute(services.metrics).initRoutes())
       .use('/customers', new CustomersRoute(services.customers).initRoutes())
       .use('/employees', new EmployeesRoute(services.employees).initRoutes())
       .use('/suppliers', new SuppliersRoute(services.suppliers).initRoutes())
