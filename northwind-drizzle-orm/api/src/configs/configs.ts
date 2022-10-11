@@ -25,12 +25,12 @@ const initConfigs = () => {
     || !AWS_SECRET_KEY
     || !AWS_REGION
     || !AWS_SQS_URL) {
-    throw new Error('ERROR! Invalid configuration');
+    throw new Error('ERROR! Invalid configuration...');
   }
 
   return {
     app: {
-      PORT,
+      PORT: Number(PORT),
     },
     db: {
       DB_HOST,
