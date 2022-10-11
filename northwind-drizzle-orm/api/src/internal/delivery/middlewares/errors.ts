@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ErrorApi } from '../../../pkg/error';
 
-const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFunction) => {
+const errors = (error: Error, req: Request, res: Response, next: NextFunction) => {
   console.log(error);
   if (error instanceof ErrorApi) {
     return res.status(error.status).json({
@@ -11,4 +11,4 @@ const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFu
   return res.status(500).json({ message: 'Internal server error!' });
 };
 
-export default errorMiddleware;
+export default errors;
