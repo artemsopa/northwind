@@ -1,69 +1,59 @@
-import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { IEmployeesRepo } from '../repositories/repositories';
-import { EmployeeItem, EmployeeInfo, EmployeeRecipient } from './dtos/employee';
-import { EnqueuedMetric } from './dtos/metric';
-import { IEmployeesService } from './services';
+import { Queue } from 'src/pkg/queue';
+import { ErrorApi } from '../../pkg/error';
+import { EmployeesRepo } from '../repositories/employees.repo';
 
-class EmployeesService implements IEmployeesService {
-  constructor(private readonly employeesRepo: IEmployeesRepo, private readonly queue: ISQSQueue) {
-    this.employeesRepo = employeesRepo;
+export class EmployeesService {
+  constructor(private readonly repo: EmployeesRepo, private readonly queue: Queue) {
+    this.repo = repo;
     this.queue = queue;
   }
 
-  async getAll(): Promise<EmployeeItem[]> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.employeesRepo.getAll();
-    const currMs = Date.now() - prevMs;
+  async getAll() {
+    const { data, query, type, ms } = await this.repo.getAll();
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    const employees = data.map((item) => new EmployeeItem(
-      item.id,
-      item.firstName,
-      item.lastName,
-      item.title,
-      item.city,
-      item.homePhone,
-      item.country,
-    ));
+    const employees = data.map((item) => ({
+      id: item.id,
+      firstName: item.firstName,
+      lastName: item.lastName,
+      title: item.title,
+      city: item.city,
+      homePhone: item.homePhone,
+      country: item.country,
+    }));
     return employees;
   }
 
-  async getInfo(id: string): Promise<EmployeeInfo> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.employeesRepo.getInfo(id);
-    const currMs = Date.now() - prevMs;
+  async getInfo(id: string) {
+    const { data, query, type, ms } = await this.repo.getInfo(id);
+    if (!data) throw ErrorApi.badRequest('Unknown employee!');
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    if (!data) throw ApiError.badRequest('Unknown employee!');
-    const employee = new EmployeeInfo(
-      data.id,
-      data.first_name,
-      data.last_name,
-      data.title,
-      data.title_of_courtesy,
-      data.birth_date,
-      data.hire_date,
-      data.address,
-      data.city,
-      data.postal_code,
-      data.country,
-      data.home_phone,
-      data.extension,
-      data.notes,
-      data.reports_to && data.reports_fname && data.reports_lname
-        ? new EmployeeRecipient(
-          data.reports_to,
-          data.reports_fname,
-          data.reports_lname,
-        ) : null,
-    );
+    const recipient = data.reports_to ? ({
+      id: data.reports_to,
+      firstName: data.reports_fname,
+      lastName: data.reports_lname,
+    }) : null;
+
+    const employee = ({
+      id: data.id,
+      firstName: data.first_name,
+      lastName: data.last_name,
+      title: data.title,
+      titleOfCourtesy: data.title_of_courtesy,
+      bithDate: data.birth_date,
+      hireDate: data.hire_date,
+      address: data.address,
+      city: data.city,
+      postalCode: data.postal_code,
+      country: data.country,
+      homePhone: data.home_phone,
+      extension: data.extension,
+      notes: data.notes,
+      recipient,
+    });
     return employee;
   }
 }
-
-export default EmployeesService;

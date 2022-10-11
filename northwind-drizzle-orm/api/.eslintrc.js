@@ -34,5 +34,6 @@ module.exports = {
     'no-use-before-define': 0,
     'no-nested-ternary': 0,
     'import/no-extraneous-dependencies': 0,
+    'object-curly-newline': 0,
   },
 };

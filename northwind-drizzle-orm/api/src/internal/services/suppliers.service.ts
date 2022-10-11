@@ -1,58 +1,47 @@
-import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { ISuppliersRepo } from '../repositories/repositories';
-import { EnqueuedMetric } from './dtos/metric';
-import { SupplierItem, SupplierInfo } from './dtos/supplier';
-import { ISuppliersService } from './services';
+import { Queue } from 'src/pkg/queue';
+import { ErrorApi } from '../../pkg/error';
+import { SuppliersRepo } from '../repositories/suppliers.repo';
 
-class SuppliersService implements ISuppliersService {
-  constructor(private readonly suppliersRepo: ISuppliersRepo, private readonly queue: ISQSQueue) {
-    this.suppliersRepo = suppliersRepo;
+export class SuppliersService {
+  constructor(private readonly repo: SuppliersRepo, private readonly queue: Queue) {
+    this.repo = repo;
     this.queue = queue;
   }
 
-  async getAll(): Promise<SupplierItem[]> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.suppliersRepo.getAll();
-    const currMs = Date.now() - prevMs;
+  async getAll() {
+    const { data, query, type, ms } = await this.repo.getAll();
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    const suppliers = data.map((item) => new SupplierItem(
-      item.id,
-      item.companyName,
-      item.contactName,
-      item.contactTitle,
-      item.city,
-      item.country,
-    ));
+    const suppliers = data.map((item) => ({
+      id: item.id,
+      companyName: item.companyName,
+      contactName: item.contactName,
+      contactTitle: item.contactTitle,
+      city: item.city,
+      country: item.country,
+    }));
     return suppliers;
   }
 
-  async getInfo(id: string): Promise<SupplierInfo> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.suppliersRepo.getInfo(id);
-    const currMs = Date.now() - prevMs;
+  async getInfo(id: string) {
+    const { data, query, type, ms } = await this.repo.getInfo(id);
+    if (!data) throw ErrorApi.badRequest('Unknown supplier!');
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    if (!data) throw ApiError.badRequest('Unknown supplier!');
-    const supplier = new SupplierInfo(
-      data.id,
-      data.companyName,
-      data.contactName,
-      data.contactTitle,
-      data.address,
-      data.city,
-      data.region,
-      data.postalCode,
-      data.country,
-      data.phone,
-    );
+    const supplier = {
+      id: data.id,
+      companyName: data.companyName,
+      contactName: data.contactName,
+      contactTitle: data.contactTitle,
+      address: data.address,
+      city: data.city,
+      region: data.region,
+      postalCode: data.postalCode,
+      country: data.country,
+      phone: data.phone,
+    };
     return supplier;
   }
 }
-
-export default SuppliersService;

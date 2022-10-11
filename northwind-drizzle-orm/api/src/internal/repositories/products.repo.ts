@@ -1,53 +1,64 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
-import { IProductsRepo, ItemsWithMetric, QueryTypes } from './repositories';
 import { Product, products as table } from './entities/products';
-import { DataBase } from './entities/schema';
-import { Supplier, suppliers } from './entities/suppliers';
+import { Database } from './entities/schema';
+import { suppliers } from './entities/suppliers';
 
-class ProductsRepo implements IProductsRepo {
-  constructor(private readonly db: DataBase) {
+export class ProductsRepo {
+  constructor(private readonly db: Database) {
     this.db = db;
   }
 
-  async getAll(): Promise<ItemsWithMetric<Product[]>> {
+  async getAll() {
     const command = this.db.products.select();
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: 'SELECT',
+      ms,
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<{ suppliers: Supplier | null, products: Product } | null>> {
+  async getInfo(id: string) {
     const command = this.db.products.select()
       .leftJoin(suppliers, eq(table.supplierId, suppliers.id))
       .where(eq(table.id, id));
 
+    const prevMs = Date.now();
     const [data] = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_LEFT_JOIN_WHERE,
+      type: 'JOIN',
+      ms,
     };
   }
 
-  async search(name: string): Promise<ItemsWithMetric<Product[]>> {
+  async search(name: string) {
     const command = this.db.products.select()
       .where(ilike(table.name, `%${name}%`));
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_WHERE,
+      type: 'WHERE',
+      ms,
     };
   }
 
@@ -59,5 +70,3 @@ class ProductsRepo implements IProductsRepo {
     await this.db.products.delete().execute();
   }
 }
-
-export default ProductsRepo;

@@ -1,37 +1,44 @@
 import { eq } from 'drizzle-orm/expressions';
-import { ISuppliersRepo, ItemsWithMetric, QueryTypes } from './repositories';
 import { Supplier, suppliers as table } from './entities/suppliers';
-import { DataBase } from './entities/schema';
+import { Database } from './entities/schema';
 
-class SuppliersRepo implements ISuppliersRepo {
-  constructor(private readonly db: DataBase) {
+export class SuppliersRepo {
+  constructor(private readonly db: Database) {
     this.db = db;
   }
 
-  async getAll(): Promise<ItemsWithMetric<Supplier[]>> {
+  async getAll() {
     const command = this.db.suppliers.select();
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: 'SELECT',
+      ms,
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<Supplier | null>> {
+  async getInfo(id: string) {
     const command = this.db.suppliers.select()
       .where(eq(table.id, id));
 
+    const prevMs = Date.now();
     const [data] = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_WHERE,
+      type: 'WHERE',
+      ms,
     };
   }
 
@@ -43,5 +50,3 @@ class SuppliersRepo implements ISuppliersRepo {
     await this.db.suppliers.delete().execute();
   }
 }
-
-export default SuppliersRepo;

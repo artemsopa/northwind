@@ -17,10 +17,10 @@ export const employees = pgTable('employees', {
   homePhone: varchar('home_phone').notNull(),
   extension: integer('extension').notNull(),
   notes: text('notes').notNull(),
-  reportsTo: varchar('reports_to'),
+  recipientId: varchar('recipientId'),
 }, (table) => ({
   recipientFk: foreignKey(() => ({
-    columns: [table.reportsTo],
+    columns: [table.recipientId],
     foreignColumns: [table.id],
   })),
 }));

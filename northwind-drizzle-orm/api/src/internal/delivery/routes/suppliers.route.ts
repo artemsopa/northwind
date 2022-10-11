@@ -1,13 +1,13 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { ISuppliersService } from '../../services/services';
+import { SuppliersService } from 'src/internal/services/suppliers.service';
 import { idReqSchema } from './joi-schemas/req.schema';
 import validateSchema from './joi-schemas/schema';
 
-class SuppliersRoute {
-  constructor(private readonly suppliersService: ISuppliersService) {
-    this.suppliersService = suppliersService;
+export class SuppliersRoute {
+  constructor(private readonly service: SuppliersService) {
+    this.service = service;
   }
 
   initRoutes() {
@@ -18,7 +18,7 @@ class SuppliersRoute {
 
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const suppliers = await this.suppliersService.getAll();
+      const suppliers = await this.service.getAll();
       res.status(200).json(suppliers);
     } catch (error) {
       next(error);
@@ -28,12 +28,10 @@ class SuppliersRoute {
   private async getInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const params = validateSchema(idReqSchema, req.params);
-      const supplier = await this.suppliersService.getInfo(params.id);
+      const supplier = await this.service.getInfo(params.id);
       res.status(200).json(supplier);
     } catch (error) {
       next(error);
     }
   }
 }
-
-export default SuppliersRoute;

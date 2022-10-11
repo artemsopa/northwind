@@ -1,79 +1,67 @@
-import { IProductsService } from './services';
-import { IProductsRepo } from '../repositories/repositories';
-import { ProductItem, ProductInfo, ProductSupplier } from './dtos/product';
-import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { EnqueuedMetric } from './dtos/metric';
+import { Queue } from 'src/pkg/queue';
+import { ErrorApi } from '../../pkg/error';
+import { ProductsRepo } from '../repositories/products.repo';
 
-class ProductsService implements IProductsService {
-  constructor(private readonly productsRepo: IProductsRepo, private readonly queue: ISQSQueue) {
-    this.productsRepo = productsRepo;
+export class ProductsService {
+  constructor(private readonly repo: ProductsRepo, private readonly queue: Queue) {
+    this.repo = repo;
     this.queue = queue;
   }
 
-  async getAll(): Promise<ProductItem[]> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.productsRepo.getAll();
-    const currMs = Date.now() - prevMs;
+  async getAll() {
+    const { data, query, type, ms } = await this.repo.getAll();
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    const products = data.map((item) => new ProductItem(
-      item.id,
-      item.name,
-      item.quantityPerUnit,
-      item.unitPrice,
-      item.unitsInStock,
-      item.unitsOnOrder,
-    ));
+    const products = data.map((item) => ({
+      id: item.id,
+      name: item.name,
+      qtPerUnit: item.quantityPerUnit,
+      unitPrice: item.unitPrice,
+      unitsInStock: item.unitsInStock,
+      unitsOnOrder: item.unitsOnOrder,
+    }));
     return products;
   }
 
-  async getInfo(id: string): Promise<ProductInfo> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.productsRepo.getInfo(id);
-    const currMs = Date.now() - prevMs;
+  async getInfo(id: string) {
+    const { data, query, type, ms } = await this.repo.getInfo(id);
+    if (!data || !data.products || !data.suppliers) throw ErrorApi.badRequest('Unknown product!');
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    if (!data || !data.products || !data.suppliers) throw ApiError.badRequest('Unknown product!');
-    const item = new ProductInfo(
-      data.products.id,
-      data.products.name,
-      data.products.quantityPerUnit,
-      data.products.unitPrice,
-      data.products.unitsInStock,
-      data.products.unitsOnOrder,
-      data.products.reorderLevel,
-      data.products.discontinued,
-      new ProductSupplier(
-        data.suppliers.id,
-        data.suppliers.companyName,
-      ),
-    );
+    const supplier = {
+      id: data.suppliers.id,
+      companyName: data.suppliers.companyName,
+    };
+
+    const item = {
+      id: data.products.id,
+      name: data.products.name,
+      qtPerUnit: data.products.quantityPerUnit,
+      unitPrice: data.products.unitPrice,
+      unitsInStock: data.products.unitsInStock,
+      unitsOnOrder: data.products.unitsOnOrder,
+      reorderLevel: data.products.reorderLevel,
+      discontinued: data.products.discontinued,
+      supplier,
+    };
     return item;
   }
 
-  async search(name: string): Promise<ProductItem[]> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.productsRepo.search(name);
-    const currMs = Date.now() - prevMs;
+  async search(name: string) {
+    const { data, query, type, ms } = await this.repo.search(name);
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    const products = data.map((item) => new ProductItem(
-      item.id,
-      item.name,
-      item.quantityPerUnit,
-      item.unitPrice,
-      item.unitsInStock,
-      item.unitsOnOrder,
-    ));
+    const products = data.map((item) => ({
+      id: item.id,
+      name: item.name,
+      qtPerUnit: item.quantityPerUnit,
+      unitPrice: item.unitPrice,
+      unitsInStock: item.unitsInStock,
+      unitsOnOrder: item.unitsOnOrder,
+    }));
     return products;
   }
 }
-
-export default ProductsService;

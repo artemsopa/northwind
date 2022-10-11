@@ -48,9 +48,7 @@ const initConfigs = () => {
       AWS_ACCESS_KEY,
       AWS_SECRET_KEY,
       AWS_REGION,
-      sqs: {
-        AWS_SQS_URL,
-      },
+      AWS_SQS_URL,
     },
   };
 };

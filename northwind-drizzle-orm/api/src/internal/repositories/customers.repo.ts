@@ -1,51 +1,62 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
 import { customers as table, Customer } from './entities/customers';
-import { ICustomersRepo, ItemsWithMetric, QueryTypes } from './repositories';
-import { DataBase } from './entities/schema';
+import { Database } from './entities/schema';
 
-class CustomersRepo implements ICustomersRepo {
-  constructor(private readonly db: DataBase) {
+export class CustomersRepo {
+  constructor(private readonly db: Database) {
     this.db = db;
   }
 
-  async getAll(): Promise<ItemsWithMetric<Customer[]>> {
+  async getAll() {
     const command = this.db.customers.select();
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT,
+      type: 'SELECT',
+      ms,
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<Customer | null>> {
+  async getInfo(id: string) {
     const command = this.db.customers.select()
       .where(eq(table.id, id));
 
+    const prevMs = Date.now();
     const [data] = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_WHERE,
+      type: 'WHERE',
+      ms,
     };
   }
 
-  async search(company: string): Promise<ItemsWithMetric<Customer[]>> {
+  async search(company: string) {
     const command = this.db.customers.select()
       .where(ilike(table.companyName, `%${company}%`));
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_WHERE,
+      type: 'WHERE',
+      ms,
     };
   }
 
@@ -57,5 +68,3 @@ class CustomersRepo implements ICustomersRepo {
     await this.db.customers.delete().execute();
   }
 }
-
-export default CustomersRepo;

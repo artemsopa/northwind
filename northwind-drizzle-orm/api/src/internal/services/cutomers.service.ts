@@ -1,78 +1,66 @@
-import { ICustomersService } from './services';
-import { ICustomersRepo } from '../repositories/repositories';
-import { CustomerItem, CustomerInfo } from './dtos/customer';
-import ApiError from '../../pkg/error/api.error';
-import { ISQSQueue } from '../../pkg/queue/sqs.queue';
-import { EnqueuedMetric } from './dtos/metric';
+import { Queue } from 'src/pkg/queue';
+import { ErrorApi } from '../../pkg/error';
+import { CustomersRepo } from '../repositories/customers.repo';
 
-class CustomersService implements ICustomersService {
-  constructor(private readonly customersRepo: ICustomersRepo, private readonly queue: ISQSQueue) {
-    this.customersRepo = customersRepo;
+export class CustomersService {
+  constructor(private readonly repo: CustomersRepo, private readonly queue: Queue) {
+    this.repo = repo;
     this.queue = queue;
   }
 
-  async getAll(): Promise<CustomerItem[]> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.customersRepo.getAll();
-    const currMs = Date.now() - prevMs;
+  async getAll() {
+    const { data, query, type, ms } = await this.repo.getAll();
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    const customers = data.map((item) => new CustomerItem(
-      item.id,
-      item.companyName,
-      item.contactName,
-      item.contactTitle,
-      item.city,
-      item.country,
-    ));
+    const customers = data.map((item) => ({
+      id: item.id,
+      companyName: item.companyName,
+      contactName: item.contactName,
+      contactTitle: item.contactTitle,
+      city: item.city,
+      country: item.country,
+    }));
+
     return customers;
   }
 
-  async getInfo(id: string): Promise<CustomerInfo> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.customersRepo.getInfo(id);
-    const currMs = Date.now() - prevMs;
+  async getInfo(id: string) {
+    const { data, query, type, ms } = await this.repo.getInfo(id);
+    if (!data) throw ErrorApi.badRequest('Unknown customer!');
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    if (!data) throw ApiError.badRequest('Unknown customer!');
-    const customer = new CustomerInfo(
-      data.id,
-      data.companyName,
-      data.contactName,
-      data.contactTitle,
-      data.address,
-      data.city,
-      data.postalCode,
-      data.region,
-      data.country,
-      data.phone,
-      data.fax,
-    );
+    const customer = {
+      id: data.id,
+      companyName: data.companyName,
+      contactName: data.contactName,
+      contactTitle: data.contactTitle,
+      address: data.address,
+      city: data.city,
+      postalCode: data.postalCode,
+      region: data.region,
+      country: data.country,
+      phone: data.phone,
+      fax: data.fax,
+    };
+
     return customer;
   }
 
-  async search(company: string): Promise<CustomerItem[]> {
-    const prevMs = Date.now();
-    const { data, query, type } = await this.customersRepo.search(company);
-    const currMs = Date.now() - prevMs;
+  async search(company: string) {
+    const { data, query, type, ms } = await this.repo.search(company);
 
-    const metric = new EnqueuedMetric(query, currMs, type);
-    await this.queue.enqueueMessage<EnqueuedMetric>(metric);
+    // await this.queue.enqueueMessage({ query, type, ms });
 
-    const customers = data.map((item) => new CustomerItem(
-      item.id,
-      item.companyName,
-      item.contactName,
-      item.contactTitle,
-      item.city,
-      item.country,
-    ));
+    const customers = data.map((item) => ({
+      id: item.id,
+      companyName: item.companyName,
+      contactName: item.contactName,
+      contactTitle: item.contactTitle,
+      city: item.city,
+      country: item.country,
+    }));
     return customers;
   }
 }
-
-export default CustomersService;

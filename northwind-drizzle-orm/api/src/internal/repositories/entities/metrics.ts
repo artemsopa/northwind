@@ -3,15 +3,15 @@ import {
 } from 'drizzle-orm-pg';
 
 export const queryTypeEnum = pgEnum('query_type', [
-  'SELECT', 'SELECT_WHERE', 'SELECT_LEFT_JOIN', 'SELECT_LEFT_JOIN_WHERE',
+  'SELECT', 'SELECT_WHERE', 'SELECT_LEFT_JOIN',
 ]);
 
 export const metrics = pgTable('metrics', {
   id: serial('id').primaryKey().notNull(),
-  queryString: text('query_string').notNull(),
+  query: text('query').notNull(),
   ms: integer('ms').notNull(),
-  queryType: queryTypeEnum('query_type').notNull(),
-  created_at: timestamp('created_at', { mode: 'date', withTimezone: true }).defaultNow().notNull(),
+  type: queryTypeEnum('type').notNull(),
+  createdAt: timestamp('created_at', { mode: 'date', withTimezone: true }).defaultNow().notNull(),
 });
 
 export type Metric = InferModel<typeof metrics>;

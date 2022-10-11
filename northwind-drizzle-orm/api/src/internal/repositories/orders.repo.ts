@@ -1,43 +1,49 @@
 import { eq } from 'drizzle-orm/expressions';
-import { IOrdersRepo, ItemsWithMetric, QueryTypes } from './repositories';
 import { Order, orders as table } from './entities/orders';
-import { Detail, details } from './entities/details';
-import { DataBase } from './entities/schema';
-import { Product, products } from './entities/products';
+import { details } from './entities/details';
+import { Database } from './entities/schema';
+import { products } from './entities/products';
 
-class OrdersRepo implements IOrdersRepo {
-  constructor(private readonly db: DataBase) {
+export class OrdersRepo {
+  constructor(private readonly db: Database) {
     this.db = db;
   }
 
-  async getAll(): Promise<ItemsWithMetric<{ orders: Order, details: Detail | null }[]>> {
+  async getAll() {
     const command = this.db.orders.select()
       .leftJoin(details, eq(table.id, details.orderId));
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_LEFT_JOIN,
+      type: 'JOIN',
+      ms,
     };
   }
 
-  async getInfo(id: string): Promise<ItemsWithMetric<{ orders: Order | null, products: Product | null, details: Detail }[] | null>> {
+  async getInfo(id: string) {
     const command = this.db.details.select()
       .leftJoin(table, eq(details.orderId, table.id))
       .leftJoin(products, eq(details.productId, products.id))
       .where(eq(details.orderId, id));
 
+    const prevMs = Date.now();
     const data = await command.execute();
+    const ms = Date.now() - prevMs;
+
     const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
-    console.log(data);
 
     return {
       data,
       query,
-      type: QueryTypes.SELECT_LEFT_JOIN_WHERE,
+      type: 'JOIN',
+      ms,
     };
   }
 
@@ -49,5 +55,3 @@ class OrdersRepo implements IOrdersRepo {
     await this.db.orders.delete().execute();
   }
 }
-
-export default OrdersRepo;

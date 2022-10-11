@@ -1,9 +1,8 @@
-import { IDetailsRepo } from './repositories';
 import { Detail } from './entities/details';
-import { DataBase } from './entities/schema';
+import { Database } from './entities/schema';
 
-class DetailsRepo implements IDetailsRepo {
-  constructor(private readonly db: DataBase) {
+export class DetailsRepo {
+  constructor(private readonly db: Database) {
     this.db = db;
   }
 
@@ -15,5 +14,3 @@ class DetailsRepo implements IDetailsRepo {
     await this.db.details.delete().execute();
   }
 }
-
-export default DetailsRepo;

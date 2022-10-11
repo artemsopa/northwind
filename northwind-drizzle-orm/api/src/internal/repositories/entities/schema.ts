@@ -17,4 +17,4 @@ export const schema = {
   metrics,
 };
 
-export type DataBase = PGDatabase<typeof schema>;
+export type Database = PGDatabase<typeof schema>;

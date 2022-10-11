@@ -1,9 +1,8 @@
-import { IMetricsRepo } from './repositories';
 import { Metric } from './entities/metrics';
-import { DataBase } from './entities/schema';
+import { Database } from './entities/schema';
 
-class MetricsRepo implements IMetricsRepo {
-  constructor(private readonly db: DataBase) {
+export class MetricsRepo {
+  constructor(private readonly db: Database) {
     this.db = db;
   }
 
@@ -11,5 +10,3 @@ class MetricsRepo implements IMetricsRepo {
     return await this.db.metrics.select().execute();
   }
 }
-
-export default MetricsRepo;
