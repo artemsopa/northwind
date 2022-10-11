@@ -1,7 +1,7 @@
 {
   "version": "3",
   "dialect": "pg",
-  "id": "bbdb0f6d-d85a-421b-87ea-939ff8fb461b",
+  "id": "5feacb04-bb96-4774-9927-837e4cd0bfb1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customers": {
@@ -543,8 +543,8 @@
       "name": "query_type",
       "values": {
         "SELECT": "SELECT",
-        "SELECT_WHERE": "SELECT_WHERE",
-        "SELECT_LEFT_JOIN": "SELECT_LEFT_JOIN"
+        "WHERE": "WHERE",
+        "JOIN": "JOIN"
       }
     }
   }

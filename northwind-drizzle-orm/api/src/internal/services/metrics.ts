@@ -17,8 +17,8 @@ export class MetricsService {
     const info = {
       count: metrics.length || 0,
       select: map.get('SELECT') || 0,
-      where: map.get('SELECT WHERE') || 0,
-      join: map.get('SELECT LEFT JOIN') || 0,
+      where: map.get('WHERE') || 0,
+      join: map.get('JOIN') || 0,
       metrics: metrics.map((item) => ({ query: item.query, ms: item.ms, createdAt: item.createdAt })),
     };
     return info;

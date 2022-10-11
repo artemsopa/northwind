@@ -3,7 +3,7 @@ import {
 } from 'drizzle-orm-pg';
 
 export const queryTypeEnum = pgEnum('query_type', [
-  'SELECT', 'SELECT_WHERE', 'SELECT_LEFT_JOIN',
+  'SELECT', 'WHERE', 'JOIN',
 ]);
 
 export const metrics = pgTable('metrics', {

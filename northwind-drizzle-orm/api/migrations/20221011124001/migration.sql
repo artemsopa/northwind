@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE query_type AS ENUM('SELECT', 'SELECT_WHERE', 'SELECT_LEFT_JOIN');
+ CREATE TYPE query_type AS ENUM('SELECT', 'WHERE', 'JOIN');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
