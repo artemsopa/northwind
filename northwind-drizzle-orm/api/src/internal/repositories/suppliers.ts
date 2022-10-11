@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm/expressions';
-import { Supplier, suppliers as table } from './entities/suppliers';
-import { Database } from './entities/schema';
+import { Supplier, suppliers as table } from '@/internal/repositories/entities/suppliers';
+import { Database } from '@/internal/repositories/entities/schema';
 
 export class SuppliersRepo {
   constructor(private readonly db: Database) {

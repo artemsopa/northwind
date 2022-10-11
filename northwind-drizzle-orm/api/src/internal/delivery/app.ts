@@ -1,7 +1,7 @@
 import express, { Application, RequestHandler, Router } from 'express';
 import cors from 'cors';
-import errors from './middlewares/errors';
-import notFound from './middlewares/notfound';
+import errors from '@/internal/delivery/middlewares/errors';
+import notFound from '@/internal/delivery/middlewares/notfound';
 
 export class App {
   private readonly app: Application;

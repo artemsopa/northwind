@@ -1,8 +1,8 @@
 import {
   pgTable, varchar, integer, doublePrecision, InferModel,
 } from 'drizzle-orm-pg';
-import { orders } from './orders';
-import { products } from './products';
+import { orders } from '@/internal/repositories/entities/orders';
+import { products } from '@/internal/repositories/entities/products';
 
 export const details = pgTable('order_details', {
   unitPrice: doublePrecision('unit_price').notNull(),

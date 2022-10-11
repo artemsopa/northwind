@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 import { CustomersService } from '@/internal/services/cutomers';
-import { Controller, wrapped } from '../app';
-import { idReqSchema, customerReqSchema } from './joi-schemas/req.schema';
-import validateSchema from './joi-schemas/schema';
+import { Controller, wrapped } from '@/internal/delivery/app';
+import { idReqSchema, customerReqSchema } from '@/internal/delivery/controllers/joi-schemas/req.schema';
+import validateSchema from '@/internal/delivery/controllers/joi-schemas/schema';
 
 export class CustomersController extends Controller {
   constructor(private readonly service: CustomersService) {

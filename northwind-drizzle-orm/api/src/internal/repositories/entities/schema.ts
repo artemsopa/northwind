@@ -1,11 +1,11 @@
 import { PGDatabase } from 'drizzle-orm-pg';
-import { customers } from './customers';
-import { employees } from './employees';
-import { orders } from './orders';
-import { suppliers } from './suppliers';
-import { products } from './products';
-import { details } from './details';
-import { metrics } from './metrics';
+import { customers } from '@/internal/repositories/entities/customers';
+import { employees } from '@/internal/repositories/entities/employees';
+import { orders } from '@/internal/repositories/entities/orders';
+import { suppliers } from '@/internal/repositories/entities/suppliers';
+import { products } from '@/internal/repositories/entities/products';
+import { details } from '@/internal/repositories/entities/details';
+import { metrics } from '@/internal/repositories/entities/metrics';
 
 export const schema = {
   customers,

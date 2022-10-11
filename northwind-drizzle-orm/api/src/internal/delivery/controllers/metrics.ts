@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { MetricsService } from '@/internal/services/metrics';
-import { Controller, wrapped } from '../app';
+import { Controller, wrapped } from '@/internal/delivery/app';
 
 export class MetricsController extends Controller {
   constructor(private readonly service: MetricsService) {

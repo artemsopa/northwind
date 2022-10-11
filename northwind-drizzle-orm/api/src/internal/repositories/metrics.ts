@@ -1,5 +1,5 @@
-import { Metric } from './entities/metrics';
-import { Database } from './entities/schema';
+import { Metric } from '@/internal/repositories/entities/metrics';
+import { Database } from '@/internal/repositories/entities/schema';
 
 export class MetricsRepo {
   constructor(private readonly db: Database) {

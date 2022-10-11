@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
-import { Employee } from './entities/employees';
-import { Database } from './entities/schema';
+import { Employee } from '@/internal/repositories/entities/employees';
+import { Database } from '@/internal/repositories/entities/schema';
 
 export class EmployeesRepo {
   constructor(private readonly db: Database) {

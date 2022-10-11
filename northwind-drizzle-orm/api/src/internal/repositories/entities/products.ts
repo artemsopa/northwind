@@ -1,7 +1,7 @@
 import {
   pgTable, varchar, integer, InferModel, doublePrecision,
 } from 'drizzle-orm-pg';
-import { suppliers } from './suppliers';
+import { suppliers } from '@/internal/repositories/entities/suppliers';
 
 export const products = pgTable('products', {
   id: varchar('id').primaryKey().notNull(),

@@ -1,7 +1,7 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
-import { Product, products as table } from './entities/products';
-import { Database } from './entities/schema';
-import { suppliers } from './entities/suppliers';
+import { Product, products as table } from '@/internal/repositories/entities/products';
+import { Database } from '@/internal/repositories/entities/schema';
+import { suppliers } from '@/internal/repositories/entities/suppliers';
 
 export class ProductsRepo {
   constructor(private readonly db: Database) {

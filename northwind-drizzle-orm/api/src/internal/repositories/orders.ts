@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm/expressions';
-import { Order, orders as table } from './entities/orders';
-import { details } from './entities/details';
-import { Database } from './entities/schema';
-import { products } from './entities/products';
+import { Order, orders as table } from '@/internal/repositories/entities/orders';
+import { details } from '@/internal/repositories/entities/details';
+import { Database } from '@/internal/repositories/entities/schema';
+import { products } from '@/internal/repositories/entities/products';
 
 export class OrdersRepo {
   constructor(private readonly db: Database) {
