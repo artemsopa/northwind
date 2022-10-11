@@ -25,7 +25,7 @@ export class EmployeesRepo {
   }
 
   async getInfo(id: string) {
-    const command = sql`SELECT e1.*, e2.last_name as reports_lname, e2.first_name as reports_fname 
+    const command = sql`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname 
     FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = ${id}`;
 
     const prevMs = Date.now();
