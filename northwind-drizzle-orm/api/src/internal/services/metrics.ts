@@ -5,7 +5,7 @@ export class MetricsService {
     this.repo = repo;
   }
 
-  async getAllMetrics() {
+  async getAll() {
     const metrics = await this.repo.getAll();
 
     const map = new Map();
