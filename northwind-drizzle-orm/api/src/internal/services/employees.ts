@@ -1,6 +1,6 @@
-import { Queue } from 'src/pkg/queue';
 import { ErrorApi } from '../../pkg/error';
-import { EmployeesRepo } from '../repositories/employees.repo';
+import { Queue } from '../../pkg/queue';
+import { EmployeesRepo } from '../repositories/employees';
 
 export class EmployeesService {
   constructor(private readonly repo: EmployeesRepo, private readonly queue: Queue) {

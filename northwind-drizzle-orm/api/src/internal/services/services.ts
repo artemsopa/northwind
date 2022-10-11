@@ -1,11 +1,11 @@
-import { Queue } from 'src/pkg/queue';
-import { CustomersService } from './cutomers.service';
-import { EmployeesService } from './employees.service';
-import { OrdersService } from './orders.service';
-import { SuppliersService } from './suppliers.service';
-import { ProductsService } from './products.service';
+import { Queue } from '../../pkg/queue';
+import { CustomersService } from './cutomers';
+import { EmployeesService } from './employees';
+import { OrdersService } from './orders';
+import { SuppliersService } from './suppliers';
+import { ProductsService } from './products';
 import { Repositories } from '../repositories/repositories';
-import { MetricsService } from './metrics.service';
+import { MetricsService } from './metrics';
 
 export interface Services {
   metrics: MetricsService,

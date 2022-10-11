@@ -9,14 +9,14 @@ import { schema } from './internal/repositories/entities/schema';
 import { Queue } from './pkg/queue';
 import { initRepositories } from './internal/repositories/repositories';
 import { initServices } from './internal/services/services';
-import { CustomersRoute } from './internal/delivery/routes/customers.routes';
-import { EmployeesRoute } from './internal/delivery/routes/employees.route';
-import { SuppliersRoute } from './internal/delivery/routes/suppliers.route';
-import { ProductsRoute } from './internal/delivery/routes/products.route';
-import { OrdersRoute } from './internal/delivery/routes/orders.route';
-import { MetricsRoute } from './internal/delivery/routes/metrics.route';
-import errorMiddleware from './internal/delivery/middlewares/error.mware';
-import notfMiddleware from './internal/delivery/middlewares/notf.mware';
+import { CustomersRoute } from './internal/delivery/routes/customers';
+import { EmployeesRoute } from './internal/delivery/routes/employees';
+import { SuppliersRoute } from './internal/delivery/routes/suppliers';
+import { ProductsRoute } from './internal/delivery/routes/products';
+import { OrdersRoute } from './internal/delivery/routes/orders';
+import { MetricsRoute } from './internal/delivery/routes/metrics';
+import errorMiddleware from './internal/delivery/middlewares/error';
+import notfMiddleware from './internal/delivery/middlewares/notfound';
 
 const main = async () => {
   try {

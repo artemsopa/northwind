@@ -1,7 +1,7 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { MetricsService } from '../../services/metrics.service';
+import { MetricsService } from '../../services/metrics';
 
 export class MetricsRoute {
   constructor(private readonly service: MetricsService) {

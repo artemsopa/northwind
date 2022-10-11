@@ -1,6 +1,6 @@
-import { ErrorApi } from 'src/pkg/error';
-import { Queue } from 'src/pkg/queue';
-import { OrdersRepo } from '../repositories/orders.repo';
+import { ErrorApi } from '../../pkg/error';
+import { Queue } from '../../pkg/queue';
+import { OrdersRepo } from '../repositories/orders';
 
 export class OrdersService {
   constructor(private readonly repo: OrdersRepo, private readonly queue: Queue) {

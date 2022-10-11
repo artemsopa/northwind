@@ -1,10 +1,10 @@
-import { CustomersRepo } from './customers.repo';
-import { EmployeesRepo } from './employees.repo';
-import { OrdersRepo } from './orders.repo';
-import { DetailsRepo } from './details.repo';
-import { ProductsRepo } from './products.repo';
-import { SuppliersRepo } from './suppliers.repo';
-import { MetricsRepo } from './metrics.repo';
+import { CustomersRepo } from './customers';
+import { EmployeesRepo } from './employees';
+import { OrdersRepo } from './orders';
+import { DetailsRepo } from './details';
+import { ProductsRepo } from './products';
+import { SuppliersRepo } from './suppliers';
+import { MetricsRepo } from './metrics';
 import { Database } from './entities/schema';
 
 export interface Repositories {

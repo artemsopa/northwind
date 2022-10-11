@@ -1,6 +1,6 @@
-import { Queue } from 'src/pkg/queue';
 import { ErrorApi } from '../../pkg/error';
-import { ProductsRepo } from '../repositories/products.repo';
+import { Queue } from '../../pkg/queue';
+import { ProductsRepo } from '../repositories/products';
 
 export class ProductsService {
   constructor(private readonly repo: ProductsRepo, private readonly queue: Queue) {

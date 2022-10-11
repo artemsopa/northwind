@@ -1,12 +1,12 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { CustomersService } from 'src/internal/services/cutomers.service';
-import { idReqSchema, customerReqSchema } from './joi-schemas/req.schema';
+import { ProductsService } from 'src/internal/services/products';
+import { idReqSchema, productReqSchema } from './joi-schemas/req.schema';
 import validateSchema from './joi-schemas/schema';
 
-export class CustomersRoute {
-  constructor(private readonly service: CustomersService) {
+export class ProductsRoute {
+  constructor(private readonly service: ProductsService) {
     this.service = service;
   }
 
@@ -14,13 +14,13 @@ export class CustomersRoute {
     return Router()
       .get('/', this.getAll.bind(this))
       .get('/:id', this.getInfo.bind(this))
-      .get('/search/:company', this.search.bind(this));
+      .get('/search/:name', this.search.bind(this));
   }
 
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const customers = await this.service.getAll();
-      res.status(200).json(customers);
+      const products = await this.service.getAll();
+      res.status(200).json(products);
     } catch (error) {
       next(error);
     }
@@ -29,8 +29,8 @@ export class CustomersRoute {
   private async getInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const params = validateSchema(idReqSchema, req.params);
-      const customer = await this.service.getInfo(params.id);
-      res.status(200).json(customer);
+      const product = await this.service.getInfo(params.id);
+      res.status(200).json(product);
     } catch (error) {
       next(error);
     }
@@ -38,9 +38,9 @@ export class CustomersRoute {
 
   private async search(req: Request, res: Response, next: NextFunction) {
     try {
-      const params = validateSchema(customerReqSchema, req.params);
-      const customer = await this.service.search(params.company);
-      res.status(200).json(customer);
+      const params = validateSchema(productReqSchema, req.params);
+      const products = await this.service.search(params.name);
+      res.status(200).json(products);
     } catch (error) {
       next(error);
     }

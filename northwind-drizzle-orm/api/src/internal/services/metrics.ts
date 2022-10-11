@@ -1,4 +1,4 @@
-import { MetricsRepo } from '../repositories/metrics.repo';
+import { MetricsRepo } from '../repositories/metrics';
 
 export class MetricsService {
   constructor(private readonly repo: MetricsRepo) {

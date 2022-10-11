@@ -1,9 +1,9 @@
-import { Queue } from 'src/pkg/queue';
 import { ErrorApi } from '../../pkg/error';
-import { SuppliersRepo } from '../repositories/suppliers.repo';
+import { Queue } from '../../pkg/queue';
+import { CustomersRepo } from '../repositories/customers';
 
-export class SuppliersService {
-  constructor(private readonly repo: SuppliersRepo, private readonly queue: Queue) {
+export class CustomersService {
+  constructor(private readonly repo: CustomersRepo, private readonly queue: Queue) {
     this.repo = repo;
     this.queue = queue;
   }
@@ -13,7 +13,7 @@ export class SuppliersService {
 
     // await this.queue.enqueueMessage({ query, type, ms });
 
-    const suppliers = data.map((item) => ({
+    const customers = data.map((item) => ({
       id: item.id,
       companyName: item.companyName,
       contactName: item.contactName,
@@ -21,27 +21,46 @@ export class SuppliersService {
       city: item.city,
       country: item.country,
     }));
-    return suppliers;
+
+    return customers;
   }
 
   async getInfo(id: string) {
     const { data, query, type, ms } = await this.repo.getInfo(id);
-    if (!data) throw ErrorApi.badRequest('Unknown supplier!');
+    if (!data) throw ErrorApi.badRequest('Unknown customer!');
 
     // await this.queue.enqueueMessage({ query, type, ms });
 
-    const supplier = {
+    const customer = {
       id: data.id,
       companyName: data.companyName,
       contactName: data.contactName,
       contactTitle: data.contactTitle,
       address: data.address,
       city: data.city,
-      region: data.region,
       postalCode: data.postalCode,
+      region: data.region,
       country: data.country,
       phone: data.phone,
+      fax: data.fax,
     };
-    return supplier;
+
+    return customer;
+  }
+
+  async search(company: string) {
+    const { data, query, type, ms } = await this.repo.search(company);
+
+    // await this.queue.enqueueMessage({ query, type, ms });
+
+    const customers = data.map((item) => ({
+      id: item.id,
+      companyName: item.companyName,
+      contactName: item.contactName,
+      contactTitle: item.contactTitle,
+      city: item.city,
+      country: item.country,
+    }));
+    return customers;
   }
 }

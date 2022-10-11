@@ -1,12 +1,12 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { EmployeesService } from 'src/internal/services/employees.service';
+import { OrdersService } from 'src/internal/services/orders';
 import { idReqSchema } from './joi-schemas/req.schema';
 import validateSchema from './joi-schemas/schema';
 
-export class EmployeesRoute {
-  constructor(private readonly service: EmployeesService) {
+export class OrdersRoute {
+  constructor(private readonly service: OrdersService) {
     this.service = service;
   }
 
@@ -18,8 +18,8 @@ export class EmployeesRoute {
 
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const employees = await this.service.getAll();
-      res.status(200).json(employees);
+      const orders = await this.service.getAll();
+      res.status(200).json(orders);
     } catch (error) {
       next(error);
     }
@@ -28,8 +28,8 @@ export class EmployeesRoute {
   private async getInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const params = validateSchema(idReqSchema, req.params);
-      const employee = await this.service.getInfo(params.id);
-      res.status(200).json(employee);
+      const order = await this.service.getInfo(params.id);
+      res.status(200).json(order);
     } catch (error) {
       next(error);
     }
