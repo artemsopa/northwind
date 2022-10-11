@@ -10,7 +10,7 @@ export class MetricsRoute {
 
   initRoutes() {
     return Router()
-      .get('/metrics', this.getAllMetrics.bind(this));
+      .get('/', this.getAllMetrics.bind(this));
   }
 
   private async getAllMetrics(req: Request, res: Response, next: NextFunction) {
