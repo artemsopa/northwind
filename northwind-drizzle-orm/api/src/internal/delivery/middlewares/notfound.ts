@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 
-const notFound = (req: Request, res: Response) => res.status(404).json({ message: 'Not Found!' });
+const notFound: RequestHandler = (req, res) => res.status(404).json({ message: 'Not Found!' });
 
 export default notFound;

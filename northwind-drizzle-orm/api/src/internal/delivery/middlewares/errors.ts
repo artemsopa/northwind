@@ -1,8 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler } from 'express';
 import { ErrorApi } from '@/pkg/error';
 
-const errors = (error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.log(error);
+const errors: ErrorRequestHandler = (error, req, res, next) => {
   if (error instanceof ErrorApi) {
     return res.status(error.status).json({
       message: error.message,
