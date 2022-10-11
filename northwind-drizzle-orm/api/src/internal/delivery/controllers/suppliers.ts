@@ -18,9 +18,9 @@ export class SuppliersController extends Controller {
     res.status(200).json(suppliers);
   };
 
-  private async getInfo(req: Request, res: Response, next: NextFunction) {
+  private getInfo: RequestHandler = async (req, res) => {
     const params = validateSchema(idReqSchema, req.params);
     const supplier = await this.service.getInfo(params.id);
     res.status(200).json(supplier);
-  }
+  };
 }
