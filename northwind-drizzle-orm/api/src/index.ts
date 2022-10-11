@@ -2,22 +2,17 @@ import { SQS } from 'aws-sdk';
 import { PgConnector } from 'drizzle-orm-pg';
 import { connect, migrate } from 'drizzle-orm';
 import { Pool } from 'pg';
-import express, { Router } from 'express';
-import cors from 'cors';
 import initConfigs from './configs/configs';
 import { schema } from './internal/repositories/entities/schema';
 import { Queue } from './pkg/queue';
-import { CustomersRoute } from './internal/delivery/routes/customers';
-import { EmployeesRoute } from './internal/delivery/routes/employees';
-import { SuppliersRoute } from './internal/delivery/routes/suppliers';
-import { ProductsRoute } from './internal/delivery/routes/products';
-import { OrdersRoute } from './internal/delivery/routes/orders';
-import { MetricsRoute } from './internal/delivery/routes/metrics';
-import errorMiddleware from './internal/delivery/middlewares/error';
-import notfMiddleware from './internal/delivery/middlewares/notfound';
+import { CustomersController } from './internal/delivery/controllers/customers';
+import { EmployeesController } from './internal/delivery/controllers/employees';
+import { SuppliersController } from './internal/delivery/controllers/suppliers';
+import { ProductsController } from './internal/delivery/controllers/products';
+import { OrdersController } from './internal/delivery/controllers/orders';
+import { MetricsController } from './internal/delivery/controllers/metrics';
 import { MetricsRepo } from './internal/repositories/metrics';
 import { CustomersRepo } from './internal/repositories/customers';
-import { DetailsRepo } from './internal/repositories/details';
 import { EmployeesRepo } from './internal/repositories/employees';
 import { OrdersRepo } from './internal/repositories/orders';
 import { ProductsRepo } from './internal/repositories/products';
@@ -28,6 +23,7 @@ import { MetricsService } from './internal/services/metrics';
 import { OrdersService } from './internal/services/orders';
 import { ProductsService } from './internal/services/products';
 import { SuppliersService } from './internal/services/suppliers';
+import { App } from './internal/delivery/app';
 
 const main = async () => {
   try {
@@ -56,46 +52,33 @@ const main = async () => {
     });
 
     const queue = new Queue(sqs, AWS_SQS_URL);
-    const repos = {
-      metrics: new MetricsRepo(db),
-      customers: new CustomersRepo(db),
-      employees: new EmployeesRepo(db),
-      orders: new OrdersRepo(db),
-      details: new DetailsRepo(db),
-      products: new ProductsRepo(db),
-      suppliers: new SuppliersRepo(db),
-    };
 
-    const services = {
-      metrics: new MetricsService(repos.metrics),
-      customers: new CustomersService(repos.customers, queue),
-      employees: new EmployeesService(repos.employees, queue),
-      suppliers: new SuppliersService(repos.suppliers, queue),
-      products: new ProductsService(repos.products, queue),
-      orders: new OrdersService(repos.orders, queue),
-    };
+    const metricsRepo = new MetricsRepo(db);
+    const customersRepo = new CustomersRepo(db);
+    const employeesRepo = new EmployeesRepo(db);
+    const ordersRepo = new OrdersRepo(db);
+    const productsRepo = new ProductsRepo(db);
+    const suppliersRepo = new SuppliersRepo(db);
 
-    const routes = Router()
-      .use('/metrics', new MetricsRoute(services.metrics).initRoutes())
-      .use('/customers', new CustomersRoute(services.customers).initRoutes())
-      .use('/employees', new EmployeesRoute(services.employees).initRoutes())
-      .use('/suppliers', new SuppliersRoute(services.suppliers).initRoutes())
-      .use('/products', new ProductsRoute(services.products).initRoutes())
-      .use('/orders', new OrdersRoute(services.orders).initRoutes());
-
-    const server = express()
-      .use(cors({
-        origin: '*',
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-        optionsSuccessStatus: 204,
-      }))
-      .use(express.json())
-      .use(routes)
-      .use(errorMiddleware)
-      .use(notfMiddleware);
+    const metricsService = new MetricsService(metricsRepo);
+    const customersService = new CustomersService(customersRepo, queue);
+    const employeesService = new EmployeesService(employeesRepo, queue);
+    const suppliersService = new SuppliersService(suppliersRepo, queue);
+    const productsService = new ProductsService(productsRepo, queue);
+    const ordersService = new OrdersService(ordersRepo, queue);
 
     const { PORT } = configs.app;
-    server.listen(PORT, () => console.log(`Server successfully started on ${PORT}...`));
+    const app = new App(
+      PORT,
+      new MetricsController(metricsService),
+      new CustomersController(customersService),
+      new EmployeesController(employeesService),
+      new SuppliersController(suppliersService),
+      new ProductsController(productsService),
+      new OrdersController(ordersService),
+    );
+
+    app.start();
   } catch (error) {
     console.error(error);
     process.exit(1);
