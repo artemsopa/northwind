@@ -13,33 +13,16 @@ export class OrdersService {
 
     // await this.queue.enqueueMessage({ query, type, ms });
 
-    const map = new Map();
-    for (const el of data) {
-      if (el.details) {
-        const item = map.get(el.orders.id);
-
-        map.set(el.orders.id, item ? ({
-          id: el.orders.id,
-          totalPrice: item.totalPrice + el.details.quantity * el.details.unitPrice,
-          products: item.products + 1,
-          quantity: item.quantity + el.details.quantity,
-          shippedDate: el.orders.shippedDate,
-          shipName: el.orders.shipName,
-          shipCity: el.orders.shipCity,
-          shipCountry: el.orders.shipCountry,
-        }) : ({
-          id: el.orders.id,
-          totalPrice: el.details.quantity * el.details.unitPrice,
-          products: 1,
-          quantity: el.details.quantity,
-          shippedDate: el.orders.shippedDate,
-          shipName: el.orders.shipName,
-          shipCity: el.orders.shipCity,
-          shipCountry: el.orders.shipCountry,
-        }));
-      }
-    }
-    const orders = Array.from(map, ([name, value]) => (value));
+    const orders = data.map((item) => ({
+      id: item.id,
+      totalPrice: Number(item.total_price.toFixed(2)),
+      products: Number(item.products),
+      quantity: Number(item.quantity),
+      shipped: item.shipped_date,
+      shipName: item.ship_name,
+      city: item.ship_city,
+      country: item.ship_country,
+    }));
     return orders;
   }
 

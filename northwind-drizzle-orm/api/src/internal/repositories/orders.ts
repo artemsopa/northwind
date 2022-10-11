@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm/expressions';
+import { sql } from 'drizzle-orm';
 import { Order, orders as table } from '@/internal/repositories/entities/orders';
 import { details } from '@/internal/repositories/entities/details';
 import { Database } from '@/internal/repositories/entities/schema';
@@ -10,17 +11,18 @@ export class OrdersRepo {
   }
 
   async getAll() {
-    const command = this.db.orders.select()
-      .leftJoin(details, eq(table.id, details.orderId));
+    const command = sql`SELECT id, shipped_date, ship_name, ship_city, ship_country, 
+     COUNT(product_id) as products, SUM(quantity) as quantity, SUM(quantity * unit_price) as total_price
+     from orders as o left join order_details as od on od.order_id = o.id group by o.id order by o.id asc`;
 
     const prevMs = Date.now();
-    const data = await command.execute();
+    const { rows } = await this.db.execute(command);
     const ms = Date.now() - prevMs;
 
-    const query = `${command.getQuery().sql}. ${command.getQuery().params}`;
+    const query = command.getSQL().queryChunks.toString();
 
     return {
-      data,
+      data: rows,
       query,
       type: 'JOIN',
       ms,
