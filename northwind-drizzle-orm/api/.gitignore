@@ -3,6 +3,6 @@ build
 
 .env
 
-scripts/*.sql
+scripts
 
 .DS_STORE
