@@ -9,7 +9,7 @@ class DetailsRepo implements IDetailsRepo {
   }
 
   async createMany(details: Detail[]): Promise<void> {
-    await this.db.insertInto('details').values(details).execute()
+    await this.db.insertInto('details').values(details).execute();
   }
 
   async deleteAll(): Promise<void> {

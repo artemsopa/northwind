@@ -31,7 +31,7 @@ const initDbConnection = async (
   });
   // await dropTables(db);
   // await createTables(db);
-  await db.migrate.latest();
+  // await db.migrate.latest();
   console.log('Database connection successful...');
   return db;
 };
