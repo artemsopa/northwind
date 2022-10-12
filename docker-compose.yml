@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  db:
+    image: 'postgres'
+    network_mode: bridge
+    container_name: db
+    # restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: northwind_db
+    expose:
+      - 5438
+    ports: 
+      - 5438:5432
+    volumes:
+      - data:/var/lib/postgresql/data
+      - ./drizzle-orm/migrations/20221011131343/migration.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./scripts/insert-data.sql:/docker-entrypoint-initdb.d/insert_data.sql
+
+  api:
+    build:
+      context: ./api-gateway
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: api
+    environment:
+      DRIZZLE_HOST: drizzle:8001
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    depends_on:
+      - drizzle
+    links:
+      - drizzle
+
+  drizzle:
+    build:
+      context: ./drizzle-orm
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: drizzle
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: adminadmin
+      DB_NAME: northwind_db
+    expose:
+      - 8001
+    ports:
+      - 8001:8001
+    depends_on:
+      - db
+    links:
+      - db
+
+volumes:
+  data:
