@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  db:
+    image: 'postgres'
+    network_mode: bridge
+    container_name: db
+    # restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: northwind_db
+    expose:
+      - 5438
+    ports: 
+      - 5438:5432
+    # command: --init-file data/docker-entrypoint-initdb.d/create_db.sql
+    volumes:
+      - data:/var/lib/postgresql/data
+      # - ./scripts/create-db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - ./migrations/20221011131343/migration.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./scripts/insert-data.sql:/docker-entrypoint-initdb.d/insert_data.sql
+
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: api
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: adminadmin
+      DB_NAME: northwind_db
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    links:
+      - db
+
+volumes:
+  data:
