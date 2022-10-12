@@ -35,21 +35,21 @@ export class OrdersService {
       if (el.details && el.products) {
         map.set(
           { order: orders.id, product: el.products.id },
-          ({
+          {
             id: el.products.id,
             name: el.products.name,
             quantity: el.details.quantity,
             unitPrice: el.details.unitPrice,
             totalPrice: el.details.quantity * el.details.unitPrice,
             discount: el.details.discount,
-          }),
+          },
         );
       }
     }
 
     const products = Array.from(map, ([name, value]) => (value));
 
-    const info = ({
+    const info = {
       id: orders.id,
       shipName: orders.shipName,
       totalProducts: products.length || 0,
@@ -67,7 +67,7 @@ export class OrdersService {
       shipCountry: orders.shipCountry,
       customerId: orders.customerId,
       products,
-    });
+    };
     return info;
   }
 }

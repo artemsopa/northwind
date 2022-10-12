@@ -6,11 +6,12 @@ const main = async () => {
   try {
     const configs = initConfigs();
 
-    const { PORT, DRIZZLE_HOST } = configs;
+    const { PORT, DRIZZLE_HOST, TYPEORM_HOST } = configs;
 
     const app = new App(
       PORT,
       new Service('/drizzle', DRIZZLE_HOST),
+      new Service('/typeorm', TYPEORM_HOST),
     );
 
     app.start();

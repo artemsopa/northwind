@@ -30,12 +30,4 @@ export class ProductsRepo {
 
     return data;
   }
-
-  async createMany(products: Product[]): Promise<void> {
-    await this.db.products.insert(products).execute();
-  }
-
-  async deleteAll(): Promise<void> {
-    await this.db.products.delete().execute();
-  }
 }

@@ -20,12 +20,4 @@ export class SuppliersRepo {
 
     return data;
   }
-
-  async createMany(suppliers: Supplier[]): Promise<void> {
-    await this.db.suppliers.insert(suppliers).execute();
-  }
-
-  async deleteAll(): Promise<void> {
-    await this.db.suppliers.delete().execute();
-  }
 }

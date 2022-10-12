@@ -5,10 +5,12 @@ export const initConfigs = () => {
   const {
     PORT,
     DRIZZLE_HOST,
+    TYPEORM_HOST,
   } = process.env;
 
   if (!PORT
     || !DRIZZLE_HOST
+    || !TYPEORM_HOST
   ) {
     throw new Error('ERROR! One of the ports cannot be found.');
   }
@@ -16,5 +18,6 @@ export const initConfigs = () => {
   return {
     PORT: Number(PORT),
     DRIZZLE_HOST,
+    TYPEORM_HOST,
   };
 };

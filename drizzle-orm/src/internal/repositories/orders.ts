@@ -29,12 +29,4 @@ export class OrdersRepo {
 
     return data;
   }
-
-  async createMany(orders: Order[]): Promise<void> {
-    await this.db.orders.insert(orders).execute();
-  }
-
-  async deleteAll(): Promise<void> {
-    await this.db.orders.delete().execute();
-  }
 }

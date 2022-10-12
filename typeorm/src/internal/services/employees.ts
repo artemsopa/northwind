@@ -26,29 +26,29 @@ export class EmployeesService {
 
     if (!data) throw ErrorApi.badRequest('Unknown employee!');
 
-    const recipient = data.recipient_id ? {
-      id: data.recipient_id,
-      firstName: data.reports_fname,
-      lastName: data.reports_lname,
-    } : null;
+    const recipient = data.recipientId ? ({
+      id: data.recipient.id,
+      firstName: data.recipient.firstName,
+      lastName: data.recipient.lastName,
+    }) : null;
 
-    const employee = {
+    const employee = ({
       id: data.id,
-      firstName: data.first_name,
-      lastName: data.last_name,
+      firstName: data.firstName,
+      lastName: data.lastName,
       title: data.title,
-      titleOfCourtesy: data.title_of_courtesy,
-      bithDate: data.birth_date,
-      hireDate: data.hire_date,
+      titleOfCourtesy: data.titleOfCourtesy,
+      bithDate: data.birthDate,
+      hireDate: data.hireDate,
       address: data.address,
       city: data.city,
-      postalCode: data.postal_code,
+      postalCode: data.postalCode,
       country: data.country,
-      homePhone: data.home_phone,
+      homePhone: data.homePhone,
       extension: data.extension,
       notes: data.notes,
       recipient,
-    };
+    });
     return employee;
   }
 }

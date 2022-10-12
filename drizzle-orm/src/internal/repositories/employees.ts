@@ -21,12 +21,4 @@ export class EmployeesRepo {
 
     return data;
   }
-
-  async createMany(employees: Employee[]): Promise<void> {
-    await this.db.employees.insert(employees).execute();
-  }
-
-  async deleteAll(): Promise<void> {
-    await this.db.employees.delete().execute();
-  }
 }

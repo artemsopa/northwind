@@ -28,12 +28,4 @@ export class CustomersRepo {
 
     return data;
   }
-
-  async createMany(customers: Customer[]): Promise<void> {
-    await this.db.customers.insert(customers).execute();
-  }
-
-  async deleteAll(): Promise<void> {
-    await this.db.customers.delete().execute();
-  }
 }
