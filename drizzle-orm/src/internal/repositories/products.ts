@@ -1,5 +1,5 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
-import { Product, products as table } from '@/internal/repositories/entities/products';
+import { products as table } from '@/internal/repositories/entities/products';
 import { Database } from '@/internal/repositories/entities/schema';
 import { suppliers } from '@/internal/repositories/entities/suppliers';
 

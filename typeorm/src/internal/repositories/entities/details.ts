@@ -1,5 +1,5 @@
 import {
-  Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn,
+  Column, Entity, JoinColumn, ManyToOne, PrimaryColumn,
 } from 'typeorm';
 import { Order } from '@/internal/repositories/entities/orders';
 import { Product } from '@/internal/repositories/entities/products';

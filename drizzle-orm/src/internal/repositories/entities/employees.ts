@@ -1,5 +1,5 @@
 import {
-  pgTable, varchar, date, text, integer, InferModel, foreignKey, index,
+  pgTable, varchar, date, text, integer, InferModel, foreignKey,
 } from 'drizzle-orm-pg';
 
 export const employees = pgTable('employees', {

@@ -1,7 +1,7 @@
 import {
   Entity, Column, OneToMany, PrimaryColumn,
 } from 'typeorm';
-import { Product } from './products';
+import { Product } from '@/internal/repositories/entities/products';
 
 @Entity({ name: 'suppliers' })
 export class Supplier {

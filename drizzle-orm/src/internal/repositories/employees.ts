@@ -1,5 +1,4 @@
 import { sql } from 'drizzle-orm';
-import { Employee } from '@/internal/repositories/entities/employees';
 import { Database } from '@/internal/repositories/entities/schema';
 
 export class EmployeesRepo {

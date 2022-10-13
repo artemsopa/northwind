@@ -1,9 +1,9 @@
 import {
   Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn,
 } from 'typeorm';
-import { Customer } from './customers';
-import { Detail } from './details';
-import { Employee } from './employees';
+import { Customer } from '@/internal/repositories/entities/customers';
+import { Detail } from '@/internal/repositories/entities/details';
+import { Employee } from '@/internal/repositories/entities/employees';
 
 @Entity({ name: 'orders' })
 export class Order {

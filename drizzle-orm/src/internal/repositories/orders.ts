@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
-import { Order, orders as table } from '@/internal/repositories/entities/orders';
+import { orders as table } from '@/internal/repositories/entities/orders';
 import { details } from '@/internal/repositories/entities/details';
 import { Database } from '@/internal/repositories/entities/schema';
 import { products } from '@/internal/repositories/entities/products';

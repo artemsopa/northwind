@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Employee } from './entities/employees';
+import { Employee } from '@/internal/repositories/entities/employees';
 
 export class EmployeesRepo {
   private readonly repo: Repository<Employee>;

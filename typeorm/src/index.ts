@@ -20,13 +20,13 @@ import { OrdersService } from '@/internal/services/orders';
 import { ProductsService } from '@/internal/services/products';
 import { SuppliersService } from '@/internal/services/suppliers';
 import { App } from '@/internal/delivery/app';
-import { Customer } from './internal/repositories/entities/customers';
-import { Employee } from './internal/repositories/entities/employees';
-import { Order } from './internal/repositories/entities/orders';
-import { Supplier } from './internal/repositories/entities/suppliers';
-import { Product } from './internal/repositories/entities/products';
-import { Metric } from './internal/repositories/entities/metrics';
-import { Detail } from './internal/repositories/entities/details';
+import { Customer } from '@/internal/repositories/entities/customers';
+import { Employee } from '@/internal/repositories/entities/employees';
+import { Order } from '@/internal/repositories/entities/orders';
+import { Supplier } from '@/internal/repositories/entities/suppliers';
+import { Product } from '@/internal/repositories/entities/products';
+import { Metric } from '@/internal/repositories/entities/metrics';
+import { Detail } from '@/internal/repositories/entities/details';
 
 const main = async () => {
   try {

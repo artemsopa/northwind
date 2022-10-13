@@ -1,5 +1,5 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
-import { customers as table, Customer } from '@/internal/repositories/entities/customers';
+import { customers as table } from '@/internal/repositories/entities/customers';
 import { Database } from '@/internal/repositories/entities/schema';
 
 export class CustomersRepo {

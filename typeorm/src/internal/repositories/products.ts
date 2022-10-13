@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Product } from './entities/products';
+import { Product } from '@/internal/repositories/entities/products';
 
 export class ProductsRepo {
   private readonly repo: Repository<Product>;

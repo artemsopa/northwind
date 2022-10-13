@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import { Detail } from './entities/details';
-import { Order } from './entities/orders';
+import { Detail } from '@/internal/repositories/entities/details';
+import { Order } from '@/internal/repositories/entities/orders';
 
 export class OrdersRepo {
   constructor(private readonly ds: DataSource) {

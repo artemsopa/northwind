@@ -15,8 +15,7 @@ services:
       - 5438:5432
     volumes:
       - data:/var/lib/postgresql/data
-      - ./drizzle-orm/migrations/20221011131343/migration.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - ./scripts/insert-data.sql:/docker-entrypoint-initdb.d/insert_data.sql
+      - ./_scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
 
   api:
     build:
@@ -27,6 +26,9 @@ services:
     environment:
       DRIZZLE_HOST: drizzle:8001
       TYPEORM_HOST: typeorm:8002
+      KNEX_HOST: knex:8003
+      KYSELY_HOST: kysely:8004
+      PRISMA_HOST: prisma:8005
     expose:
       - 8000
     ports:
@@ -34,9 +36,15 @@ services:
     depends_on:
       - drizzle
       - typeorm
+      - knex
+      - kysely
+      - prisma
     links:
       - drizzle
       - typeorm
+      - knex
+      - kysely
+      - prisma
 
   drizzle:
     build:
@@ -75,6 +83,65 @@ services:
       - 8002
     ports:
       - 8002:8002
+    depends_on:
+      - db
+    links:
+      - db
+
+  knex:
+    build:
+      context: ./knex-orm
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: knex
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: adminadmin
+      DB_NAME: northwind_db
+    expose:
+      - 8003
+    ports:
+      - 8003:8003
+    depends_on:
+      - db
+    links:
+      - db
+  
+  kysely:
+    build:
+      context: ./kysely-orm
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: kysely
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: adminadmin
+      DB_NAME: northwind_db
+    expose:
+      - 8004
+    ports:
+      - 8004:8004
+    depends_on:
+      - db
+    links:
+      - db
+
+  prisma:
+    build:
+      context: ./prisma-orm
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: prisma
+    environment:
+      DATABASE_URL: postgresql://postgres:adminadmin@db:5438/northwind_db
+    expose:
+      - 8005
+    ports:
+      - 8005:8005
     depends_on:
       - db
     links:

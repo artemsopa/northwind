@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Metric } from './entities/metrics';
+import { Metric } from '@/internal/repositories/entities/metrics';
 
 export class MetricsRepo {
   private readonly repo: Repository<Metric>;
