@@ -19,7 +19,7 @@ export class MetricsService {
       select: map.get('SELECT') || 0,
       where: map.get('WHERE') || 0,
       join: map.get('JOIN') || 0,
-      metrics: metrics.map((item) => ({ query: item.query, ms: item.ms, createdAt: item.createdAt })),
+      metrics: metrics.map((item) => ({ query: item.query, ms: item.ms, createdAt: item.created_at })),
     };
     return info;
   }

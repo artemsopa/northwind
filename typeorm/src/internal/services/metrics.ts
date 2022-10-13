@@ -10,7 +10,7 @@ export class MetricsService {
 
     const map = new Map();
     for (const el of metrics) {
-      const counter = map.get(el.query);
+      const counter = map.get(el.type);
       map.set(el.type, counter ? counter + 1 : 1);
     }
 

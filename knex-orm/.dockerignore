@@ -1,0 +1,6 @@
+.git
+.gitignore
+node_modules
+.eslintrc.js
+.example.env
+.DS_STORE
