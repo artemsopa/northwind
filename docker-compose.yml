@@ -137,7 +137,7 @@ services:
     network_mode: bridge
     container_name: prisma
     environment:
-      DATABASE_URL: postgresql://postgres:adminadmin@db:5438/northwind_db
+      DATABASE_URL: postgresql://postgres:adminadmin@db:5432/northwind_db
     expose:
       - 8005
     ports:
