@@ -1,24 +1,18 @@
 import { PrismaClient } from '@prisma/client';
-import { initConfigs } from '@/configs/configs';
-import { CustomersController } from '@/internal/delivery/controllers/customers';
-import { EmployeesController } from '@/internal/delivery/controllers/employees';
-import { SuppliersController } from '@/internal/delivery/controllers/suppliers';
-import { ProductsController } from '@/internal/delivery/controllers/products';
-import { OrdersController } from '@/internal/delivery/controllers/orders';
-import { MetricsController } from '@/internal/delivery/controllers/metrics';
-import { MetricsRepo } from '@/internal/repositories/metrics';
-import { CustomersRepo } from '@/internal/repositories/customers';
-import { EmployeesRepo } from '@/internal/repositories/employees';
-import { OrdersRepo } from '@/internal/repositories/orders';
-import { ProductsRepo } from '@/internal/repositories/products';
-import { SuppliersRepo } from '@/internal/repositories/suppliers';
-import { CustomersService } from '@/internal/services/cutomers';
-import { EmployeesService } from '@/internal/services/employees';
-import { MetricsService } from '@/internal/services/metrics';
-import { OrdersService } from '@/internal/services/orders';
-import { ProductsService } from '@/internal/services/products';
-import { SuppliersService } from '@/internal/services/suppliers';
-import { App } from '@/internal/delivery/app';
+import { initConfigs } from '@/configs';
+import { CustomersController } from '@/controllers/customers';
+import { EmployeesController } from '@/controllers/employees';
+import { SuppliersController } from '@/controllers/suppliers';
+import { ProductsController } from '@/controllers/products';
+import { OrdersController } from '@/controllers/orders';
+import { MetricsController } from '@/controllers/metrics';
+import { CustomersService } from '@/services/cutomers';
+import { EmployeesService } from '@/services/employees';
+import { MetricsService } from '@/services/metrics';
+import { OrdersService } from '@/services/orders';
+import { ProductsService } from '@/services/products';
+import { SuppliersService } from '@/services/suppliers';
+import { App } from '@/app';
 
 const main = async () => {
   try {
@@ -31,19 +25,12 @@ const main = async () => {
       ],
     });
 
-    const metricsRepo = new MetricsRepo(prisma);
-    const customersRepo = new CustomersRepo(prisma);
-    const employeesRepo = new EmployeesRepo(prisma);
-    const ordersRepo = new OrdersRepo(prisma);
-    const productsRepo = new ProductsRepo(prisma);
-    const suppliersRepo = new SuppliersRepo(prisma);
-
-    const metricsService = new MetricsService(metricsRepo);
-    const customersService = new CustomersService(customersRepo);
-    const employeesService = new EmployeesService(employeesRepo);
-    const suppliersService = new SuppliersService(suppliersRepo);
-    const productsService = new ProductsService(productsRepo);
-    const ordersService = new OrdersService(ordersRepo);
+    const metricsService = new MetricsService(prisma);
+    const customersService = new CustomersService(prisma);
+    const employeesService = new EmployeesService(prisma);
+    const suppliersService = new SuppliersService(prisma);
+    const productsService = new ProductsService(prisma);
+    const ordersService = new OrdersService(prisma);
 
     const { PORT } = configs;
     const app = new App(

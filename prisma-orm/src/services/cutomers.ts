@@ -1,15 +1,13 @@
-import { eq, ilike } from 'drizzle-orm/expressions';
+import { PrismaClient } from '@prisma/client';
 import { ApiError } from '@/error';
-import { Database } from '@/entities/schema';
-import { customers as table } from '@/entities/customers';
 
 export class CustomersService {
-  constructor(private readonly db: Database) {
-    this.db = db;
+  constructor(private readonly prisma: PrismaClient) {
+    this.prisma = prisma;
   }
 
   async getAll() {
-    const data = await this.db.customers.select().execute();
+    const data = await this.prisma.customer.findMany();
 
     const customers = data.map((item) => ({
       id: item.id,
@@ -24,9 +22,11 @@ export class CustomersService {
   }
 
   async getInfo(id: string) {
-    const [customer] = await this.db.customers.select()
-      .where(eq(table.id, id))
-      .execute();
+    const customer = await this.prisma.customer.findUnique({
+      where: {
+        id,
+      },
+    });
 
     if (!customer) throw ApiError.badRequest('Unknown customer!');
 
@@ -34,9 +34,14 @@ export class CustomersService {
   }
 
   async search(company: string) {
-    const data = await this.db.customers.select()
-      .where(ilike(table.companyName, `%${company}%`))
-      .execute();
+    const data = await this.prisma.customer.findMany({
+      where: {
+        companyName: {
+          contains: company,
+          mode: 'insensitive',
+        },
+      },
+    });
 
     const customers = data.map((item) => ({
       id: item.id,
@@ -46,7 +51,6 @@ export class CustomersService {
       city: item.city,
       country: item.country,
     }));
-
     return customers;
   }
 }

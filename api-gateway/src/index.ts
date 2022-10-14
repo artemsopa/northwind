@@ -1,6 +1,6 @@
-import { initConfigs } from '@/configs/configs';
-import { App } from '@/internal/app';
-import { Service } from './internal/service';
+import { initConfigs } from '@/configs';
+import { App } from '@/app';
+import { Service } from '@/service';
 
 const main = async () => {
   try {

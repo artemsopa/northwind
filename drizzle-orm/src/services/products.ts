@@ -20,6 +20,7 @@ export class ProductsService {
       unitsInStock: item.unitsInStock,
       unitsOnOrder: item.unitsOnOrder,
     }));
+
     return products;
   }
 

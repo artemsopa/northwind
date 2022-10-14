@@ -1,15 +1,13 @@
-import { eq } from 'drizzle-orm/expressions';
+import { PrismaClient } from '@prisma/client';
 import { ApiError } from '@/error';
-import { suppliers as table } from '@/entities/suppliers';
-import { Database } from '@/entities/schema';
 
 export class SuppliersService {
-  constructor(private readonly db: Database) {
-    this.db = db;
+  constructor(private readonly prisma: PrismaClient) {
+    this.prisma = prisma;
   }
 
   async getAll() {
-    const data = await this.db.suppliers.select().execute();
+    const data = await this.prisma.supplier.findMany();
 
     const suppliers = data.map((item) => ({
       id: item.id,
@@ -23,9 +21,11 @@ export class SuppliersService {
   }
 
   async getInfo(id: string) {
-    const [supplier] = await this.db.suppliers.select()
-      .where(eq(table.id, id))
-      .execute();
+    const supplier = await this.prisma.supplier.findUnique({
+      where: {
+        id,
+      },
+    });
 
     if (!supplier) throw ApiError.badRequest('Unknown supplier!');
 
