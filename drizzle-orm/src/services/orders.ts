@@ -52,7 +52,7 @@ export class OrdersService {
             id: el.products.id,
             name: el.products.name,
             quantity: el.details.quantity,
-            unitPrice: el.details.unitPrice,
+            orderPrice: el.details.unitPrice,
             totalPrice: el.details.quantity * el.details.unitPrice,
             discount: el.details.discount,
           },

@@ -18,9 +18,9 @@ export class OrdersService {
       totalPrice: item.details.reduce((sum, curr) => sum + curr.quantity * Number(curr.unitPrice), 0),
       products: item.details.length || 0,
       quantity: item.details.reduce((sum, curr) => sum + curr.quantity, 0),
-      shppedDate: item.shippedDate,
+      shipped: item.shippedDate,
       shipName: item.shipName,
-      shipCity: item.shipCity,
+      city: item.shipCity,
       shipCountry: item.shipCountry,
     }));
     return orders;

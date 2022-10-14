@@ -22,13 +22,26 @@ export class SuppliersService {
   }
 
   async getInfo(id: string) {
-    const [supplier] = await this.db.selectFrom('suppliers')
+    const [data] = await this.db.selectFrom('suppliers')
       .selectAll()
       .where('suppliers.id', '=', id)
       .limit(1)
       .execute();
 
-    if (!supplier) throw ApiError.badRequest('Unknown supplier!');
+    if (!data) throw ApiError.badRequest('Unknown supplier!');
+
+    const supplier = {
+      id: data.id,
+      companyName: data.company_name,
+      contactName: data.contact_name,
+      contactTitle: data.contact_title,
+      address: data.address,
+      city: data.city,
+      region: data.region,
+      postalCode: data.postal_code,
+      country: data.country,
+      phone: data.phone,
+    };
 
     return supplier;
   }

@@ -25,17 +25,17 @@ export class OrdersService {
         totalPrice: item.totalPrice + el.quantity * el.unit_price,
         products: item.products++,
         quantity: item.quantity + el.quantity,
-        shippedDate: el.shipped_date,
+        shipped: el.shipped_date,
         shipName: el.ship_name,
-        shipCity: el.ship_city,
+        city: el.ship_city,
         shipCountry: el.ship_country,
       } : {
         totalPrice: el.quantity * el.unit_price,
         products: 1,
         quantity: el.quantity,
-        shippedDate: el.shipped_date,
+        shipped: el.shipped_date,
         shipName: el.ship_name,
-        shipCity: el.ship_city,
+        city: el.ship_city,
         shipCountry: el.ship_country,
       });
     }
