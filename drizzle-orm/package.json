@@ -17,8 +17,8 @@
     "drizzle-orm": "^0.12.0-beta.6",
     "drizzle-orm-pg": "^0.12.0-beta.25",
     "express": "^4.18.1",
-    "joi": "^17.6.1",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

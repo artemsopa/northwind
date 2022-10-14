@@ -1,8 +1,8 @@
 import {
   pgTable, varchar, date, integer, doublePrecision, InferModel,
 } from 'drizzle-orm-pg';
-import { customers } from '@/internal/repositories/entities/customers';
-import { employees } from '@/internal/repositories/entities/employees';
+import { customers } from '@/entities/customers';
+import { employees } from '@/entities/employees';
 
 export const orders = pgTable('orders', {
   id: varchar('id').primaryKey().notNull(),

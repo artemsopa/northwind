@@ -1,13 +1,14 @@
-import { ErrorApi } from '@/pkg/error';
-import { EmployeesRepo } from '@/internal/repositories/employees';
+import { sql } from 'drizzle-orm';
+import { ApiError } from '@/app';
+import { Database } from '@/entities/schema';
 
 export class EmployeesService {
-  constructor(private readonly repo: EmployeesRepo) {
-    this.repo = repo;
+  constructor(private readonly db: Database) {
+    this.db = db;
   }
 
   async getAll() {
-    const data = await this.repo.getAll();
+    const data = await this.db.employees.select().execute();
 
     const employees = data.map((item) => ({
       id: item.id,
@@ -22,9 +23,12 @@ export class EmployeesService {
   }
 
   async getInfo(id: string) {
-    const data = await this.repo.getInfo(id);
+    const command = sql`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname 
+    FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = ${id}`;
 
-    if (!data) throw ErrorApi.badRequest('Unknown employee!');
+    const { rows: [data] } = await this.db.execute(command);
+
+    if (!data) throw ApiError.badRequest('Unknown employee!');
 
     const recipient = data.recipient_id ? {
       id: data.recipient_id,

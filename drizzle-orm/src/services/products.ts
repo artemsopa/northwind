@@ -1,13 +1,16 @@
-import { ErrorApi } from '@/pkg/error';
-import { ProductsRepo } from '@/internal/repositories/products';
+import { eq, ilike } from 'drizzle-orm/expressions';
+import { ApiError } from '@/app';
+import { products as table } from '@/entities/products';
+import { Database } from '@/entities/schema';
+import { suppliers } from '@/entities/suppliers';
 
 export class ProductsService {
-  constructor(private readonly repo: ProductsRepo) {
-    this.repo = repo;
+  constructor(private readonly db: Database) {
+    this.db = db;
   }
 
   async getAll() {
-    const data = await this.repo.getAll();
+    const data = await this.db.products.select().execute();
 
     const products = data.map((item) => ({
       id: item.id,
@@ -21,9 +24,12 @@ export class ProductsService {
   }
 
   async getInfo(id: string) {
-    const data = await this.repo.getInfo(id);
+    const [data] = await this.db.products.select()
+      .leftJoin(suppliers, eq(table.supplierId, suppliers.id))
+      .where(eq(table.id, id))
+      .execute();
 
-    if (!data || !data.products || !data.suppliers) throw ErrorApi.badRequest('Unknown product!');
+    if (!data || !data.products || !data.suppliers) throw ApiError.badRequest('Unknown product!');
 
     const supplier = {
       id: data.suppliers.id,
@@ -45,7 +51,9 @@ export class ProductsService {
   }
 
   async search(name: string) {
-    const data = await this.repo.search(name);
+    const data = await this.db.products.select()
+      .where(ilike(table.name, `%${name}%`))
+      .execute();
 
     const products = data.map((item) => ({
       id: item.id,

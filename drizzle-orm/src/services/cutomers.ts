@@ -1,13 +1,15 @@
-import { ErrorApi } from '@/pkg/error';
-import { CustomersRepo } from '@/internal/repositories/customers';
+import { eq, ilike } from 'drizzle-orm/expressions';
+import { ApiError } from '@/app';
+import { Database } from '@/entities/schema';
+import { customers as table } from '@/entities/customers';
 
 export class CustomersService {
-  constructor(private readonly repo: CustomersRepo) {
-    this.repo = repo;
+  constructor(private readonly db: Database) {
+    this.db = db;
   }
 
   async getAll() {
-    const data = await this.repo.getAll();
+    const data = await this.db.customers.select().execute();
 
     const customers = data.map((item) => ({
       id: item.id,
@@ -22,9 +24,11 @@ export class CustomersService {
   }
 
   async getInfo(id: string) {
-    const data = await this.repo.getInfo(id);
+    const [data] = await this.db.customers.select()
+      .where(eq(table.id, id))
+      .execute();
 
-    if (!data) throw ErrorApi.badRequest('Unknown customer!');
+    if (!data) throw ApiError.badRequest('Unknown customer!');
 
     const customer = {
       id: data.id,
@@ -44,7 +48,9 @@ export class CustomersService {
   }
 
   async search(company: string) {
-    const data = await this.repo.search(company);
+    const data = await this.db.customers.select()
+      .where(ilike(table.companyName, `%${company}%`))
+      .execute();
 
     const customers = data.map((item) => ({
       id: item.id,

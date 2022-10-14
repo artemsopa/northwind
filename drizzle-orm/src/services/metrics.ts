@@ -1,12 +1,12 @@
-import { MetricsRepo } from '@/internal/repositories/metrics';
+import { Database } from '@/entities/schema';
 
 export class MetricsService {
-  constructor(private readonly repo: MetricsRepo) {
-    this.repo = repo;
+  constructor(private readonly db: Database) {
+    this.db = db;
   }
 
   async getAll() {
-    const metrics = await this.repo.getAll();
+    const metrics = await this.db.metrics.select().execute();
 
     const map = new Map();
     for (const el of metrics) {

@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
-import { ProductsService } from '@/internal/services/products';
-import { Controller, wrapped } from '@/internal/delivery/app';
-import { idReqSchema, productReqSchema } from '@/internal/delivery/joi-schemas/req.schema';
-import validateSchema from '@/internal/delivery/joi-schemas/schema';
+import { ProductsService } from '@/services/products';
+import { Controller, wrapped } from '@/app';
+import { idSchema, productSchema } from '@/zod-schemas/schemas';
 
 export class ProductsController extends Controller {
   constructor(private readonly service: ProductsService) {
@@ -20,13 +19,13 @@ export class ProductsController extends Controller {
   };
 
   private getInfo: RequestHandler = async (req, res) => {
-    const params = validateSchema(idReqSchema, req.params);
-    const product = await this.service.getInfo(params.id);
+    const params = idSchema.parse(req.params);
+    const product = await this.service.getInfo(String(params.id));
     res.status(200).json(product);
   };
 
   private search: RequestHandler = async (req, res) => {
-    const params = validateSchema(productReqSchema, req.params);
+    const params = productSchema.parse(req.params);
     const products = await this.service.search(params.name);
     res.status(200).json(products);
   };

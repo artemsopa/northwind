@@ -1,7 +1,7 @@
 import express, { Application, RequestHandler, Router } from 'express';
 import cors from 'cors';
-import errors from '@/internal/delivery/middlewares/errors';
-import notFound from '@/internal/delivery/middlewares/notfound';
+import errors from '@/middlewares/errors';
+import notFound from '@/middlewares/notfound';
 
 export class App {
   private readonly app: Application;
@@ -53,3 +53,13 @@ export const wrapped = (callback: any): RequestHandler => async (req, res, next)
     next(error);
   }
 };
+
+export class ApiError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
+
+  static badRequest = (message: string) => new ApiError(400, `Bad request. ${message}`);
+}

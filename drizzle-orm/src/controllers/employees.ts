@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
-import { EmployeesService } from '@/internal/services/employees';
-import { Controller, wrapped } from '@/internal/delivery/app';
-import { idReqSchema } from '@/internal/delivery/joi-schemas/req.schema';
-import validateSchema from '@/internal/delivery/joi-schemas/schema';
+import { EmployeesService } from '@/services/employees';
+import { Controller, wrapped } from '@/app';
+import { idSchema } from '@/zod-schemas/schemas';
 
 export class EmployeesController extends Controller {
   constructor(private readonly service: EmployeesService) {
@@ -19,8 +18,8 @@ export class EmployeesController extends Controller {
   };
 
   private getInfo: RequestHandler = async (req, res) => {
-    const params = validateSchema(idReqSchema, req.params);
-    const employee = await this.service.getInfo(params.id);
+    const params = idSchema.parse(req.params);
+    const employee = await this.service.getInfo(String(params.id));
     res.status(200).json(employee);
   };
 }

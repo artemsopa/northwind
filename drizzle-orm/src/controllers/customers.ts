@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
-import { CustomersService } from '@/internal/services/cutomers';
-import { Controller, wrapped } from '@/internal/delivery/app';
-import { idReqSchema, customerReqSchema } from '@/internal/delivery/joi-schemas/req.schema';
-import validateSchema from '@/internal/delivery/joi-schemas/schema';
+import { CustomersService } from '@/services/cutomers';
+import { Controller, wrapped } from '@/app';
+import { idSchema, customerSchema } from '@/zod-schemas/schemas';
 
 export class CustomersController extends Controller {
   constructor(private readonly service: CustomersService) {
@@ -20,13 +19,13 @@ export class CustomersController extends Controller {
   };
 
   private getInfo: RequestHandler = async (req, res) => {
-    const params = validateSchema(idReqSchema, req.params);
-    const customer = await this.service.getInfo(params.id);
+    const params = idSchema.parse(req.params);
+    const customer = await this.service.getInfo(String(params.id));
     res.status(200).json(customer);
   };
 
   private search: RequestHandler = async (req, res) => {
-    const params = validateSchema(customerReqSchema, req.params);
+    const params = customerSchema.parse(req.params);
     const customer = await this.service.search(params.company);
     res.status(200).json(customer);
   };

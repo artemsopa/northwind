@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
-import { OrdersService } from '@/internal/services/orders';
-import { Controller, wrapped } from '@/internal/delivery/app';
-import { idReqSchema } from '@/internal/delivery/joi-schemas/req.schema';
-import validateSchema from '@/internal/delivery/joi-schemas/schema';
+import { OrdersService } from '@/services/orders';
+import { Controller, wrapped } from '@/app';
+import { idSchema } from '@/zod-schemas/schemas';
 
 export class OrdersController extends Controller {
   constructor(private readonly service: OrdersService) {
@@ -19,8 +18,8 @@ export class OrdersController extends Controller {
   };
 
   private getInfo: RequestHandler = async (req, res) => {
-    const params = validateSchema(idReqSchema, req.params);
-    const order = await this.service.getInfo(params.id);
+    const params = idSchema.parse(req.params);
+    const order = await this.service.getInfo(String(params.id));
     res.status(200).json(order);
   };
 }

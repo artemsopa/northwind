@@ -1,13 +1,15 @@
-import { ErrorApi } from '@/pkg/error';
-import { SuppliersRepo } from '@/internal/repositories/suppliers';
+import { eq } from 'drizzle-orm/expressions';
+import { ApiError } from '@/app';
+import { suppliers as table } from '@/entities/suppliers';
+import { Database } from '@/entities/schema';
 
 export class SuppliersService {
-  constructor(private readonly repo: SuppliersRepo) {
-    this.repo = repo;
+  constructor(private readonly db: Database) {
+    this.db = db;
   }
 
   async getAll() {
-    const data = await this.repo.getAll();
+    const data = await this.db.suppliers.select().execute();
 
     const suppliers = data.map((item) => ({
       id: item.id,
@@ -21,8 +23,11 @@ export class SuppliersService {
   }
 
   async getInfo(id: string) {
-    const data = await this.repo.getInfo(id);
-    if (!data) throw ErrorApi.badRequest('Unknown supplier!');
+    const [data] = await this.db.suppliers.select()
+      .where(eq(table.id, id))
+      .execute();
+
+    if (!data) throw ApiError.badRequest('Unknown supplier!');
 
     const supplier = {
       id: data.id,

@@ -1,15 +1,24 @@
-import { ErrorApi } from '@/pkg/error';
-import { OrdersRepo } from '@/internal/repositories/orders';
+import { eq } from 'drizzle-orm/expressions';
+import { sql } from 'drizzle-orm';
+import { ApiError } from '@/app';
+import { orders as table } from '@/entities/orders';
+import { details } from '@/entities/details';
+import { Database } from '@/entities/schema';
+import { products as productsTable } from '@/entities/products';
 
 export class OrdersService {
-  constructor(private readonly repo: OrdersRepo) {
-    this.repo = repo;
+  constructor(private readonly db: Database) {
+    this.db = db;
   }
 
   async getAll() {
-    const data = await this.repo.getAll();
+    const command = sql`SELECT id, shipped_date, ship_name, ship_city, ship_country, 
+     COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price
+     FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`;
 
-    const orders = data.map((item) => ({
+    const { rows } = await this.db.execute(command);
+
+    const orders = rows.map((item) => ({
       id: item.id,
       totalPrice: Number(item.total_price.toFixed(2)),
       products: Number(item.products),
@@ -23,12 +32,16 @@ export class OrdersService {
   }
 
   async getInfo(id: string) {
-    const data = await this.repo.getInfo(id);
+    const data = await this.db.details.select()
+      .leftJoin(table, eq(details.orderId, table.id))
+      .leftJoin(productsTable, eq(details.productId, productsTable.id))
+      .where(eq(details.orderId, id))
+      .execute();
 
-    if (!data.length !) throw ErrorApi.badRequest('Cannot find order`s details with products!');
+    if (!data.length !) throw ApiError.badRequest('Cannot find order`s details with products!');
 
     const [{ orders }] = data;
-    if (!orders) throw ErrorApi.badRequest('Unknown order!');
+    if (!orders) throw ApiError.badRequest('Unknown order!');
 
     const map = new Map();
     for (const el of data) {

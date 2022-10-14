@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
-import { SuppliersService } from '@/internal/services/suppliers';
-import { Controller, wrapped } from '@/internal/delivery/app';
-import { idReqSchema } from '@/internal/delivery/joi-schemas/req.schema';
-import validateSchema from '@/internal/delivery/joi-schemas/schema';
+import { SuppliersService } from '@/services/suppliers';
+import { Controller, wrapped } from '@/app';
+import { idSchema } from '@/zod-schemas/schemas';
 
 export class SuppliersController extends Controller {
   constructor(private readonly service: SuppliersService) {
@@ -19,8 +18,8 @@ export class SuppliersController extends Controller {
   };
 
   private getInfo: RequestHandler = async (req, res) => {
-    const params = validateSchema(idReqSchema, req.params);
-    const supplier = await this.service.getInfo(params.id);
+    const params = idSchema.parse(req.params);
+    const supplier = await this.service.getInfo(String(params.id));
     res.status(200).json(supplier);
   };
 }
