@@ -40,7 +40,7 @@ export class ProductsService {
     const item = {
       id: data.id,
       name: data.name,
-      qtPerUnit: data.qt_perUnit,
+      qtPerUnit: data.qt_per_unit,
       unitPrice: data.unit_price,
       unitsInStock: data.units_in_stock,
       unitsOnOrder: data.units_on_order,

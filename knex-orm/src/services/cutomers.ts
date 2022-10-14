@@ -22,9 +22,23 @@ export class CustomersService {
   }
 
   async getInfo(id: string) {
-    const customer = await this.knex('public.customers').where({ id }).first();
+    const data = await this.knex('public.customers').where({ id }).first();
 
-    if (customer === undefined) throw ApiError.badRequest('Unknown customer!');
+    if (data === undefined) throw ApiError.badRequest('Unknown customer!');
+
+    const customer = {
+      id: data.id,
+      companyName: data.company_name,
+      contactName: data.contact_name,
+      contactTitle: data.contact_title,
+      address: data.address,
+      city: data.city,
+      postalCode: data.postal_code,
+      region: data.region,
+      country: data.country,
+      phone: data.phone,
+      fax: data.fax,
+    };
 
     return customer;
   }

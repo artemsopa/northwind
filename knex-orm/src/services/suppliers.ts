@@ -21,9 +21,22 @@ export class SuppliersService {
   }
 
   async getInfo(id: string) {
-    const supplier = await this.knex('public.suppliers').where({ id }).first();
+    const data = await this.knex('public.suppliers').where({ id }).first();
 
-    if (supplier === undefined) throw ApiError.badRequest('Unknown supplier!');
+    if (data === undefined) throw ApiError.badRequest('Unknown supplier!');
+
+    const supplier = {
+      id: data.id,
+      companyName: data.company_name,
+      contactName: data.contact_name,
+      contactTitle: data.contact_title,
+      address: data.address,
+      city: data.city,
+      region: data.region,
+      postalCode: data.postal_code,
+      country: data.country,
+      phone: data.phone,
+    };
 
     return supplier;
   }
