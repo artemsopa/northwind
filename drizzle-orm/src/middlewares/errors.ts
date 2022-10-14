@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
-import { ApiError } from '@/app';
+import { ApiError } from '@/error';
 
 const errors: ErrorRequestHandler = (error, req, res, next) => {
   if (error instanceof ApiError) return res.status(error.status).json({ message: error.message });

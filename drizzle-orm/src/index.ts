@@ -1,7 +1,7 @@
 import { PgConnector } from 'drizzle-orm-pg';
 import { connect, migrate } from 'drizzle-orm';
 import { Pool } from 'pg';
-import { initConfigs } from '@/configs/configs';
+import { initConfigs } from '@/configs';
 import { schema } from '@/entities/schema';
 import { CustomersController } from '@/controllers/customers';
 import { EmployeesController } from '@/controllers/employees';

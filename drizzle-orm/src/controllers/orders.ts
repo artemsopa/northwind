@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { OrdersService } from '@/services/orders';
-import { Controller, wrapped } from '@/app';
-import { idSchema } from '@/zod-schemas/schemas';
+import { Controller, wrapped } from '@/controllers/controller';
+import { idSchema } from '@/validation/schemas';
 
 export class OrdersController extends Controller {
   constructor(private readonly service: OrdersService) {

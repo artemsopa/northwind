@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
-import { ApiError } from '@/app';
+import { ApiError } from '@/error';
 import { orders as table } from '@/entities/orders';
 import { details } from '@/entities/details';
 import { Database } from '@/entities/schema';

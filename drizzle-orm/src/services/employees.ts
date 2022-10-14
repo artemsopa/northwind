@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { ApiError } from '@/app';
+import { ApiError } from '@/error';
 import { Database } from '@/entities/schema';
 
 export class EmployeesService {

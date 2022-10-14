@@ -1,5 +1,5 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
-import { ApiError } from '@/app';
+import { ApiError } from '@/error';
 import { products as table } from '@/entities/products';
 import { Database } from '@/entities/schema';
 import { suppliers } from '@/entities/suppliers';

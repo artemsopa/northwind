@@ -1,7 +1,8 @@
-import express, { Application, RequestHandler, Router } from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
 import errors from '@/middlewares/errors';
 import notFound from '@/middlewares/notfound';
+import { Controller } from './controllers/controller';
 
 export class App {
   private readonly app: Application;
@@ -33,33 +34,4 @@ export class App {
       console.log(`Server successfully started on http://127.0.0.1:${this.port}...`);
     });
   }
-}
-
-export abstract class Controller {
-  public readonly path: string;
-  public readonly router: Router;
-
-  public constructor(path: string) {
-    this.path = path;
-    this.router = Router();
-  }
-}
-
-export const wrapped = (callback: any): RequestHandler => async (req, res, next) => {
-  try {
-    await callback(req, res, next);
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-export class ApiError extends Error {
-  status: number;
-  constructor(status: number, message: string) {
-    super(message);
-    this.status = status;
-  }
-
-  static badRequest = (message: string) => new ApiError(400, `Bad request. ${message}`);
 }
