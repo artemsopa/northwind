@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import b from 'benny';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
