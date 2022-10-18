@@ -4,6 +4,7 @@
     "module": "commonjs",
     "lib": ["es2018"],
     "strict": true,
+    "noImplicitAny": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
