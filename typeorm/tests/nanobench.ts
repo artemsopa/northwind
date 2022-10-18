@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import bench from 'nanobench';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { Employee } from '@/entities/employees';
@@ -8,6 +7,8 @@ import { Order } from '@/entities/orders';
 import { Customer } from '@/entities/customers';
 import { Supplier } from '@/entities/suppliers';
 import { Product } from '@/entities/products';
+
+const bench = require('nanobench');
 
 dotenv.config();
 
