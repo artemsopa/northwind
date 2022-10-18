@@ -46,7 +46,7 @@ export type Order = InferModel<typeof orders>;
 
 At this example we define instance of `PgTable` by running `pgTable()` method with properties like `‘orders’` - table name, object
 with properties have to be match table columns by indicating their types, like `varchar`, `date`, `integer` with property of column name,
-indicating of primary key and null columns.
+indicating of `.primaryKey()` and `.notNull()` columns.
 
 Also, we can define foreign keys, like `customerId` and `employeeId`, where we also define their type in table, relation with another table
 and `onDelete` action. 
@@ -86,7 +86,7 @@ export type Employee = InferModel<typeof employees>;
 
 By `InferModel` we can get type of created table without code duplication.
 
-And of course, we need to create our db schema, by which we can directly communicate with our db tables by *drizzle-orm*.
+And of course, we need to create our db schema, by which we can directly communicate with our db tables by **drizzle-orm**.
 
 ```JavaScript
 import { PGDatabase } from 'drizzle-orm-pg';
@@ -106,7 +106,7 @@ export type Database = PGDatabase<typeof schema>;
 
 ### Next step is migrations
 
-For migrations we need to use drizzle-kit with **drizzle.config.json** file at the root of directory
+For migrations we need to use **drizzle-kit** with **drizzle.config.json** file at the root of directory
 
 ```JSON
 {
@@ -117,10 +117,10 @@ For migrations we need to use drizzle-kit with **drizzle.config.json** file at t
 ```
 
 Where we can see `dialect` of db, property `out` that defines folder of migration containing and `schema` - path to the folder or file
-with our entities
+with our tables
 
-Command `drizzle-kit generate` generates next files: *migration.sql* with sql queries of tables creating 
-and *snapshot.json* with as called snapshot
+Command `drizzle-kit generate` generates next files: **migration.sql** with sql queries of tables creating 
+and **snapshot.json** with as called snapshot
 
 ## Connecting to db and migrating
 
@@ -172,7 +172,7 @@ const [data] = await this.db.products.select()
 ```
 
 In `.leftJoin()` we pass table column needs to be joined, and by `eq()` function determine table columns need to be equal.
-In our case we are join suppliers table on product’s supplierId equals suppliers’ id column, `.where()` product’s id equal passed value - id
+In our case we are join suppliers table on product’s `supplierId` equals suppliers’ `id` column, `.where()` product’s id equal passed value - `id`
 
 ## Of course, we can execute simple sql queries
 
