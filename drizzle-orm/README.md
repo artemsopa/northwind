@@ -192,7 +192,7 @@ At this example you can see as called self-join on table employees with receivin
 await this.db.customers.select()
       .execute();
 ```
-`SELECT * FROM customers;`
+`select "id", "company_name", "contact_name", "contact_title", "address", "city", "postal_code", "region", "country", "phone", "fax" from "customers"`
 
 <br />
 
@@ -201,7 +201,7 @@ await this.db.customers.select()
       .where(eq(table.id, id))
       .execute();
 ```
-`SELECT * FROM customers WHERE id = ?;`
+`select "id", "company_name", "contact_name", "contact_title", "address", "city", "postal_code", "region", "country", "phone", "fax" from "customers" where "customers"."id" = $1`
 
 <br/>
 
@@ -210,14 +210,14 @@ await this.db.customers.select()
       .where(ilike(table.companyName, `%${company}%`))
       .execute();
 ```
-`SELECT * FROM customers WHERE LOWER(company_name) LIKE LOWER(%?%);`
+`select "id", "company_name", "contact_name", "contact_title", "address", "city", "postal_code", "region", "country", "phone", "fax" from "customers" where "customers"."company_name" ilike $1`
 
 <br/>
 
 ```JavaScript
 await this.db.employees.select().execute();
 ```
-`SELECT * FROM employees;`
+`select "id", "last_name", "first_name", "title", "title_of_courtesy", "birth_date", "hire_date", "address", "city", "postal_code", "country", "home_phone", "extension", "notes", "recipient_id" from "employees"`
 
 <br/>
 
@@ -226,14 +226,14 @@ const command = sql`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS
 
 const { rows: [data] } = await this.db.execute(command);
 ```
-`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = ?;`
+`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = $1`
 
 <br/>
 
 ```JavaScript
 await this.db.execute(sql`SELECT id, shipped_date, ship_name, ship_city, ship_country, COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`);
 ```
-`SELECT id, shipped_date, ship_name, ship_city, ship_country, COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC;`
+`SELECT id, shipped_date, ship_name, ship_city, ship_country, COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`
 
 <br/>
 
@@ -244,14 +244,14 @@ await this.db.details.select()
       .where(eq(details.orderId, id))
       .execute();
 ```
-`SELECT * FROM order_details LEFT JOIN orders ON order_details.order_id = orders.id LEFT JOIN products ON order_details.product_id = products.id;`
+`select "order_details"."unit_price", "order_details"."quantity", "order_details"."discount", "order_details"."order_id", "order_details"."product_id", "orders"."id", "orders"."order_date", "orders"."required_date", "orders"."shipped_date", "orders"."ship_via", "orders"."freight", "orders"."ship_name", "orders"."ship_city", "orders"."ship_region", "orders"."ship_postal_code", "orders"."ship_country", "orders"."customer_id", "orders"."employee_id", "products"."id", "products"."name", "products"."qt_per_unit", "products"."unit_price", "products"."units_in_stock", "products"."units_on_order", "products"."reorder_level", "products"."discontinued", "products"."supplier_id" from "order_details" left join "orders" on "order_details"."order_id" = "orders"."id" left join "products" on "order_details"."product_id" = "products"."id" where "order_details"."order_id" = $1`
 
 <br/>
 
 ```JavaScript
 await this.db.products.select().execute();
 ```
-`SELECT * FROM products;`
+`select "id", "name", "qt_per_unit", "unit_price", "units_in_stock", "units_on_order", "reorder_level", "discontinued", "supplier_id" from "products"`
 
 <br/>
 
@@ -261,7 +261,7 @@ await this.db.products.select()
       .where(eq(table.id, id))
       .execute();
 ```
-`SELECT * FROM products AS e1 LEFT JOIN suppliers ON products.supplier_id = suppliers.id WHERE products.id = ?;`
+`select "products"."id", "products"."name", "products"."qt_per_unit", "products"."unit_price", "products"."units_in_stock", "products"."units_on_order", "products"."reorder_level", "products"."discontinued", "products"."supplier_id", "suppliers"."id", "suppliers"."company_name", "suppliers"."contact_name", "suppliers"."contact_title", "suppliers"."address", "suppliers"."city", "suppliers"."region", "suppliers"."postal_code", "suppliers"."country", "suppliers"."phone" from "products" left join "suppliers" on "products"."supplier_id" = "suppliers"."id" where "products"."id" = $1`
 
 <br/>
 
@@ -270,14 +270,14 @@ await this.db.products.select()
       .where(ilike(table.name, `%${name}%`))
       .execute();
 ```
-`SELECT * FROM products WHERE LOWER(name) LIKE LOWER(%?%);`
+`select "id", "name", "qt_per_unit", "unit_price", "units_in_stock", "units_on_order", "reorder_level", "discontinued", "supplier_id" from "products" where "products"."name" ilike $1`
 
 <br/>
 
 ```JavaScript
 await this.db.suppliers.select().execute();
 ```
-`SELECT * FROM suppliers;`
+`select "id", "company_name", "contact_name", "contact_title", "address", "city", "region", "postal_code", "country", "phone" from "suppliers"`
 
 <br/>
 
@@ -286,7 +286,7 @@ await this.db.suppliers.select()
       .where(eq(table.id, id))
       .execute();
 ```
-`SELECT * FROM suppliers WHERE id = ?;`
+`select "id", "company_name", "contact_name", "contact_title", "address", "city", "region", "postal_code", "country", "phone" from "suppliers" where "suppliers"."id" = $1`
 
 <br/>
 
