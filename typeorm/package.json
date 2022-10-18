@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/index.ts",
+    "start-dev": "nodemon --exec ts-node src/index.ts",
     "test-benny": "ts-node -r tsconfig-paths/register ./tests/benny.ts",
     "test-benchmark": "ts-node -r tsconfig-paths/register ./tests/benchmark.ts",
-    "test-nanobench": "ts-node -r tsconfig-paths/register ./tests/nanobench.ts",
-    "start-dev": "nodemon --exec ts-node src/index.ts"
+    "test-nanobench": "ts-node -r tsconfig-paths/register ./tests/nanobench.ts"
   },
   "keywords": [],
   "author": "",
