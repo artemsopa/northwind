@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm/expressions';
 import { ApiError } from '@/error';
-import { suppliers as table } from '@/entities/suppliers';
-import { Database } from '@/entities/schema';
+import { suppliers as table, Database } from '@/data/schema';
 
 export class SuppliersService {
   constructor(private readonly db: Database) {

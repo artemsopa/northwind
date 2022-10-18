@@ -1,10 +1,7 @@
 import { eq } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
 import { ApiError } from '@/error';
-import { orders as table } from '@/entities/orders';
-import { details } from '@/entities/details';
-import { Database } from '@/entities/schema';
-import { products as productsTable } from '@/entities/products';
+import { orders as table, details, Database, products as productsTable } from '@/data/schema';
 
 export class OrdersService {
   constructor(private readonly db: Database) {

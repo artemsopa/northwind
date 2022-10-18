@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { ApiError } from '@/error';
-import { Database } from '@/entities/schema';
+import { Database } from '@/data/schema';
 
 export class EmployeesService {
   constructor(private readonly db: Database) {

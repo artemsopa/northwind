@@ -1,8 +1,6 @@
 import { eq, ilike } from 'drizzle-orm/expressions';
 import { ApiError } from '@/error';
-import { products as table } from '@/entities/products';
-import { Database } from '@/entities/schema';
-import { suppliers } from '@/entities/suppliers';
+import { products as table, Database, suppliers } from '@/data/schema';
 
 export class ProductsService {
   constructor(private readonly db: Database) {
