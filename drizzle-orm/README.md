@@ -1,6 +1,6 @@
 # Northwind sample databases for PostgreSQL with Drizzle-ORM implementing
 
-At the beginning we need to install *drizzle-orm*, *drizzle-orm-pg*, *drizzle-kit*, *pg* packages by npm, yarn or else package manager.
+At the beginning we need to install **drizzle-orm**, **drizzle-orm-pg**, **drizzle-kit**, **pg** packages by npm, yarn or else package manager.
 
    `npm i drizzle-orm drizzle-orm-pg pg`
 
