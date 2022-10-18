@@ -7,7 +7,6 @@ At the beginning we need to install *drizzle-orm*, *drizzle-orm-pg*, *drizzle-ki
    `npm i -D drizzle-kit`
 
 ## Implementation of DB tables
-<hr/>
 
 ### Our project has followed tables: 
 - customers
@@ -124,7 +123,6 @@ Command `drizzle-kit generate` generates next files: *migration.sql* with sql qu
 and *snapshot.json* with as called snapshot
 
 ## Connecting to db and migrating
-<hr/>
 
 ```JavaScript
 import { PgConnector } from 'drizzle-orm-pg';
@@ -148,7 +146,6 @@ First of all we create **connection pool** and **connector** with properties of 
 migrate our migrations folder
 
 ## SQL queries
-<hr/>
 
 After passing **schema** with all defined tables before to the **connector**, we can refer to them as to db object properties
 and execute queries for each one
@@ -190,7 +187,6 @@ const { rows: [data] } = await this.db.execute(command);
 At this example you can see as called self-join on table employees with receiving the array of all matched rows
 
 ## Examples of all drizzle-orm queries on sql
-<hr />
 
 ```JavaScript
 await this.db.customers.select()
@@ -294,4 +290,4 @@ await this.db.suppliers.select()
 
 <br/>
 
-### For more examples you can see our GitHub repository
+#### For more examples you can see our [Github](https://github.com/artemsopa/northwind/tree/main/drizzle-orm "Github home") repository
