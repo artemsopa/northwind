@@ -172,7 +172,7 @@ const [data] = await this.db.products.select()
 ```
 
 In `.leftJoin()` we pass table column needs to be joined, and by `eq()` function determine table columns need to be equal.
-In our case we are join suppliers table on product’s `supplierId` equals suppliers’ `id` column, `.where()` product’s id equal passed value - `id`
+In our case we are join suppliers table on product’s `supplierId` equals suppliers’ `id` column, `.where()` product’s `id` equal passed value.
 
 ## Of course, we can execute simple sql queries
 
