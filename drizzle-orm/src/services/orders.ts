@@ -17,7 +17,7 @@ export class OrdersService {
 
     const orders = rows.map((item) => ({
       id: item.id,
-      totalPrice: Number(item.total_price.toFixed(2)),
+      totalPrice: Number(item.total_price),
       products: Number(item.products),
       quantity: Number(item.quantity),
       shipped: item.shipped_date,
