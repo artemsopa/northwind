@@ -289,4 +289,4 @@ await this.db.suppliers.select()
 
 <br/>
 
-#### For more examples you can see our [Github](https://github.com/artemsopa/northwind/tree/main/drizzle-orm "Github home") repository
+#### For more examples you can see our [GitHub](https://github.com/artemsopa/northwind/tree/main/drizzle-orm "Github home") repository
