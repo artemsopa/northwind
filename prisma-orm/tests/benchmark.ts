@@ -33,7 +33,7 @@ const main = async () => {
         },
       });
     })
-    .on('cycle', (event) => {
+    .on('cycle', (event: any) => {
       console.log(String(event.target));
     })
     .on('complete', () => {

@@ -60,7 +60,7 @@ const main = async () => {
         .where('order_details.order_id = :id', { id: '10248' })
         .getMany();
     })
-    .on('cycle', (event) => {
+    .on('cycle', (event: any) => {
       console.log(String(event.target));
     })
     .on('complete', () => {

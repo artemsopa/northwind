@@ -35,5 +35,7 @@ module.exports = {
     'no-nested-ternary': 0,
     'object-curly-newline': 0,
     'no-plusplus': 0,
+    'import/no-extraneous-dependencies': 0,
+    'no-await-in-loop': 0,
   },
 };

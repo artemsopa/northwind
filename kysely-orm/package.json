@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/index.ts",
-    "start-dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts"
+    "start-dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
+    "test-benny": "ts-node -r tsconfig-paths/register ./tests/benny.ts",
+    "test-benchmark": "ts-node -r tsconfig-paths/register ./tests/benchmark.ts",
+    "test-nanobench": "ts-node -r tsconfig-paths/register ./tests/nanobench.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +23,7 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@types/benchmark": "^2.1.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "^18.7.13",
@@ -27,9 +31,12 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "benchmark": "^2.1.4",
+    "benny": "^3.7.1",
     "eslint": "^8.24.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "nanobench": "^3.0.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.3"

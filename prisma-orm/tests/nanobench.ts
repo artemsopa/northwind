@@ -13,7 +13,7 @@ const main = async () => {
     ],
   });
 
-  bench('Select employee with recipient by id 10 times', async (b) => {
+  bench('Select employee with recipient by id 10 times', async (b: any) => {
     b.start();
 
     for (let i = 0; i < 10; i++) {
@@ -30,7 +30,7 @@ const main = async () => {
     b.end();
   });
 
-  bench('Select order_details with orders and products 10 times', async (b) => {
+  bench('Select order_details with orders and products 10 times', async (b: any) => {
     b.start();
 
     for (let i = 0; i < 10; i++) {
