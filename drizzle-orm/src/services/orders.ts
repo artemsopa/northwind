@@ -9,15 +9,15 @@ export class OrdersService {
   }
 
   async getAll() {
-    const command = sql`SELECT id, shipped_date, ship_name, ship_city, ship_country, 
-     COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price
-     FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`;
+    const command = sql`select "id", "shipped_date", "ship_name", "ship_city", "ship_country", 
+     count("product_id") as "products", sum("quantity") as "quantity", sum("quantity" * "unit_price") as "total_price"
+     from "orders" as "o" left join "order_details" as "od" on "od"."order_id" = "o"."id" group by "o"."id" order by "o"."id" asc`;
 
     const { rows } = await this.db.execute(command);
 
     const orders = rows.map((item) => ({
       id: item.id,
-      totalPrice: Number(item.total_price.toFixed(2)),
+      totalPrice: Number(item.total_price),
       products: Number(item.products),
       quantity: Number(item.quantity),
       shipped: item.shipped_date,
