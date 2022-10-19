@@ -17,7 +17,9 @@ const main = async () => {
     throw new Error('Invalid environment variables!');
   }
 
-  const suite = new Benchmark.Suite();
+  const suite = new Benchmark.Suite('Benchmark tests', {
+    initCount: 10,
+  });
 
   const ds = new DataSource({
     type: 'postgres',
@@ -28,7 +30,7 @@ const main = async () => {
     database: DB_NAME,
     entities: [Customer, Employee, Order, Supplier, Product, Detail],
     synchronize: false,
-    logging: true,
+    logging: false,
     extra: {
       decimalNumbers: true,
     },

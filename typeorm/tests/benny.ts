@@ -26,7 +26,7 @@ const main = async () => {
     database: DB_NAME,
     entities: [Customer, Employee, Order, Supplier, Product, Detail],
     synchronize: false,
-    logging: true,
+    logging: false,
     extra: {
       decimalNumbers: true,
     },
