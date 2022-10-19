@@ -5,11 +5,6 @@ import { PrismaClient } from '@prisma/client';
 dotenv.config();
 
 const main = async () => {
-  const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
-  if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
-    throw new Error('Invalid environment variables!');
-  }
-
   const prisma = new PrismaClient({
     log: [
       { level: 'query', emit: 'event' },

@@ -5,19 +5,11 @@ import { PrismaClient } from '@prisma/client';
 dotenv.config();
 
 const main = async () => {
-  const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
-  if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
-    throw new Error('Invalid environment variables!');
-  }
-
-  const suite = new Benchmark.Suite();
-
-  const prisma = new PrismaClient({
-    log: [
-      { level: 'query', emit: 'event' },
-      { level: 'warn', emit: 'stdout' },
-    ],
+  const suite = new Benchmark.Suite('Benchmark tests', {
+    initCount: 10,
   });
+
+  const prisma = new PrismaClient();
 
   suite
     .add('Select employee with recipient by id', async () => {
