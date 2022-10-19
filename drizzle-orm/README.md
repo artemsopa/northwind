@@ -179,8 +179,7 @@ In our case we are join suppliers table on product’s `supplierId` equals suppl
 ```JavaScript
 import { sql } from 'drizzle-orm';
 
-const command = sql`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname 
-    FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = ${id}`;
+const command = sql`select "e1".*, "e2"."last_name" as "reports_lname", "e2"."first_name" as "reports_fname" from "employees" as "e1" left join "employees" as "e2" on "e2"."id" = "e1"."recipient_id" where "e1"."id" = ${id}`;
 const { rows: [data] } = await this.db.execute(command);
 ```
 
@@ -222,18 +221,18 @@ await this.db.employees.select().execute();
 <br/>
 
 ```JavaScript
-const command = sql`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = ${id}`;
+const command = sql`select "e1".*, "e2"."last_name" as "reports_lname", "e2"."first_name" as "reports_fname" from "employees" as "e1" left join "employees" as "e2" on "e2"."id" = "e1"."recipient_id" where "e1"."id" = ${id}`;
 
 const { rows: [data] } = await this.db.execute(command);
 ```
-`SELECT e1.*, e2.last_name AS reports_lname, e2.first_name AS reports_fname FROM employees AS e1 LEFT JOIN employees AS e2 ON e2.id = e1.recipient_id WHERE e1.id = $1`
+`select "e1".*, "e2"."last_name" as "reports_lname", "e2"."first_name" as "reports_fname" from "employees" as "e1" left join "employees" as "e2" on "e2"."id" = "e1"."recipient_id" where "e1"."id" = $1`
 
 <br/>
 
 ```JavaScript
-await this.db.execute(sql`SELECT id, shipped_date, ship_name, ship_city, ship_country, COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`);
+await this.db.execute(sql`select "id", "shipped_date", "ship_name", "ship_city", "ship_country", count("product_id") as "products", sum("quantity") as "quantity", sum("quantity" * "unit_price") as "total_price" from "orders" as "o" left join "order_details" as "od" on "od"."order_id" = "o"."id" group by "o"."id" order by "o"."id" asc`);
 ```
-`SELECT id, shipped_date, ship_name, ship_city, ship_country, COUNT(product_id) AS products, SUM(quantity) AS quantity, SUM(quantity * unit_price) AS total_price FROM orders AS o LEFT JOIN order_details AS od ON od.order_id = o.id GROUP BY o.id ORDER BY o.id ASC`
+`select "id", "shipped_date", "ship_name", "ship_city", "ship_country", count("product_id") as "products", sum("quantity") as "quantity", sum("quantity" * "unit_price") as "total_price" from "orders" as "o" left join "order_details" as "od" on "od"."order_id" = "o"."id" group by "o"."id" order by "o"."id" asc`
 
 <br/>
 
