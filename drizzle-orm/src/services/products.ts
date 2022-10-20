@@ -26,6 +26,7 @@ export class ProductsService {
     const [data] = await this.db.products.select()
       .leftJoin(suppliers, eq(table.supplierId, suppliers.id))
       .where(eq(table.id, id))
+      .limit(1)
       .execute();
 
     if (!data || !data.products || !data.suppliers) throw ApiError.badRequest('Unknown product!');

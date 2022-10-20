@@ -25,6 +25,7 @@ export class CustomersService {
   async getInfo(id: string) {
     const [customer] = await this.db.customers.select()
       .where(eq(table.id, id))
+      .limit(1)
       .execute();
 
     if (!customer) throw ApiError.badRequest('Unknown customer!');
