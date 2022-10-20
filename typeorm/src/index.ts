@@ -17,7 +17,6 @@ import { Employee } from '@/entities/employees';
 import { Order } from '@/entities/orders';
 import { Supplier } from '@/entities/suppliers';
 import { Product } from '@/entities/products';
-import { Metric } from '@/entities/metrics';
 import { Detail } from '@/entities/details';
 
 const main = async () => {
@@ -32,8 +31,8 @@ const main = async () => {
       username: DB_USER,
       password: DB_PASSWORD,
       database: DB_NAME,
-      entities: [Customer, Employee, Order, Supplier, Product, Detail, Metric],
-      synchronize: false,
+      entities: [Customer, Employee, Order, Supplier, Product, Detail],
+      synchronize: true,
       logging: true,
       extra: {
         decimalNumbers: true,
