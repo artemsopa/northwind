@@ -1,0 +1,41 @@
+{
+  "name": "benchmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "start-benny": "ts-node  -r tsconfig-paths/register src/benny.ts",
+    "start-benchmark": "ts-node -r tsconfig-paths/register src/benchmark.ts",
+    "start-nanobench": "ts-node -r tsconfig-paths/register src/nanobench.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/benchmark": "^2.1.2",
+    "@types/node": "^18.11.1",
+    "@types/pg": "^8.6.5",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "benny": "^3.7.1",
+    "esbuild": "^0.15.10",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.5.0",
+    "benchmark": "^2.1.4",
+    "dotenv": "^16.0.3",
+    "drizzle-orm": "^0.12.0-beta.6",
+    "drizzle-orm-pg": "^0.12.0-beta.25",
+    "knex": "^2.3.0",
+    "kysely": "^0.22.0",
+    "nanobench": "^3.0.0",
+    "pg": "^8.8.0",
+    "prisma": "^4.5.0",
+    "typeorm": "^0.3.10"
+  }
+}
