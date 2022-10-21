@@ -34,7 +34,12 @@ export const employees = pgTable('employees', {
   extension: integer('extension').notNull(),
   notes: text('notes').notNull(),
   recipientId: varchar('recipient_id'),
-});
+}, (table) => ({
+  recipientFk: foreignKey(() => ({
+    columns: [table.recipientId],
+    foreignColumns: [table.id],
+  })),
+}));
 
 export type Employee = InferModel<typeof employees>;
 
@@ -107,6 +112,7 @@ export type Detail = InferModel<typeof details>;
 
 export const schema = {
   customers,
+  employees,
   orders,
   suppliers,
   products,
