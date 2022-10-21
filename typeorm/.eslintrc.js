@@ -21,6 +21,7 @@ module.exports = {
     'no-unused-vars': 0,
     'import/extensions': 0,
     'import/no-unresolved': 0,
+    'import/no-extraneous-dependencies': 0,
     'import/prefer-default-export': 0,
     'max-classes-per-file': 0,
     'max-len': 0,
@@ -34,5 +35,8 @@ module.exports = {
     'no-use-before-define': 0,
     'no-nested-ternary': 0,
     'object-curly-newline': 0,
+    'no-unused-expressions': 0,
+    'no-plusplus': 0,
+    'no-await-in-loop': 0,
   },
 };
