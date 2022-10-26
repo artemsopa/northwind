@@ -4,7 +4,7 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
-    "i-deps": "npm i --prefix ../drizzle-orm && npm i --prefix ../knex-orm && npm i --prefix ../kysely-orm && npm i --prefix ../typeorm && npm i --prefix ../prisma-orm && npx --prefix ../prisma-orm prisma generate --schema=../prisma-orm/prisma/schema.prisma",
+    "generate": "npx prisma generate --schema=./src/prisma-orm/schema.prisma",
     "start-benny": "ts-node  -r tsconfig-paths/register ./src/benny.ts",
     "start-benchmark": "ts-node -r tsconfig-paths/register ./src/benchmark.ts",
     "start-nanobench": "ts-node -r tsconfig-paths/register ./src/nanobench.ts"
