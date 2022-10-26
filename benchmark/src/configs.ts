@@ -15,7 +15,7 @@ export const initConfigs = () => {
     || !DB_USER
     || !DB_PASSWORD
     || !DB_NAME) {
-    throw new Error(`${DB_HOST}`);
+    throw new Error('ERROR! Invalid configuration...');
   }
 
   return {

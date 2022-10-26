@@ -1,12 +1,13 @@
 import bench from 'nanobench';
 
-import { getConnection } from '@/type-orm';
-import { Customer } from './entities/customers';
-import { Employee } from './entities/employees';
-import { Supplier } from './entities/suppliers';
-import { Product } from './entities/products';
-import { Order } from './entities/orders';
-import { Detail } from './entities/details';
+import { Customer } from '@/typeorm/entities/customers';
+import { Employee } from '@/typeorm/entities/employees';
+import { Supplier } from '@/typeorm/entities/suppliers';
+import { Product } from '@/typeorm/entities/products';
+import { Order } from '@/typeorm/entities/orders';
+import { Detail } from '@/typeorm/entities/details';
+
+import { getConnection } from '@/typeorm';
 
 export const startTypeOrmBenches = async () => {
   const db = await getConnection();

@@ -4,11 +4,10 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
-    "prisma-generate": "prisma generate --schema=./src/prisma-orm/schema.prisma",
-    "start-benny": "ts-node  -r tsconfig-paths/register src/benny.ts",
-    "start-benchmark": "ts-node -r tsconfig-paths/register src/benchmark.ts",
-    "start-nanobench": "ts-node -r tsconfig-paths/register src/nanobench.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "i-deps": "npm i --prefix ../drizzle-orm && npm i --prefix ../knex-orm && npm i --prefix ../kysely-orm && npm i --prefix ../typeorm && npm i --prefix ../prisma-orm && npx --prefix ../prisma-orm prisma generate --schema=../prisma-orm/prisma/schema.prisma",
+    "start-benny": "ts-node  -r tsconfig-paths/register ./src/benny.ts",
+    "start-benchmark": "ts-node -r tsconfig-paths/register ./src/benchmark.ts",
+    "start-nanobench": "ts-node -r tsconfig-paths/register ./src/nanobench.ts"
   },
   "author": "",
   "license": "ISC",
@@ -30,8 +29,8 @@
     "benchmark": "^2.1.4",
     "benny": "^3.7.1",
     "dotenv": "^16.0.3",
-    "drizzle-orm": "^0.12.0-beta.6",
-    "drizzle-orm-pg": "^0.12.0-beta.25",
+    "drizzle-orm": "0.12.0-beta.6",
+    "drizzle-orm-pg": "0.12.0-beta.25",
     "knex": "^2.3.0",
     "kysely": "^0.22.0",
     "nanobench": "^3.0.0",

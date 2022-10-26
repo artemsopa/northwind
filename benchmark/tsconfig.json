@@ -11,8 +11,9 @@
     "noImplicitAny": false,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "@/prisma-orm/client": ["../prisma-orm/node_modules/@prisma/client"],
+    },
   },
   "exclude": ["node_modules", "**/*/lib", "**/*/dist"]
 }

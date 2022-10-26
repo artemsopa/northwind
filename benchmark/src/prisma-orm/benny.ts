@@ -9,7 +9,7 @@ export const startPrismaOrmSuites = async () => {
     'Prisma-ORM',
 
     benny.add('Prisma-ORM Customers: getAll', async () => {
-      await await db.customer.findMany();
+      await db.customer.findMany();
     }),
     benny.add('Prisma-ORM Customers: getInfo', async () => {
       await db.customer.findUnique({

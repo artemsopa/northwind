@@ -10,7 +10,7 @@ export const startPrismaOrmBenches = async () => {
   await bench('Prisma ORM Customers: getAll', async (b) => {
     b.start();
     for await (const i of count) {
-      await await db.customer.findMany();
+      await db.customer.findMany();
     }
     b.end();
   });

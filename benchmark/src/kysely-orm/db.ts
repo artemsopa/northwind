@@ -96,25 +96,3 @@ export interface Database {
     order_details: Detail;
     metrics: Metric;
 }
-
-export type EmployeeWithRecipient = Employee & {
-    e_id: string,
-    e_last_name: string,
-    e_first_name: string,
-};
-
-export type OrderWithDetail = Order & Detail;
-
-export type OrderWithDetailAndProduct = Order & {
-    order_id: string;
-    unit_price: number;
-    quantity: number;
-    discount: number;
-    p_id: string;
-    p_name:string;
-  }
-
-export type ProductWithSupplier = Product & {
-    s_id: string;
-    s_company_name: string;
-  }

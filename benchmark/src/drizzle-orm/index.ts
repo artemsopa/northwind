@@ -1,8 +1,8 @@
 import { PgConnector } from 'drizzle-orm-pg';
-import { connect, migrate } from 'drizzle-orm';
+import { connect } from 'drizzle-orm';
 import { Pool } from 'pg';
-import { initConfigs } from '../configs';
-import { schema } from './data/schema';
+import { initConfigs } from '@/configs';
+import { schema } from '@/drizzle-orm/data/schema';
 
 export const getConnection = async () => {
   const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();
@@ -15,6 +15,6 @@ export const getConnection = async () => {
   });
   const connector = new PgConnector(pool, schema);
   const db = await connect(connector);
-  console.log(db);
+
   return db;
 };

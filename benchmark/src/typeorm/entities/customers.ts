@@ -1,7 +1,7 @@
 import {
   Entity, Column, OneToMany, PrimaryColumn,
 } from 'typeorm';
-import { Order } from './orders';
+import { Order } from '@/typeorm/entities/orders';
 
 @Entity({ name: 'customers' })
 export class Customer {

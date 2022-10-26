@@ -3,7 +3,7 @@ import { startKnexOrmBenches } from '@/knex-orm/nanobench';
 import { startKyselyOrmBenches } from '@/kysely-orm/nanobench';
 import { startPgDriverBenches } from '@/pg/nanobench';
 import { startPrismaOrmBenches } from '@/prisma-orm/nanobench';
-import { startTypeOrmBenches } from '@/type-orm/nanobench';
+import { startTypeOrmBenches } from '@/typeorm/nanobench';
 
 const main = async () => {
   try {
