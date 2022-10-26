@@ -9,7 +9,7 @@ import { Supplier } from './entities/suppliers';
 
 const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();
 
-export const getConnectionTypeOrm = async () => {
+export const getConnection = async () => {
   const ds = new DataSource({
     type: 'postgres',
     host: DB_HOST,
@@ -24,6 +24,5 @@ export const getConnectionTypeOrm = async () => {
       decimalNumbers: true,
     },
   });
-  await ds.initialize();
-  return ds.getRepository(Product);
+  return await ds.initialize();
 };

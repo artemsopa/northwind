@@ -1,49 +1,22 @@
-import benny from 'benny'
-
-import { getConnectionTypeOrm } from './type-orm/index';
-import { getConnectionPrismaOrm } from './prisma-orm/index';
-import { getConnectionKysely } from './kysely-orm';
-import { getConnectionDrizzleOrm } from './drizzle-orm';
-import { getConnectionKnex } from './knex-orm';
-import { getConnectionPgDriver } from './pg';
+import { startDrizzleOrmSuites } from '@/drizzle-orm/benny';
+import { startKnexOrmSuites } from '@/knex-orm/benny';
+import { startKyselyOrmSuites } from '@/kysely-orm/benny';
+import { startPgDriverSuites } from '@/pg/benny';
+import { startPrismaOrmSuites } from '@/prisma-orm/benny';
+import { startTypeOrmSuites } from '@/type-orm/benny';
 
 const main = async () => {
-  const type = await getConnectionTypeOrm();
-  const prisma = await getConnectionPrismaOrm();
-  const kysely = await getConnectionKysely();
-  const drizzle = await getConnectionDrizzleOrm();
-  const knex = await getConnectionKnex();
-  const pgDriver = await getConnectionPgDriver();
-
-  benny.suite(
-    'Example',
-    benny.add('DrizzleOrm', async () => {
-      await drizzle.products.select().execute();
-    }),
-
-    benny.add('typeOrm', async () => {
-      await type.createQueryBuilder('products').getMany();
-    }),
-
-    benny.add('prismaOrm', async () => {
-      await prisma.product.findMany();
-    }),
-
-    benny.add('kyselyOrm', async () => {
-      await kysely.selectFrom('products').selectAll().execute();
-    }),
-
-    benny.add('knexOrm', async () => {
-      await knex('public.products').select();
-    }),
-
-    benny.add('pgDriver', async () => {
-      await pgDriver.query('select * from "products"');
-    }),
-
-    benny.cycle(),
-    benny.complete(),
-  );
+  try {
+    // await startPgDriverSuites();
+    // await startDrizzleOrmSuites();
+    // await startKnexOrmSuites();
+    // await startKyselyOrmSuites();
+    // await startPrismaOrmSuites();
+    await startTypeOrmSuites();
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
 };
 
 main();

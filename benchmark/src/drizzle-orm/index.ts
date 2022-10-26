@@ -4,7 +4,7 @@ import { Pool } from 'pg';
 import { initConfigs } from '../configs';
 import { schema } from './data/schema';
 
-export const getConnectionDrizzleOrm = async () => {
+export const getConnection = async () => {
   const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();
   const pool = new Pool({
     host: DB_HOST,
@@ -15,5 +15,6 @@ export const getConnectionDrizzleOrm = async () => {
   });
   const connector = new PgConnector(pool, schema);
   const db = await connect(connector);
+  console.log(db);
   return db;
 };
