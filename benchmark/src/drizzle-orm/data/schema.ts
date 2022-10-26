@@ -35,12 +35,12 @@ export const employees = pgTable('employees', {
   notes: text('notes').notNull(),
   recipientId: varchar('recipient_id'),
 });
-//  (table) => ({
-//   recipientFk: foreignKey(() => ({
-//     columns: [table.recipientId],
-//     foreignColumns: [table.id],
-//   })),
-// }));
+ (table) => ({
+  recipientFk: foreignKey(() => ({
+    columns: [table.recipientId],
+    foreignColumns: [table.id],
+  })),
+});
 
 export type Employee = InferModel<typeof employees>;
 
