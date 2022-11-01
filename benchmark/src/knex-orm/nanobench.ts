@@ -1,6 +1,6 @@
 import bench from 'nanobench';
 
-import { getConnection } from '@/knex-orm';
+import { getConnection } from './index';
 
 export const startKnexOrmBenches = async () => {
   const db = await getConnection();

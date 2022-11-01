@@ -1,8 +1,8 @@
 import pkg from 'pg';
 
 import { Kysely, PostgresDialect } from 'kysely';
-import { initConfigs } from '@/configs';
-import { Database } from '@/kysely-orm/db';
+import { initConfigs } from '../configs';
+import { Database } from './db';
 
 const { Pool } = pkg;
 

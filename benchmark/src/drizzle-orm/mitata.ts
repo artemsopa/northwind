@@ -3,6 +3,7 @@ import { eq, ilike } from 'drizzle-orm/expressions';
 
 import { getConnection } from './index';
 import { customers, details, orders, products, suppliers } from '@/drizzle-orm/data/schema';
+import { sql } from 'drizzle-orm';
 
 export const startDrizzleOrmBenches = async () => {
   const db = await getConnection();

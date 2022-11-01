@@ -2,7 +2,7 @@ import bench from 'nanobench';
 
 import { eq, ilike } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
-import { customers, details, orders, products, suppliers } from '@/drizzle-orm/data/schema';
+import { customers, details, orders, products, suppliers } from './data/schema';
 
 import { getConnection } from './index';
 

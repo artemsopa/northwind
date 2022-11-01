@@ -1,5 +1,5 @@
 import { Cascade, Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
-import { Product } from '@/mikro-orm/entities/products';
+import { Product } from './products';
 
 @Entity({ tableName: 'suppliers' })
 export class Supplier {

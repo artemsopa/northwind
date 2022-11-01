@@ -1,12 +1,10 @@
 import bench from 'nanobench';
-
-import { Customer } from '@/mikro-orm/entities/customers';
-import { Employee } from '@/mikro-orm/entities/employees';
-import { Supplier } from '@/mikro-orm/entities/suppliers';
-import { Product } from '@/mikro-orm/entities/products';
-import { Order } from '@/mikro-orm/entities/orders';
-import { Detail } from '@/mikro-orm/entities/details';
-
+import { Customer } from './entities/customers';
+import { Employee } from './entities/employees';
+import { Supplier } from './entities/suppliers';
+import { Product } from './entities/products';
+import { Order } from './entities/orders';
+import { Detail } from './entities/details';
 import { getConnection } from '@/mikro-orm';
 
 export const startMikroOrmBenches = async () => {

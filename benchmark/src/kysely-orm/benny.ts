@@ -1,7 +1,7 @@
 import benny from 'benny';
 
 import { sql } from 'kysely';
-import { getConnection } from '@/kysely-orm';
+import { getConnection } from './index';
 
 export const startKyselyOrmSuites = async () => {
   const db = await getConnection();

@@ -1,13 +1,11 @@
 import benny from 'benny';
-
-import { Order } from '@/typeorm/entities/orders';
-import { Detail } from '@/typeorm/entities/details';
-import { Product } from '@/typeorm/entities/products';
-import { Employee } from '@/typeorm/entities/employees';
-import { Customer } from '@/typeorm/entities/customers';
-import { Supplier } from '@/typeorm/entities/suppliers';
-
-import { getConnection } from '@/typeorm';
+import { Order } from './entities/orders';
+import { Detail } from './entities/details';
+import { Product } from './entities/products';
+import { Employee } from './entities/employees';
+import { Customer } from './entities/customers';
+import { Supplier } from './entities/suppliers';
+import { getConnection } from './index';
 
 export const startTypeOrmSuites = async () => {
   const db = await getConnection();

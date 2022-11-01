@@ -1,7 +1,7 @@
 import {
   Entity, Column, OneToMany, PrimaryColumn, ManyToOne, JoinColumn,
 } from 'typeorm';
-import { Order } from '@/typeorm/entities/orders';
+import { Order } from './orders';
 
 @Entity({ name: 'employees' })
 export class Employee {

@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { Order } from '@/mikro-orm/entities/orders';
-import { Product } from '@/mikro-orm/entities/products';
+import { Order } from './orders';
+import { Product } from './products';
 
 @Entity({ tableName: 'order_details' })
 export class Detail {

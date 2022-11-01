@@ -1,13 +1,13 @@
 import { MikroORM } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { initConfigs } from '@/configs';
-import { Customer } from '@/mikro-orm/entities/customers';
-import { Employee } from '@/mikro-orm/entities/employees';
-import { Order } from '@/mikro-orm/entities/orders';
-import { Supplier } from '@/mikro-orm/entities/suppliers';
-import { Product } from '@/mikro-orm/entities/products';
-import { Detail } from '@/mikro-orm/entities/details';
+import { initConfigs } from '../configs';
+import { Customer } from './entities/customers';
+import { Employee } from './entities/employees';
+import { Order } from './entities/orders';
+import { Supplier } from './entities/suppliers';
+import { Product } from './entities/products';
+import { Detail } from './entities/details';
 
 export const getConnection = async () => {
   const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();

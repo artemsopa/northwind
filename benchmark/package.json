@@ -7,7 +7,7 @@
     "generate": "npx prisma generate --schema=./src/prisma-orm/schema.prisma",
     "start-benny": "ts-node  -r tsconfig-paths/register ./src/benny.ts",
     "start-nanobench": "ts-node -r tsconfig-paths/register ./src/nanobench.ts",
-    "start-mitata":"npx tsx ./src/mitataCompareTest.ts"
+    "start-mitata": "npx tsx ./src/mitataCompareTest.ts"
   },
   "author": "",
   "license": "ISC",

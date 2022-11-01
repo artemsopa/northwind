@@ -1,7 +1,7 @@
 import bench from 'nanobench';
 
 import { sql } from 'kysely';
-import { getConnection } from '@/kysely-orm';
+import { getConnection } from './index';
 
 export const startKyselyOrmBenches = async () => {
   const db = await getConnection();

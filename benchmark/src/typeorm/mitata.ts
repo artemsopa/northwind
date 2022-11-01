@@ -1,12 +1,11 @@
-import { run, bench, group, baseline } from 'mitata';
-import { getConnection } from './index';
-
+import { run, bench, group } from 'mitata';
 import { Customer } from './entities/customers';
 import { Employee } from './entities/employees';
 import { Supplier } from './entities/suppliers';
 import { Product } from './entities/products';
 import { Order } from './entities/orders';
 import { Detail } from './entities/details';
+import { getConnection } from './index';
 
 export const startTypeOrmBenches = async () => {
   const db = await getConnection();

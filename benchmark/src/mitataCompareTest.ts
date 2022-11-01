@@ -4,13 +4,21 @@ import { getConnection as getKnex } from 'src/knex-orm/index';
 import { getConnection as getKysely } from 'src/kysely-orm/index';
 import { getConnection as getPg } from 'src/pg/index';
 import { getConnection as getPrisma } from 'src/prisma-orm/index';
+import { getConnection as getMikro } from 'src/mikro-orm/index';
 
-import { Customer } from 'src/typeorm/entities/customers';
-import { Employee } from 'src/typeorm/entities/employees';
-import { Supplier } from 'src/typeorm/entities/suppliers';
-import { Product } from 'src/typeorm/entities/products';
-import { Order } from 'src/typeorm/entities/orders';
-import { Detail } from 'src/typeorm/entities/details';
+import { Customer as CustomerTypeOrm } from 'src/typeorm/entities/customers';
+import { Employee as EmployeeTypeOrm } from 'src/typeorm/entities/employees';
+import { Supplier as SupplierTypeOrm } from 'src/typeorm/entities/suppliers';
+import { Product as ProductTypeOrm} from 'src/typeorm/entities/products';
+import { Order as OrderTypeOrm } from 'src/typeorm/entities/orders';
+import { Detail as DetailTypeOrm } from 'src/typeorm/entities/details';
+
+import { Customer as CustomerMikroOrm } from 'src/mikro-orm/entities/customers';
+import { Employee as EmployeeMikroOrm} from 'src/mikro-orm/entities/employees';
+import { Supplier as SupplierMikroOrm } from 'src/mikro-orm/entities/suppliers';
+import { Product as ProductMikroOrm } from 'src/mikro-orm/entities/products';
+import { Order as OrderMikroOrm } from 'src/mikro-orm/entities/orders';
+import { Detail as DetailMikroOrm } from 'src/mikro-orm/entities/details';
 
 import { getConnection as getTypeorm } from 'src/typeorm/index';
 import { eq, ilike } from 'drizzle-orm/expressions';
@@ -26,7 +34,8 @@ const main = async () => {
     const prisma = await getPrisma();
     const kysely = await getKysely();
     const knex = await getKnex();
-    const typeorm = await getTypeorm();
+    // const typeorm = await getTypeorm();
+    const mikro = await getMikro();
     const count = new Array(1000);
     group('Customers: getAll', () => {
       bench('Pg Driver Customers: getAll', async () => {
@@ -57,6 +66,9 @@ const main = async () => {
       //     await typeorm.getRepository(Customer).createQueryBuilder('customers').getMany();
       //   }
       // });
+      bench('MikroORM Customers: getAll', async () => {
+        for await (const i of count) await mikro.find(CustomerMikroOrm, {});
+      });
     });
 
     group('Customers: getInfo', () => {
@@ -102,6 +114,9 @@ const main = async () => {
       //       .getOne();
       //   }
       // });
+      bench('MikroORM Customers: getInfo', async () => {
+        for await (const i of count) await mikro.findOne(CustomerMikroOrm, { id: 'ALFKI' });
+      });
     });
 
     group('Customers: search', () => {
@@ -150,6 +165,13 @@ const main = async () => {
       //       .getMany();
       //   }
       // });
+      bench('MikroORM Customers: search', async () => {
+        for await (const i of count) {
+          await mikro.find(CustomerMikroOrm, {
+            companyName: { $ilike: '%ha%' },
+          });
+        }
+      });
     });
 
     group(' Employees: getAll', () => {
@@ -181,6 +203,9 @@ const main = async () => {
       //     await typeorm.getRepository(Employee).createQueryBuilder('employees').getMany();
       //   }
       // });
+      bench('MikroORM Employees: getAll', async () => {
+        for await (const i of count) await mikro.find(EmployeeMikroOrm, {});
+      });
     });
 
     group('Employees: getInfo', () => {
@@ -247,6 +272,15 @@ const main = async () => {
       //       .getOne();
       //   }
       // });
+      bench('MikroORM Employees: getInfo', async () => {
+        for await (const i of count) {
+          await mikro.findOne(
+            EmployeeMikroOrm,
+            { id: '1' },
+            { populate: ['recipient'] },
+          );
+        }
+      });
     });
 
     group('Suppliers: getAll', () => {
@@ -278,6 +312,9 @@ const main = async () => {
       //     await typeorm.getRepository(Supplier).createQueryBuilder('suppliers').getMany();
       //   }
       // });
+      bench('MikroORM Suppliers: getAll', async () => {
+        for await (const i of count) await mikro.find(EmployeeMikroOrm, {});
+      });
     });
 
     group('Suppliers: getInfo', () => {
@@ -323,6 +360,11 @@ const main = async () => {
       //       .getOne();
       //   }
       // });
+      bench('MikroORM Suppliers: getInfo', async () => {
+        for await (const i of count) {
+          for await (const i of count) await mikro.findOne(SupplierMikroOrm, { id: '1' });
+        }
+      });
     });
 
 
@@ -357,6 +399,9 @@ const main = async () => {
       //     await typeorm.getRepository(Product).createQueryBuilder('products').getMany();
       //   }
       // });
+      bench('MikroORM Products: getAll', async () => {
+        for await (const i of count) await mikro.find(ProductMikroOrm, {});
+      });
     });
 
     group('Products: getInfo', () => {
@@ -424,6 +469,15 @@ const main = async () => {
       //       .getOne();
       //   }
       // });
+      bench('MikroORM Products: getInfo', async () => {
+        for await (const i of count) {
+          await mikro.findOne(
+            ProductMikroOrm,
+            { id: '1' },
+            { populate: ['supplier'] },
+          );
+        }
+      });
     });
 
     group('Products: search', () => {
@@ -472,6 +526,13 @@ const main = async () => {
       //       .getMany();
       //   }
       // });
+      bench('MikroORM Products: search', async () => {
+        for await (const i of count) {
+          await mikro.find(ProductMikroOrm, {
+              name: { $ilike: '%cha%' },
+            });
+        }
+      });
     });
 
     group('Orders: getAll', () => {
@@ -549,6 +610,15 @@ const main = async () => {
       //       ).getMany();
       //   }
       // });
+      bench('MikroORM Orders: getAll', async () => {
+        for await (const i of count) {
+          await mikro.find(
+              OrderMikroOrm,
+              {},
+              { populate: ['details'] },
+            );
+        }
+      });
     });
 
     group('Orders: getInfo', () => {
@@ -658,6 +728,15 @@ const main = async () => {
       //       .getMany();
       //   }
       // });
+      bench('MikroORM Orders: getInfo', async () => {
+        for await (const i of count) {
+          await mikro.find(
+            DetailMikroOrm,
+            { orderId: '10248' },
+            { populate: ['order', 'product'] },
+          );
+        }
+      });
     });
 
     await run();

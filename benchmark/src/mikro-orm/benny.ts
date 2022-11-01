@@ -1,13 +1,11 @@
 import benny from 'benny';
-
-import { Order } from '@/mikro-orm/entities/orders';
-import { Detail } from '@/mikro-orm/entities/details';
-import { Product } from '@/mikro-orm/entities/products';
-import { Employee } from '@/mikro-orm/entities/employees';
-import { Customer } from '@/mikro-orm/entities/customers';
-import { Supplier } from '@/mikro-orm/entities/suppliers';
-
-import { getConnection } from '@/mikro-orm';
+import { Order } from './entities/orders';
+import { Detail } from './entities/details';
+import { Product } from './entities/products';
+import { Employee } from './entities/employees';
+import { Customer } from './entities/customers';
+import { Supplier } from './entities/suppliers';
+import { getConnection } from './index';
 
 export const startMikroOrmSuites = async () => {
   const db = await getConnection();

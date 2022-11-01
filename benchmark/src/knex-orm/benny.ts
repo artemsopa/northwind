@@ -1,6 +1,6 @@
 import benny from 'benny';
 
-import { getConnection } from '@/knex-orm';
+import { getConnection } from './index';
 
 export const startKnexOrmSuites = async () => {
   const db = await getConnection();
