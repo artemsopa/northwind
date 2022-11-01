@@ -86,24 +86,12 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE');
       table.string('product_id').primary().references('id').inTable('public.products')
         .onDelete('CASCADE');
-    })
-    .createTable('metrics', (table) => {
-      table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
-      table.text('query').notNullable();
-      table.integer('ms').notNullable();
-      table.enu('type', [
-        'SELECT',
-        'WHERE',
-        'JOIN',
-      ]).defaultTo('SELECT');
-      table.dateTime('created_at').defaultTo(knex.fn.now());
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
   return await knex.schema
     .withSchema('public')
-    .dropTableIfExists('metrics')
     .dropTableIfExists('order_details')
     .dropTableIfExists('orders')
     .dropTableIfExists('customers')

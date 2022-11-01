@@ -24,7 +24,6 @@ export class SuppliersService {
   async getInfo(id: string) {
     const [supplier] = await this.db.suppliers.select()
       .where(eq(table.id, id))
-      .limit(1)
       .execute();
 
     if (!supplier) throw ApiError.badRequest('Unknown supplier!');

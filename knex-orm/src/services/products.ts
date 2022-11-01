@@ -21,15 +21,14 @@ export class ProductsService {
   }
 
   async getInfo(id: string) {
-    const data = await this.knex('public.products')
+    const [data] = await this.knex('public.products')
       .select(['products.*', 'suppliers.id as s_id', 'suppliers.company_name as s_company_name'])
       .whereRaw('products.id = (?)', [id])
       .leftJoin(
         'public.suppliers',
         'products.supplier_id',
         'suppliers.id',
-      )
-      .first();
+      );
 
     if (data === undefined) throw ApiError.badRequest('Unknown product!');
 

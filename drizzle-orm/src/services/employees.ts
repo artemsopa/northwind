@@ -24,7 +24,7 @@ export class EmployeesService {
 
   async getInfo(id: string) {
     const command = sql`select "e1".*, "e2"."last_name" as "reports_lname", "e2"."first_name" as "reports_fname" 
-    from "employees" as "e1" left join "employees" as "e2" on "e2"."id" = "e1"."recipient_id" where "e1"."id" = ${id} limit 1`;
+    from "employees" as "e1" left join "employees" as "e2" on "e2"."id" = "e1"."recipient_id" where "e1"."id" = ${id}`;
 
     const { rows: [data] } = await this.db.execute(command);
 

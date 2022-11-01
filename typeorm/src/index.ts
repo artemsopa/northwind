@@ -32,7 +32,7 @@ const main = async () => {
       password: DB_PASSWORD,
       database: DB_NAME,
       entities: [Customer, Employee, Order, Supplier, Product, Detail],
-      synchronize: true,
+      synchronize: false,
       logging: true,
       extra: {
         decimalNumbers: true,

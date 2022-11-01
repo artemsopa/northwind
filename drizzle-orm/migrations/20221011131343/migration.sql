@@ -44,14 +44,6 @@ CREATE TABLE IF NOT EXISTS employees (
 	"recipient_id" varchar
 );
 
-CREATE TABLE IF NOT EXISTS metrics (
-	"id" serial PRIMARY KEY NOT NULL,
-	"query" text NOT NULL,
-	"ms" integer NOT NULL,
-	"type" query_type NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS orders (
 	"id" varchar PRIMARY KEY NOT NULL,
 	"order_date" date NOT NULL,
