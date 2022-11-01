@@ -8,10 +8,8 @@ import { EmployeesController } from '@/controllers/employees';
 import { SuppliersController } from '@/controllers/suppliers';
 import { ProductsController } from '@/controllers/products';
 import { OrdersController } from '@/controllers/orders';
-import { MetricsController } from '@/controllers/metrics';
 import { CustomersService } from '@/services/cutomers';
 import { EmployeesService } from '@/services/employees';
-import { MetricsService } from '@/services/metrics';
 import { OrdersService } from '@/services/orders';
 import { ProductsService } from '@/services/products';
 import { SuppliersService } from '@/services/suppliers';
@@ -55,7 +53,6 @@ const main = async () => {
 
     console.log('Database successfully connected...');
 
-    const metricsService = new MetricsService(db);
     const customersService = new CustomersService(db);
     const employeesService = new EmployeesService(db);
     const suppliersService = new SuppliersService(db);
@@ -65,7 +62,6 @@ const main = async () => {
     const { PORT } = configs.app;
     const app = new App(
       PORT,
-      new MetricsController(metricsService),
       new CustomersController(customersService),
       new EmployeesController(employeesService),
       new SuppliersController(suppliersService),

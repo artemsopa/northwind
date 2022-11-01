@@ -27,6 +27,7 @@
   "dependencies": {
     "@mikro-orm/core": "^5.5.0",
     "@mikro-orm/postgresql": "^5.5.0",
+    "@mikro-orm/reflection": "^5.5.0",
     "@prisma/client": "^4.5.0",
     "benny": "^3.7.1",
     "dotenv": "^16.0.3",

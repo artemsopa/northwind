@@ -1,9 +1,3 @@
-DO $$ BEGIN
- CREATE TYPE query_type AS ENUM('SELECT', 'WHERE', 'JOIN');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
-
 CREATE TABLE IF NOT EXISTS customers (
 	"id" varchar(5) PRIMARY KEY NOT NULL,
 	"company_name" varchar NOT NULL,
@@ -42,14 +36,6 @@ CREATE TABLE IF NOT EXISTS employees (
 	"extension" integer NOT NULL,
 	"notes" text NOT NULL,
 	"recipient_id" varchar
-);
-
-CREATE TABLE IF NOT EXISTS metrics (
-	"id" serial PRIMARY KEY NOT NULL,
-	"query" text NOT NULL,
-	"ms" integer NOT NULL,
-	"type" query_type NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS orders (

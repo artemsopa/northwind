@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "QueryType" AS ENUM ('SELECT', 'WHERE', 'JOIN');
-
 -- CreateTable
 CREATE TABLE "customers" (
     "id" VARCHAR(5) NOT NULL,
@@ -98,17 +95,6 @@ CREATE TABLE "suppliers" (
     "phone" VARCHAR NOT NULL,
 
     CONSTRAINT "suppliers_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "metrics" (
-    "id" TEXT NOT NULL,
-    "query" TEXT NOT NULL,
-    "ms" INTEGER NOT NULL,
-    "type" "QueryType" NOT NULL DEFAULT 'SELECT',
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "metrics_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey

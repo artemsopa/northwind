@@ -30,6 +30,7 @@ services:
       KYSELY_HOST: kysely:8004
       PRISMA_HOST: prisma:8005
       PORT: 8000
+      MIKRO_HOST: mikro:8006
     expose:
       - 8000
     ports:
@@ -40,12 +41,14 @@ services:
       - knex
       - kysely
       - prisma
+      - mikro
     links:
       - drizzle
       - typeorm
       - knex
       - kysely
       - prisma
+      - mikro
 
   drizzle:
     build:
@@ -153,7 +156,27 @@ services:
     links:
       - db
 
-
+  mikro:
+    build:
+      context: ./mikro-orm
+      dockerfile: ./Dockerfile
+    network_mode: bridge
+    container_name: mikro
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: adminadmin
+      DB_NAME: northwind_db
+      PORT: 8006
+    expose:
+      - 8006
+    ports:
+      - 8006:8006
+    depends_on:
+      - db
+    links:
+      - db
 
 volumes:
   data:

@@ -6,10 +6,8 @@ import { EmployeesController } from '@/controllers/employees';
 import { SuppliersController } from '@/controllers/suppliers';
 import { ProductsController } from '@/controllers/products';
 import { OrdersController } from '@/controllers/orders';
-import { MetricsController } from '@/controllers/metrics';
 import { CustomersService } from '@/services/cutomers';
 import { EmployeesService } from '@/services/employees';
-import { MetricsService } from '@/services/metrics';
 import { OrdersService } from '@/services/orders';
 import { ProductsService } from '@/services/products';
 import { SuppliersService } from '@/services/suppliers';
@@ -19,7 +17,6 @@ import { Employee } from '@/entities/employees';
 import { Order } from '@/entities/orders';
 import { Supplier } from '@/entities/suppliers';
 import { Product } from '@/entities/products';
-import { Metric } from '@/entities/metrics';
 import { Detail } from '@/entities/details';
 
 const main = async () => {
@@ -34,7 +31,7 @@ const main = async () => {
       username: DB_USER,
       password: DB_PASSWORD,
       database: DB_NAME,
-      entities: [Customer, Employee, Order, Supplier, Product, Detail, Metric],
+      entities: [Customer, Employee, Order, Supplier, Product, Detail],
       synchronize: false,
       logging: true,
       extra: {
@@ -43,7 +40,6 @@ const main = async () => {
     });
     await ds.initialize();
 
-    const metricsService = new MetricsService(ds);
     const customersService = new CustomersService(ds);
     const employeesService = new EmployeesService(ds);
     const suppliersService = new SuppliersService(ds);
@@ -53,7 +49,6 @@ const main = async () => {
     const { PORT } = configs.app;
     const app = new App(
       PORT,
-      new MetricsController(metricsService),
       new CustomersController(customersService),
       new EmployeesController(employeesService),
       new SuppliersController(suppliersService),

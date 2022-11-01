@@ -248,44 +248,6 @@
         }
       }
     },
-    "metrics": {
-      "name": "metrics",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "query": {
-          "name": "query",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ms": {
-          "name": "ms",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "query_type",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {}
-    },
     "orders": {
       "name": "orders",
       "columns": {
@@ -536,16 +498,6 @@
       },
       "indexes": {},
       "foreignKeys": {}
-    }
-  },
-  "enums": {
-    "query_type": {
-      "name": "query_type",
-      "values": {
-        "SELECT": "SELECT",
-        "WHERE": "WHERE",
-        "JOIN": "JOIN"
-      }
     }
   }
 }

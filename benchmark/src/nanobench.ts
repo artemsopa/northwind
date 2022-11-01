@@ -4,6 +4,7 @@ import { startKyselyOrmBenches } from '@/kysely-orm/nanobench';
 import { startPgDriverBenches } from '@/pg/nanobench';
 import { startPrismaOrmBenches } from '@/prisma-orm/nanobench';
 import { startTypeOrmBenches } from '@/typeorm/nanobench';
+import { startMikroOrmBenches } from '@/mikro-orm/nanobench';
 
 const main = async () => {
   try {
@@ -13,6 +14,7 @@ const main = async () => {
     await startKyselyOrmBenches();
     await startPrismaOrmBenches();
     await startTypeOrmBenches();
+    await startMikroOrmBenches();
   } catch (error) {
     console.log(error);
     process.exit(1);

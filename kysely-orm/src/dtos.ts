@@ -79,14 +79,6 @@ interface Detail {
     product_id: string;
 }
 
-interface Metric {
-    id: string;
-    query: string;
-    ms: number;
-    type: 'SELECT' | 'WHERE' | 'JOIN';
-    created_at: Date;
-}
-
 export interface Database {
     customers: Customer;
     employees: Employee;
@@ -94,7 +86,6 @@ export interface Database {
     products: Product;
     suppliers: Supplier;
     order_details: Detail;
-    metrics: Metric;
 }
 
 export type EmployeeWithRecipient = Employee & {
