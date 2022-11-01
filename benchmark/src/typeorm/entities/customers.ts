@@ -5,22 +5,22 @@ import { Order } from './orders';
 
 @Entity({ name: 'customers' })
 export class Customer {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar' })
     id: string;
 
-  @Column({ name: 'company_name' })
+  @Column({ name: 'company_name', type: 'varchar' })
     companyName: string;
 
-  @Column({ name: 'contact_name' })
+  @Column({ name: 'contact_name', type: 'varchar' })
     contactName: string;
 
-  @Column({ name: 'contact_title' })
+  @Column({ name: 'contact_title', type: 'varchar' })
     contactTitle: string;
 
-  @Column({ name: 'address' })
+  @Column({ name: 'address', type: 'varchar' })
     address: string;
 
-  @Column({ name: 'city' })
+  @Column({ name: 'city', type: 'varchar' })
     city: string;
 
   @Column({ name: 'postal_code', type: 'varchar', nullable: true })
@@ -29,10 +29,10 @@ export class Customer {
   @Column({ name: 'region', type: 'varchar', nullable: true })
     region: string | null;
 
-  @Column({ name: 'country' })
+  @Column({ name: 'country', type: 'varchar' })
     country: string;
 
-  @Column({ name: 'phone' })
+  @Column({ name: 'phone', type: 'varchar' })
     phone: string;
 
   @Column({ name: 'fax', type: 'varchar', nullable: true })

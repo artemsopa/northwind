@@ -3,7 +3,7 @@ import { startKnexOrmBenches } from '@/knex-orm/mitata';
 import { startKyselyOrmBenches } from '@/kysely-orm/mitata';
 import { startPgDriverBenches } from '@/pg/mitata';
 import { startPrismaOrmBenches } from '@/prisma-orm/mitata';
-import { startTypeOrmBenches } from '@/typeorm/mitata';
+import { startTypeOrmBenches } from './typeorm/mitata';
 import { startMikroOrmBenches } from '@/mikro-orm/mitata';
 
 const main = async () => {
@@ -13,7 +13,7 @@ const main = async () => {
     await startKnexOrmBenches();
     await startKyselyOrmBenches();
     await startPrismaOrmBenches();
-    // await startTypeOrmBenches();
+    await startTypeOrmBenches();
     await startMikroOrmBenches();
   } catch (error) {
     console.log(error);

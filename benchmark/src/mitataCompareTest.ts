@@ -34,7 +34,7 @@ const main = async () => {
     const prisma = await getPrisma();
     const kysely = await getKysely();
     const knex = await getKnex();
-    // const typeorm = await getTypeorm();
+    const typeorm = await getTypeorm();
     const mikro = await getMikro();
     const count = new Array(1000);
     group('Customers: getAll', () => {
@@ -61,11 +61,11 @@ const main = async () => {
           await knex('public.customers').select();
         }
       });
-      // bench('TypeORM Customers: getAll', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Customer).createQueryBuilder('customers').getMany();
-      //   }
-      // });
+      bench('TypeORM Customers: getAll', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(CustomerTypeOrm).createQueryBuilder('customers').getMany();
+        }
+      });
       bench('MikroORM Customers: getAll', async () => {
         for await (const i of count) await mikro.find(CustomerMikroOrm, {});
       });
@@ -107,13 +107,13 @@ const main = async () => {
           await knex('public.customers').where({ id: 'ALFKI' }).first();
         }
       });
-      // bench('TypeORM Customers: getInfo', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Customer).createQueryBuilder('customers')
-      //       .where('customers.id = :id', { id: 'ALFKI' })
-      //       .getOne();
-      //   }
-      // });
+      bench('TypeORM Customers: getInfo', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(CustomerTypeOrm).createQueryBuilder('customers')
+            .where('customers.id = :id', { id: 'ALFKI' })
+            .getOne();
+        }
+      });
       bench('MikroORM Customers: getInfo', async () => {
         for await (const i of count) await mikro.findOne(CustomerMikroOrm, { id: 'ALFKI' });
       });
@@ -158,13 +158,13 @@ const main = async () => {
             .whereRaw('company_name ILIKE ?', ['%ha%']).select();
         }
       });
-      // bench('TypeORM Customers: search', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Customer).createQueryBuilder('customers')
-      //       .where('customers.company_name ilike :company', { company: '%ha%' })
-      //       .getMany();
-      //   }
-      // });
+      bench('TypeORM Customers: search', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(CustomerTypeOrm).createQueryBuilder('customers')
+            .where('customers.company_name ilike :company', { company: '%ha%' })
+            .getMany();
+        }
+      });
       bench('MikroORM Customers: search', async () => {
         for await (const i of count) {
           await mikro.find(CustomerMikroOrm, {
@@ -198,11 +198,11 @@ const main = async () => {
           await knex('public.employees').select();
         }
       });
-      // bench('TypeORM Employees: getAll', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Employee).createQueryBuilder('employees').getMany();
-      //   }
-      // });
+      bench('TypeORM Employees: getAll', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(EmployeeTypeOrm).createQueryBuilder('employees').getMany();
+        }
+      });
       bench('MikroORM Employees: getAll', async () => {
         for await (const i of count) await mikro.find(EmployeeMikroOrm, {});
       });
@@ -262,16 +262,16 @@ const main = async () => {
             .select(['e1.*', 'e2.id as e_id', 'e2.last_name as e_last_name', 'e2.first_name as e_first_name']);
         }
       });
-      // bench('TypeORM Employees: getInfo', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Employee).createQueryBuilder('employees')
-      //       .leftJoinAndSelect(
-      //         'employees.recipient',
-      //         'recipients',
-      //       ).where('employees.id = :id', { id: '1' })
-      //       .getOne();
-      //   }
-      // });
+      bench('TypeORM Employees: getInfo', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(EmployeeTypeOrm).createQueryBuilder('employees')
+            .leftJoinAndSelect(
+              'employees.recipient',
+              'recipients',
+            ).where('employees.id = :id', { id: '1' })
+            .getOne();
+        }
+      });
       bench('MikroORM Employees: getInfo', async () => {
         for await (const i of count) {
           await mikro.findOne(
@@ -307,11 +307,11 @@ const main = async () => {
           await knex('public.suppliers').select();
         }
       });
-      // bench('TypeORM Suppliers: getAll', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Supplier).createQueryBuilder('suppliers').getMany();
-      //   }
-      // });
+      bench('TypeORM Suppliers: getAll', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(SupplierTypeOrm).createQueryBuilder('suppliers').getMany();
+        }
+      });
       bench('MikroORM Suppliers: getAll', async () => {
         for await (const i of count) await mikro.find(EmployeeMikroOrm, {});
       });
@@ -353,13 +353,13 @@ const main = async () => {
           await knex('public.suppliers').where({ id: '1' }).first();
         }
       });
-      // bench('TypeORM Suppliers: getInfo', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Supplier).createQueryBuilder('suppliers')
-      //       .where('suppliers.id = :id', { id: '1' })
-      //       .getOne();
-      //   }
-      // });
+      bench('TypeORM Suppliers: getInfo', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(SupplierTypeOrm).createQueryBuilder('suppliers')
+            .where('suppliers.id = :id', { id: '1' })
+            .getOne();
+        }
+      });
       bench('MikroORM Suppliers: getInfo', async () => {
         for await (const i of count) {
           for await (const i of count) await mikro.findOne(SupplierMikroOrm, { id: '1' });
@@ -394,11 +394,11 @@ const main = async () => {
           await knex('public.products').select();
         }
       });
-      // bench('TypeORM Products: getAll', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Product).createQueryBuilder('products').getMany();
-      //   }
-      // });
+      bench('TypeORM Products: getAll', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(ProductTypeOrm).createQueryBuilder('products').getMany();
+        }
+      });
       bench('MikroORM Products: getAll', async () => {
         for await (const i of count) await mikro.find(ProductMikroOrm, {});
       });
@@ -459,16 +459,16 @@ const main = async () => {
             );
         }
       });
-      // bench('TypeORM Products: getInfo', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Product).createQueryBuilder('products')
-      //       .leftJoinAndSelect(
-      //         'products.supplier',
-      //         'suppliers',
-      //       ).where('products.id = :id', { id: '1' })
-      //       .getOne();
-      //   }
-      // });
+      bench('TypeORM Products: getInfo', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(ProductTypeOrm).createQueryBuilder('products')
+            .leftJoinAndSelect(
+              'products.supplier',
+              'suppliers',
+            ).where('products.id = :id', { id: '1' })
+            .getOne();
+        }
+      });
       bench('MikroORM Products: getInfo', async () => {
         for await (const i of count) {
           await mikro.findOne(
@@ -519,13 +519,13 @@ const main = async () => {
             .whereRaw('name ILIKE ?', ['%cha%']).select();
         }
       });
-      // bench('TypeORM Products: search', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Product).createQueryBuilder('products')
-      //       .where('products.name ilike :name', { name: '%cha%' })
-      //       .getMany();
-      //   }
-      // });
+      bench('TypeORM Products: search', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(ProductTypeOrm).createQueryBuilder('products')
+            .where('products.name ilike :name', { name: '%cha%' })
+            .getMany();
+        }
+      });
       bench('MikroORM Products: search', async () => {
         for await (const i of count) {
           await mikro.find(ProductMikroOrm, {
@@ -600,16 +600,16 @@ const main = async () => {
             .orderBy('orders.id', 'asc');
         }
       });
-      // bench('TypeORM Orders: getAll', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Order)
-      //       .createQueryBuilder('orders')
-      //       .leftJoinAndSelect(
-      //         'orders.details',
-      //         'order_details',
-      //       ).getMany();
-      //   }
-      // });
+      bench('TypeORM Orders: getAll', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(OrderTypeOrm)
+            .createQueryBuilder('orders')
+            .leftJoinAndSelect(
+              'orders.details',
+              'order_details',
+            ).getMany();
+        }
+      });
       bench('MikroORM Orders: getAll', async () => {
         for await (const i of count) {
           await mikro.find(
@@ -713,21 +713,21 @@ const main = async () => {
             ]);
         }
       });
-      // bench('TypeORM Orders: getInfo', async () => {
-      //   for await (const i of count) {
-      //     await typeorm.getRepository(Detail)
-      //       .createQueryBuilder('order_details')
-      //       .leftJoinAndSelect(
-      //         'order_details.order',
-      //         'orders',
-      //       ).leftJoinAndSelect(
-      //         'order_details.product',
-      //         'products',
-      //       )
-      //       .where('order_details.order_id = :id', { id: '10248' })
-      //       .getMany();
-      //   }
-      // });
+      bench('TypeORM Orders: getInfo', async () => {
+        for await (const i of count) {
+          await typeorm.getRepository(DetailTypeOrm)
+            .createQueryBuilder('order_details')
+            .leftJoinAndSelect(
+              'order_details.order',
+              'orders',
+            ).leftJoinAndSelect(
+              'order_details.product',
+              'products',
+            )
+            .where('order_details.order_id = :id', { id: '10248' })
+            .getMany();
+        }
+      });
       bench('MikroORM Orders: getInfo', async () => {
         for await (const i of count) {
           await mikro.find(

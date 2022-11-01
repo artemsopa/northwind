@@ -6,31 +6,31 @@ import { Detail } from './details';
 
 @Entity({ name: 'products' })
 export class Product {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar' })
     id: string;
 
-  @Column({ name: 'name' })
+  @Column({ name: 'name', type: 'varchar' })
     name: string;
 
-  @Column({ name: 'qt_per_unit' })
+  @Column({ name: 'qt_per_unit', type: 'varchar' })
     qtPerUnit: string;
 
   @Column({ name: 'unit_price', type: 'decimal', precision: 10, scale: 2, default: 0 })
     unitPrice: number;
 
-  @Column({ name: 'units_in_stock' })
+  @Column({ name: 'units_in_stock', type: 'integer' })
     unitsInStock: number;
 
-  @Column({ name: 'units_on_order' })
+  @Column({ name: 'units_on_order', type: 'integer'  })
     unitsOnOrder: number;
 
-  @Column({ name: 'reorder_level' })
+  @Column({ name: 'reorder_level', type: 'integer'  })
     reorderLevel: number;
 
-  @Column({ name: 'discontinued' })
+  @Column({ name: 'discontinued', type: 'integer'  })
     discontinued: number;
 
-  @Column({ name: 'supplier_id' })
+  @Column({ name: 'supplier_id', type: 'varchar'  })
     supplierId: string;
   @ManyToOne(() => Supplier, (supplier) => supplier.products, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'supplier_id' })
