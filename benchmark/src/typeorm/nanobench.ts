@@ -1,13 +1,13 @@
 import bench from 'nanobench';
 
-import { Customer } from '@/typeorm/entities/customers';
-import { Employee } from '@/typeorm/entities/employees';
-import { Supplier } from '@/typeorm/entities/suppliers';
-import { Product } from '@/typeorm/entities/products';
-import { Order } from '@/typeorm/entities/orders';
-import { Detail } from '@/typeorm/entities/details';
+import { Customer } from './entities/customers';
+import { Employee } from './entities/employees';
+import { Supplier } from './entities/suppliers';
+import { Product } from './entities/products';
+import { Order } from './entities/orders';
+import { Detail } from './entities/details';
 
-import { getConnection } from '@/typeorm';
+import { getConnection } from './index';
 
 export const startTypeOrmBenches = async () => {
   const db = await getConnection();
@@ -17,7 +17,7 @@ export const startTypeOrmBenches = async () => {
   await bench('TypeORM Customers: getAll', async (b) => {
     b.start();
     for await (const i of count) {
-      db.getRepository(Customer).createQueryBuilder('customers').getMany();
+      await db.getRepository(Customer).createQueryBuilder('customers').getMany();
     }
     b.end();
   });

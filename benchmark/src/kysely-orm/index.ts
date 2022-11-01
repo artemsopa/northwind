@@ -1,7 +1,10 @@
-import { Pool } from 'pg';
+import pkg from 'pg';
+
 import { Kysely, PostgresDialect } from 'kysely';
 import { initConfigs } from '@/configs';
 import { Database } from '@/kysely-orm/db';
+
+const { Pool } = pkg;
 
 export const getConnection = async () => {
   const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();

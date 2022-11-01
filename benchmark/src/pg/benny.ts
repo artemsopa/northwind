@@ -1,6 +1,6 @@
 import benny from 'benny';
 
-import { getConnection } from '@/pg';
+import { getConnection } from './index';
 
 export const startPgDriverSuites = async () => {
   const db = await getConnection();
@@ -63,3 +63,5 @@ export const startPgDriverSuites = async () => {
     benny.complete(),
   );
 };
+
+// startPgDriverSuites();

@@ -1,5 +1,7 @@
-import { Pool } from 'pg';
+import pkg from 'pg';
 import { initConfigs } from '../configs';
+
+const { Pool } = pkg;
 
 export const getConnection = async () => {
   const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();

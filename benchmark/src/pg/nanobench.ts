@@ -1,6 +1,6 @@
 import bench from 'nanobench';
 
-import { getConnection } from '@/pg';
+import { getConnection } from './index';
 
 export const startPgDriverBenches = async () => {
   const db = await getConnection();
@@ -17,11 +17,61 @@ export const startPgDriverBenches = async () => {
     for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
     b.end();
   });
-  await bench('Pg Driver Customers: search', async (b) => {
-    b.start();
-    for await (const i of count) await db.query('select * from "customers" where "customers"."company_name" ilike $1', ['ha']);
-    b.end();
-  });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: getInfo', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."id" = $1', ['ALFKI']);
+  //   b.end();
+  // });
+  // await bench('Pg Driver Customers: search', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.query('select * from "customers" where "customers"."company_name" ilike $1', ['ha']);
+  //   b.end();
+  // });
 
   await bench('Pg Driver Employees: getAll', async (b) => {
     b.start();
@@ -90,3 +140,5 @@ export const startPgDriverBenches = async () => {
     b.end();
   });
 };
+
+// startPgDriverBenches();

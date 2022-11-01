@@ -29,6 +29,7 @@ services:
       KNEX_HOST: knex:8003
       KYSELY_HOST: kysely:8004
       PRISMA_HOST: prisma:8005
+      PORT: 8000
     expose:
       - 8000
     ports:
@@ -58,6 +59,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: adminadmin
       DB_NAME: northwind_db
+      PORT: 8001
     expose:
       - 8001
     ports:
@@ -79,6 +81,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: adminadmin
       DB_NAME: northwind_db
+      PORT: 8002
     expose:
       - 8002
     ports:
@@ -100,6 +103,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: adminadmin
       DB_NAME: northwind_db
+      PORT: 8003
     expose:
       - 8003
     ports:
@@ -121,6 +125,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: adminadmin
       DB_NAME: northwind_db
+      PORT: 8004
     expose:
       - 8004
     ports:
@@ -138,6 +143,7 @@ services:
     container_name: prisma
     environment:
       DATABASE_URL: postgresql://postgres:adminadmin@db:5432/northwind_db
+      PORT: 8005
     expose:
       - 8005
     ports:

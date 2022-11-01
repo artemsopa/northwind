@@ -4,12 +4,30 @@ import { eq, ilike } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
 import { customers, details, orders, products, suppliers } from '@/drizzle-orm/data/schema';
 
-import { getConnection } from '@/drizzle-orm';
+import { getConnection } from './index';
 
 export const startDrizzleOrmBenches = async () => {
   const db = await getConnection();
 
   const count = new Array(1000);
+
+  const query = db.customers.select();
+  // await bench('Drizzle-ORM Customers: getAll ', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await query.execute();
+  //   b.end();
+  // });
+  // await bench('Drizzle-ORM Customers: getAll 2', async (b) => {
+  //   b.start();
+  //   for await (const i of count) await db.customers.select().execute();
+  //   b.end();
+  // });
+  // await bench('Drizzle-ORM Customers: getAll 3', async (b) => {
+  //   b.start();
+  //   const command = sql`select * from "customers"`;
+  //   for await (const i of count) await db.execute(command);
+  //   b.end();
+  // });
 
   await bench('Drizzle-ORM Customers: getAll', async (b) => {
     b.start();
@@ -114,3 +132,5 @@ export const startDrizzleOrmBenches = async () => {
     b.end();
   });
 };
+
+// startDrizzleOrmBenches();

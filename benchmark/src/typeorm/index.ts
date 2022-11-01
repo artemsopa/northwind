@@ -1,11 +1,11 @@
 import { DataSource } from 'typeorm';
-import { initConfigs } from '@/configs';
 import { Customer } from '@/typeorm/entities/customers';
 import { Detail } from '@/typeorm/entities/details';
 import { Employee } from '@/typeorm/entities/employees';
 import { Order } from '@/typeorm/entities/orders';
 import { Product } from '@/typeorm/entities/products';
 import { Supplier } from '@/typeorm/entities/suppliers';
+import { initConfigs } from '@/configs';
 
 const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = initConfigs();
 
