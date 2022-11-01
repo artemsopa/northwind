@@ -4,6 +4,7 @@ import { startKyselyOrmSuites } from '@/kysely-orm/benny';
 import { startPgDriverSuites } from '@/pg/benny';
 import { startPrismaOrmSuites } from '@/prisma-orm/benny';
 import { startTypeOrmSuites } from '@/typeorm/benny';
+import { startMikroOrmSuites } from '@/mikro-orm/benny';
 
 const main = async () => {
   try {
@@ -13,6 +14,7 @@ const main = async () => {
     await startKyselyOrmSuites();
     await startPrismaOrmSuites();
     await startTypeOrmSuites();
+    await startMikroOrmSuites();
   } catch (error) {
     console.log(error);
     process.exit(1);

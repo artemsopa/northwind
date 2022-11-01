@@ -9,6 +9,7 @@ export const initConfigs = () => {
     KNEX_HOST,
     KYSELY_HOST,
     PRISMA_HOST,
+    MIKRO_HOST,
   } = process.env;
 
   if (!PORT
@@ -17,6 +18,7 @@ export const initConfigs = () => {
     || !KNEX_HOST
     || !KYSELY_HOST
     || !PRISMA_HOST
+    || !MIKRO_HOST
   ) {
     throw new Error('ERROR! One of the ports cannot be found.');
   }
@@ -28,5 +30,6 @@ export const initConfigs = () => {
     KNEX_HOST,
     KYSELY_HOST,
     PRISMA_HOST,
+    MIKRO_HOST,
   };
 };

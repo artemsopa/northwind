@@ -171,15 +171,6 @@ export async function up(db: Kysely<any>): Promise<void> {
     .on('order_details')
     .column('product_id')
     .execute();
-
-  await db.schema
-    .createTable('metrics')
-    .addColumn('id', 'uuid', (col) => col.defaultTo(uuid()).primaryKey())
-    .addColumn('query', 'text', (col) => col.notNull())
-    .addColumn('ms', 'integer', (col) => col.notNull())
-    .addColumn('type', 'varchar', (col) => col.notNull())
-    .addColumn('created_at', 'timestamptz', (col) => col.defaultTo(new Date()))
-    .execute();
 }
 
 export async function down(db: Kysely<any>): Promise<void> {
@@ -189,5 +180,4 @@ export async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable('orders').execute();
   await db.schema.dropTable('employees').execute();
   await db.schema.dropTable('customers').execute();
-  await db.schema.dropTable('metrics').execute();
 }
